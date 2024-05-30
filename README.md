@@ -1,20 +1,49 @@
 # Gatherly
 
-[![Built with Devbox](https://www.jetify.com/img/devbox/shield_galaxy.svg)](https://www.jetify.com/devbox/docs/contributor-quickstart/)
+Gatherly is an application that allow coordinate party like activities.
 
-To start your Phoenix server:
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+# Planned Features
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+- [ ] Coordinate People's Calendars and Availability
+- [ ] Online Status Tracking and Chatting
+- [ ] Route Planning based on location and arrive time
+- [ ] Coordinate Items Might Bring and Track Amount By Category
+- [ ] Member Requests for Items
+- [ ] Forming Reusable Templates
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Getting Started
 
-## Learn more
+These instructions will guide you on how start the app locally for development
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+1. Install dependencies
+```bash
+devbox shell
+mix deps.get
+```
+2. Sart DB, Create and migrate your database
+
+```bash
+mix ecto.create
+mix ecto.migrate
+```
+
+3. Start the app
+To start the app locally for development, run the following command:
+
+```bash
+mix phx.server
+```
+try accessing it via http://localhost:4000
+
+4. Run tests
+
+```bash
+mix test
+```
+
+5. format code
+
+```bash
+mix format
+```
