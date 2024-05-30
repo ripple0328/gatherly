@@ -1,5 +1,5 @@
 # Gatherly
-
+[![codecov](https://codecov.io/github/ripple0328/gatherly/graph/badge.svg?token=NZJ5IIWRIK)](https://codecov.io/github/ripple0328/gatherly)
 Gatherly is an application that allow coordinate party like activities.
 
 
