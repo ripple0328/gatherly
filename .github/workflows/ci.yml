@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   static-analysis:
     name: Static Analysis
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu22
     services:
       postgres:
         image: postgres:13-alpine
@@ -42,7 +42,7 @@ jobs:
   deploy:
     name: Deploy app
     needs: static-analysis
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu22
     environment: prod
     steps:
       - uses: actions/checkout@v4
