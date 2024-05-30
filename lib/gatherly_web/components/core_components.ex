@@ -242,6 +242,14 @@ defmodule GatherlyWeb.CoreComponents do
     """
   end
 
+  def google_auth_button(assigns) do
+    ~H"""
+    <.link navigate="/auth/google">
+      <.button>Login with Google</.button>
+    </.link>
+    """
+  end
+
   @doc """
   Renders an input with label and error messages.
 

@@ -6,7 +6,10 @@ defmodule Gatherly.Repo.Migrations.CreateUsersAuthTables do
 
     create table(:users) do
       add :email, :citext, null: false
-      add :hashed_password, :string, null: false
+      add :first_name, :string, null: true
+      add :last_name, :string, null: true
+      add :hashed_password, :string, null: true
+      add :is_oauth_user, :boolean, default: false
       add :confirmed_at, :naive_datetime
       timestamps(type: :utc_datetime)
     end

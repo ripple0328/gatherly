@@ -1,4 +1,5 @@
 defmodule GatherlyWeb.UserLoginLive do
+  alias Ueberauth.Strategy.Google
   use GatherlyWeb, :live_view
 
   def render(assigns) do
@@ -31,6 +32,7 @@ defmodule GatherlyWeb.UserLoginLive do
           </.button>
         </:actions>
       </.simple_form>
+      <.google_auth_button>Login with Google Acount</.google_auth_button>
     </div>
     """
   end

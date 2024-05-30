@@ -82,4 +82,10 @@ defmodule GatherlyWeb.Router do
       live "/users/confirm", UserConfirmationInstructionsLive, :new
     end
   end
+
+  scope "/auth", GatherlyWeb do
+    pipe_through [:browser]
+    get "/google", GoogleAuthController, :request
+    get "/google/callback", GoogleAuthController, :callback
+  end
 end

@@ -4,9 +4,12 @@ defmodule Gatherly.Accounts.User do
 
   schema "users" do
     field :email, :string
+    field :first_name, :string
+    field :last_name, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
+    field :is_oauth_user, :boolean, default: false
 
     timestamps(type: :utc_datetime)
   end
@@ -154,5 +157,13 @@ defmodule Gatherly.Accounts.User do
     else
       add_error(changeset, :current_password, "is not valid")
     end
+  end
+
+  def oauth_registration_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email, :first_name, :last_name])
+    |> validate_required([:first_name, :last_name, :email])
+    |> validate_email(opts)
+    |> put_change(:is_oauth_user, true)
   end
 end

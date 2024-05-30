@@ -19,6 +19,9 @@ defmodule GatherlyWeb.UserSettingsLive do
           phx-change="validate_email"
         >
           <.input field={@email_form[:email]} type="email" label="Email" required />
+          <.input field={@email_form[:first_name]} type="text" label="First Name" />
+          <.input field={@email_form[:last_name]} type="text" label="Last Name" />
+
           <.input
             field={@email_form[:current_password]}
             name="current_password"
