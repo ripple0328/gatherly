@@ -1,10 +1,14 @@
 {
-	"$schema": "https://raw.githubusercontent.com/jetpack-io/devbox/0.10.4/.schema/devbox.schema.json",
-	"packages": ["elixir@latest", "postgresql@latest"],
-	"shell": {
-		"init_hook": ["echo 'Welcome to devbox!' > /dev/null"],
-		"scripts": {
-			"test": ["mix test"]
-		}
-	}
+  "$schema": "https://raw.githubusercontent.com/jetpack-io/devbox/0.10.4/.schema/devbox.schema.json",
+  "packages": [
+    "elixir@latest",
+    "postgresql@latest",
+    "erlang@latest"
+  ],
+  "shell": {
+    "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],
+    "scripts": {
+      "test": ["mix test"]
+    }
+  }
 }

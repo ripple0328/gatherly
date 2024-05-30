@@ -49,6 +49,54 @@
         }
       }
     },
+    "erlang@latest": {
+      "last_modified": "2024-05-22T06:18:38Z",
+      "resolved": "github:NixOS/nixpkgs/3f316d2a50699a78afe5e77ca486ad553169061e#erlang",
+      "source": "devbox-search",
+      "version": "25.3.2.12",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/0dn6dl6anrs09x7yf7dar9g3qq8zmbq5-erlang-25.3.2.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/0dn6dl6anrs09x7yf7dar9g3qq8zmbq5-erlang-25.3.2.12"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/k1hgvpw5330av537qyj2rwfda45fz9yx-erlang-25.3.2.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/k1hgvpw5330av537qyj2rwfda45fz9yx-erlang-25.3.2.12"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/vrk6zjsl78ml419r5a708znhjf721zqm-erlang-25.3.2.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/vrk6zjsl78ml419r5a708znhjf721zqm-erlang-25.3.2.12"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/r4qf88cdlzc4w6shq7n6nd0as0qrmapn-erlang-25.3.2.12",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/r4qf88cdlzc4w6shq7n6nd0as0qrmapn-erlang-25.3.2.12"
+        }
+      }
+    },
     "postgresql@latest": {
       "last_modified": "2024-05-26T09:30:02Z",
       "plugin_version": "0.0.2",
