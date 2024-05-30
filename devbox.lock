@@ -1,6 +1,54 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "direnv@latest": {
+      "last_modified": "2024-05-22T06:18:38Z",
+      "resolved": "github:NixOS/nixpkgs/3f316d2a50699a78afe5e77ca486ad553169061e#direnv",
+      "source": "devbox-search",
+      "version": "2.34.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/1nslf9a1isrmxh3hxvwkrbxy6ssr116s-direnv-2.34.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/1nslf9a1isrmxh3hxvwkrbxy6ssr116s-direnv-2.34.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/029vbaal2rswv7d74n4ssnx6laixx99r-direnv-2.34.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/029vbaal2rswv7d74n4ssnx6laixx99r-direnv-2.34.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qz0ik49dabgqgaz5ik39n47dnzdvyzaf-direnv-2.34.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/qz0ik49dabgqgaz5ik39n47dnzdvyzaf-direnv-2.34.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/35klgzald67mkslqb9kkv01gn98zfbza-direnv-2.34.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/35klgzald67mkslqb9kkv01gn98zfbza-direnv-2.34.0"
+        }
+      }
+    },
     "elixir@latest": {
       "last_modified": "2024-05-22T06:18:38Z",
       "resolved": "github:NixOS/nixpkgs/3f316d2a50699a78afe5e77ca486ad553169061e#elixir",
