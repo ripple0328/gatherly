@@ -15,6 +15,7 @@
 			"export ERL_AFLAGS='-kernel shell_history enabled'",
 			"mix local.hex --force",
 			"mix local.rebar --force",
+			"direnv allow",
 			"mix deps.get",
 			"mix ecto.create",
 			"mix ecto.migrate"
