@@ -1,5 +1,7 @@
 # Gatherly
 
+[![Built with Devbox](https://www.jetify.com/img/devbox/shield_galaxy.svg)](https://www.jetify.com/devbox/docs/contributor-quickstart/)
+
 To start your Phoenix server:
 
   * Run `mix setup` to install and setup dependencies
