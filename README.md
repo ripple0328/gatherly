@@ -22,31 +22,18 @@ These instructions will guide you on how start the app locally for development
 
 1. Install dependencies
 ```bash
-devbox shell
-mix deps.get
-```
-2. Sart DB, Create and migrate your database
-
-```bash
-mix ecto.create
-mix ecto.migrate
-```
-
-3. Start the app
-To start the app locally for development, run the following command:
-
-```bash
+cd gatherly
 mix phx.server
 ```
 try accessing it via http://localhost:4000
 
-4. Run tests
+2. Run tests
 
 ```bash
 mix test
 ```
 
-5. format code
+3. format code
 
 ```bash
 mix format

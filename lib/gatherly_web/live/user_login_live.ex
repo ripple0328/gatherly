@@ -1,5 +1,4 @@
 defmodule GatherlyWeb.UserLoginLive do
-  alias Ueberauth.Strategy.Google
   use GatherlyWeb, :live_view
 
   def render(assigns) do
