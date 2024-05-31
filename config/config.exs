@@ -13,7 +13,7 @@ config :gatherly,
 
 # Configures the endpoint
 config :gatherly, GatherlyWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [scheme: "https", host: "gatherly.qingbo.io", port: 443],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: GatherlyWeb.ErrorHTML, json: GatherlyWeb.ErrorJSON],
