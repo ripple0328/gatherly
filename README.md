@@ -40,7 +40,7 @@ create DB for this app
 
 ```
 mix deps.get
-mix ecto.create
+mix setup
 ```
 
 set secrets to mac keyvaults, direnv will populate that to local session
