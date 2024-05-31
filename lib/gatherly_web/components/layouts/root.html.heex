@@ -15,12 +15,31 @@
     <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
       <%= if @current_user do %>
         <li>
-          <.link
-            href={~p"/users/settings"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            <img src={@current_user.image} class="w-10 h-10 rounded-full" />
-            <p><%= @current_user.name %></p>
+          <.link href={~p"/users/settings"}>
+            <div class="flex min-w-0 gap-x-4">
+              <img
+                class="h-12 w-12 flex-none rounded-full bg-gray-50"
+                src={@current_user.image}
+                alt=""
+              />
+              <div class="min-w-0 flex-auto">
+                <p class="text-sm font-semibold leading-6 text-gray-900">
+                  <%= @current_user.name %>
+                </p>
+                <p class="mt-1 truncate text-xs leading-5 text-gray-500">
+                  <%= @current_user.email %>
+                </p>
+              </div>
+              <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                <p class="text-sm leading-6 text-gray-900">Member</p>
+                <div class="mt-1 flex items-center gap-x-1.5">
+                  <div class="flex-none rounded-full bg-emerald-500/20 p-1">
+                    <div class="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
+                  </div>
+                  <p class="text-xs leading-5 text-gray-500">Online</p>
+                </div>
+              </div>
+            </div>
           </.link>
         </li>
         <li>
