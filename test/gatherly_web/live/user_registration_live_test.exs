@@ -52,7 +52,7 @@ defmodule GatherlyWeb.UserRegistrationLiveTest do
       conn = get(conn, "/")
       response = html_response(conn, 200)
       assert response =~ name
-      assert response =~ "Log out"
+      assert response =~ "Sign out"
     end
 
     test "renders errors for duplicated email", %{conn: conn} do
