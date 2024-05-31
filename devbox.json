@@ -9,9 +9,7 @@
 	"env": {
 		"MIX_HOME": "$PWD/.nix-mix",
 		"HEX_HOME": "$PWD/.nix-hex",
-		"ERL_AFLAGS": "'-kernel shell_history enabled'",
-		"PGDATA": ".devbox/conf/postgresql/data",
-		"PGHOST": ".devbox/virtenv/postgresql"
+		"ERL_AFLAGS": "'-kernel shell_history enabled'"
 	},
 	"shell": {
 		"init_hook": [],

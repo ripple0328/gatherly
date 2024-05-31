@@ -22,16 +22,16 @@ These instructions will guide you on how start the app locally for development
 
 0. Once off
 ```bash
+cd gatherly
 initdb
-createdb $USER
 mix ecto.setup
+```
 
 1. Install dependencies
 ```bash
-cd gatherly
 mix phx.server
 ```
-try accessing it via http://localhost:4000
+Accessing it via http://localhost:4000
 
 2. Run tests
 
