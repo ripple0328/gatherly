@@ -97,6 +97,54 @@
         }
       }
     },
+    "envchain@latest": {
+      "last_modified": "2024-05-22T06:18:38Z",
+      "resolved": "github:NixOS/nixpkgs/3f316d2a50699a78afe5e77ca486ad553169061e#envchain",
+      "source": "devbox-search",
+      "version": "1.1.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/pjg4raqppk3n1jsryxb6srb42viss56x-envchain-1.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/pjg4raqppk3n1jsryxb6srb42viss56x-envchain-1.1.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/0y6cbpdnmirg0hhyzw9j6wimxqm39rzm-envchain-1.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/0y6cbpdnmirg0hhyzw9j6wimxqm39rzm-envchain-1.1.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/a4gqz967vps6c6vgazji547s3rss6myq-envchain-1.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/a4gqz967vps6c6vgazji547s3rss6myq-envchain-1.1.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/xx9pgb043jv0lrs4c20k0wblmsnql4ca-envchain-1.1.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/xx9pgb043jv0lrs4c20k0wblmsnql4ca-envchain-1.1.0"
+        }
+      }
+    },
     "erlang@latest": {
       "last_modified": "2024-05-22T06:18:38Z",
       "resolved": "github:NixOS/nixpkgs/3f316d2a50699a78afe5e77ca486ad553169061e#erlang",
