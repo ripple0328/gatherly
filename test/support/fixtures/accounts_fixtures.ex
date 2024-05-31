@@ -6,10 +6,14 @@ defmodule Gatherly.AccountsFixtures do
 
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
+  def unique_user_name, do: Faker.Person.name()
+  def unique_image_url, do: Faker.Avatar.image_url()
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
       email: unique_user_email(),
+      name: unique_user_name(),
+      image: unique_image_url(),
       password: valid_user_password()
     })
   end

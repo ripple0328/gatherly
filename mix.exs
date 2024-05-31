@@ -61,6 +61,7 @@ defmodule Gatherly.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
       {:ueberauth_google, "~> 0.12"},
+      {:faker, "~> 0.18", only: :test},
       {:excoveralls, "~> 0.18", only: :test}
     ]
   end
