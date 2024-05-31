@@ -4,8 +4,8 @@ defmodule Gatherly.Accounts.User do
 
   schema "users" do
     field :email, :string
-    field :first_name, :string
-    field :last_name, :string
+    field :name, :string
+    field :image, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
@@ -161,8 +161,8 @@ defmodule Gatherly.Accounts.User do
 
   def oauth_registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :first_name, :last_name])
-    |> validate_required([:first_name, :last_name, :email])
+    |> cast(attrs, [:email, :name, :image])
+    |> validate_required([:name, :email])
     |> validate_email(opts)
     |> put_change(:is_oauth_user, true)
   end

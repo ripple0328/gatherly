@@ -66,8 +66,8 @@ if config_env() == :prod do
     secret_key_base: secret_key_base
 
   config :ueberauth, Ueberauth.Strategy.Google.OAuth,
-    client_id: System.get_env("GOOGLE_CLIENT_ID"),
-    client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
+    client_id: {System, :get_env, ["GOOGLE_CLIENT_ID"]},
+    client_secret: {System, :get_env, ["GOOGLE_CLIENT_SECRET"]}
 
   # ## SSL Support
   #

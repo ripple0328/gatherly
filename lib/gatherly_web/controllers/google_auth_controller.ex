@@ -18,8 +18,8 @@ defmodule GatherlyWeb.GoogleAuthController do
         # User does not exist, so create a new user
         user_params = %{
           email: email,
-          first_name: auth.info.first_name,
-          last_name: auth.info.last_name
+          name: auth.info.name,
+          image: auth.info.image
         }
 
         case Accounts.register_oauth_user(user_params) do
