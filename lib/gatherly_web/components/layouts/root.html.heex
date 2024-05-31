@@ -18,7 +18,11 @@
           <div class="flex h-16 items-center justify-between">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <img class="h-8 w-8" src="images/gatherly.png" alt="Gatherly" />
+                <img
+                  class="h-8 w-8"
+                  src={static_path(@conn, "/images/gatherly.png")}
+                  alt="Gatherly"
+                />
               </div>
               <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
