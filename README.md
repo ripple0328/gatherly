@@ -23,6 +23,7 @@ These instructions will guide you on how start the app locally for development
 
 ```bash
 cd gatherly
+direnv allow
 initdb
 createdb $USER
 ```
@@ -40,6 +41,12 @@ create DB for this app
 ```
 mix deps.get
 mix ecto.create
+```
+
+set secrets to mac keyvaults, direnv will populate that to local session
+```bash
+envchain -s gatherly GOOGLE_CLIENT_ID
+envchain -s gatherly GOOGLE_CLIENT_SECRET
 ```
 
 1. Install dependencies
