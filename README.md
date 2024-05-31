@@ -20,6 +20,12 @@ Gatherly is an application that allow coordinate party like activities.
 
 These instructions will guide you on how start the app locally for development
 
+0. Once off
+```bash
+initdb
+createdb $USER
+mix ecto.setup
+
 1. Install dependencies
 ```bash
 cd gatherly
