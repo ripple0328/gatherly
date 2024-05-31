@@ -193,6 +193,54 @@
         }
       }
     },
+    "fswatch@latest": {
+      "last_modified": "2024-05-22T06:18:38Z",
+      "resolved": "github:NixOS/nixpkgs/3f316d2a50699a78afe5e77ca486ad553169061e#fswatch",
+      "source": "devbox-search",
+      "version": "1.17.1",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/9q2licnjrfhgljn87wr78s2gsxi04p4b-fswatch-1.17.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/9q2licnjrfhgljn87wr78s2gsxi04p4b-fswatch-1.17.1"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/p3pzch1zkp5h8qcipih3f5ypc5wvlkql-fswatch-1.17.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/p3pzch1zkp5h8qcipih3f5ypc5wvlkql-fswatch-1.17.1"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/2vjypfkqxxysdr1ipd0f6mb149sjx3ys-fswatch-1.17.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/2vjypfkqxxysdr1ipd0f6mb149sjx3ys-fswatch-1.17.1"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/m58ki8vr0dsmfkbrmsj4nz3pw92vagrc-fswatch-1.17.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/m58ki8vr0dsmfkbrmsj4nz3pw92vagrc-fswatch-1.17.1"
+        }
+      }
+    },
     "postgresql@latest": {
       "last_modified": "2024-05-26T09:30:02Z",
       "plugin_version": "0.0.2",
