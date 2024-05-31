@@ -13,7 +13,12 @@
 		"ERL_AFLAGS": "'-kernel shell_history enabled'"
 	},
 	"shell": {
-		"init_hook": [],
+		"init_hook": [
+			"mkdir -p .nix-mix",
+			"mkdir -p .nix-hex",
+			"mix local.hex --force",
+			"mix local.rebar --force"
+		],
 		"scripts": {
 			"test": ["mix test"],
 			"start": ["mix phx.server"]
