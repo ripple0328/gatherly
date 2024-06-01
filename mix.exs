@@ -63,7 +63,12 @@ defmodule Gatherly.MixProject do
       {:ueberauth_google, "~> 0.12"},
       {:faker, "~> 0.18", only: :test},
       {:excoveralls, "~> 0.18", only: :test},
-      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false}
+      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
+      {:ex_aws, "~> 2.0"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:poison, "~> 3.0"},
+      {:hackney, "~> 1.9"},
+      {:sweet_xml, "~> 0.6.6"}
     ]
   end
 

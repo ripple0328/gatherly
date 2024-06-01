@@ -119,3 +119,15 @@ end
 config :ueberauth, Ueberauth.Strategy.Google.OAuth,
   client_id: System.get_env("GOOGLE_CLIENT_ID"),
   client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
+
+config :ex_aws,
+  debug_requests: true,
+  json_codec: Jason,
+  access_key_id: {:system, "AWS_ACCESS_KEY_ID"},
+  secret_access_key: {:system, "AWS_SECRET_ACCESS_KEY"}
+
+config :ex_aws, :s3,
+  scheme: "https://",
+  host: {:system, "AWS_S3_HOST"},
+  region: {:system, "AWS_REGION"},
+  bucket_name: {:system, "BUCKET_NAME"}
