@@ -135,27 +135,6 @@
                   </div>
                 </div>
               </div>
-            <% else %>
-              <div class="hidden md:block">
-                <div class="ml-10 flex items-baseline space-x-4">
-                  <li>
-                    <.link
-                      href={~p"/users/register"}
-                      class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
-                    >
-                      Register
-                    </.link>
-                  </li>
-                  <li>
-                    <.link
-                      href={~p"/users/log_in"}
-                      class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
-                    >
-                      Log in
-                    </.link>
-                  </li>
-                </div>
-              </div>
             <% end %>
             <div class="-mr-2 flex md:hidden">
               <!-- Mobile menu button -->
@@ -277,27 +256,6 @@
                 >
                   Sign out
                 </.link>
-              </div>
-            </div>
-          <% else %>
-            <div class="md:hidden" id="mobile-menu">
-              <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                <li>
-                  <.link
-                    href={~p"/users/register"}
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                  >
-                    Register
-                  </.link>
-                </li>
-                <li>
-                  <.link
-                    href={~p"/users/log_in"}
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                  >
-                    Log in
-                  </.link>
-                </li>
               </div>
             </div>
           <% end %>

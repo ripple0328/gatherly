@@ -20,7 +20,9 @@ defmodule GatherlyWeb.Router do
   scope "/", GatherlyWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    get "/", PageController, :redirect_authenticated
+    get "/auth/google", GoogleAuthController, :request
+    get "/auth/google/callback", GoogleAuthController, :callback
   end
 
   # Other scopes may use custom stacks.
@@ -52,6 +54,7 @@ defmodule GatherlyWeb.Router do
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{GatherlyWeb.UserAuth, :redirect_if_user_is_authenticated}] do
+      live "/signin", UserLoginLive, :new
       live "/users/register", UserRegistrationLive, :new
       live "/users/log_in", UserLoginLive, :new
       live "/users/reset_password", UserForgotPasswordLive, :new
@@ -66,6 +69,7 @@ defmodule GatherlyWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{GatherlyWeb.UserAuth, :ensure_authenticated}] do
+      live "/:user_id", ProfileLive, :show
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
@@ -81,11 +85,5 @@ defmodule GatherlyWeb.Router do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
     end
-  end
-
-  scope "/auth", GatherlyWeb do
-    pipe_through [:browser]
-    get "/google", GoogleAuthController, :request
-    get "/google/callback", GoogleAuthController, :callback
   end
 end

@@ -65,10 +65,6 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
-  config :ueberauth, Ueberauth.Strategy.Google.OAuth,
-    client_id: {System, :get_env, ["GOOGLE_CLIENT_ID"]},
-    client_secret: {System, :get_env, ["GOOGLE_CLIENT_SECRET"]}
-
   # ## SSL Support
   #
   # To get SSL working, you will need to add the `https` key
@@ -119,3 +115,7 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end
+
+config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+  client_id: System.get_env("GOOGLE_CLIENT_ID"),
+  client_secret: System.get_env("GOOGLE_CLIENT_SECRET")

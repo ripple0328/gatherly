@@ -28,6 +28,7 @@ defmodule GatherlyWeb.UserAuth do
   def log_in_user(conn, user, params \\ %{}) do
     token = Accounts.generate_user_session_token(user)
     user_return_to = get_session(conn, :user_return_to)
+    conn = assign(conn, :current_user, user)
 
     conn
     |> renew_session()
@@ -225,5 +226,5 @@ defmodule GatherlyWeb.UserAuth do
 
   defp maybe_store_return_to(conn), do: conn
 
-  defp signed_in_path(_conn), do: ~p"/"
+  defp signed_in_path(conn), do: ~p"/#{conn.assigns.current_user.id}"
 end
