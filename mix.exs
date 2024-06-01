@@ -62,7 +62,8 @@ defmodule Gatherly.MixProject do
       {:bandit, "~> 1.2"},
       {:ueberauth_google, "~> 0.12"},
       {:faker, "~> 0.18", only: :test},
-      {:excoveralls, "~> 0.18", only: :test}
+      {:excoveralls, "~> 0.18", only: :test},
+      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false}
     ]
   end
 
