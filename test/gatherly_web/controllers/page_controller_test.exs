@@ -5,6 +5,6 @@ defmodule GatherlyWeb.PageControllerTest do
     conn = get(conn, ~p"/")
 
     assert html_response(conn, 200) =~
-             "Gatherly is an application that allow coordinate party like activities"
+             "Sign in to your account"
   end
 end
