@@ -11,32 +11,25 @@ defmodule GatherlyWeb.GoogleAuthController do
   end
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
-    email = auth.info.email
+    case Accounts.register_oauth_user(auth) do
+      {:ok, user} ->
+        conn
+        |> put_flash(:info, "Welcome #{user.name}")
+        |> UserAuth.log_in_user(user)
 
-    case Accounts.get_user_by_email(email) do
-      nil ->
-        # User does not exist, so create a new user
-        user_params = %{
-          email: email,
-          name: auth.info.name,
-          image: auth.info.image
-        }
+      {:error, %Ecto.Changeset{} = changeset} ->
+        Logger.error("Failed to create user #{inspect(changeset)}.")
 
-        case Accounts.register_oauth_user(user_params) do
-          {:ok, user} ->
-            UserAuth.log_in_user(conn, user)
+        conn
+        |> put_flash(:error, "Failed to create user.")
+        |> redirect(to: ~p"/")
 
-          {:error, changeset} ->
-            Logger.error("Failed to create user #{inspect(changeset)}.")
+      {:error, reason} ->
+        Logger.debug("failed Google exchange #{inspect(reason)}")
 
-            conn
-            |> put_flash(:error, "Failed to create user.")
-            |> redirect(to: ~p"/")
-        end
-
-      user ->
-        # User exists, update session or other details if necessary
-        UserAuth.log_in_user(conn, user)
+        conn
+        |> put_flash(:error, "We were unable to contact GitHub. Please try again later")
+        |> redirect(to: ~p"/")
     end
   end
 

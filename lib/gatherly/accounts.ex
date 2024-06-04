@@ -4,9 +4,11 @@ defmodule Gatherly.Accounts do
   """
 
   import Ecto.Query, warn: false
+  import Ecto.Changeset
+
   alias Gatherly.Repo
 
-  alias Gatherly.Accounts.{User, UserToken, UserNotifier}
+  alias Gatherly.Accounts.{User, Identity, UserToken, UserNotifier}
 
   ## Database getters
 
@@ -59,39 +61,6 @@ defmodule Gatherly.Accounts do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
-
-  ## User registration
-
-  @doc """
-  Registers a user.
-
-  ## Examples
-
-      iex> register_user(%{field: value})
-      {:ok, %User{}}
-
-      iex> register_user(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def register_user(attrs) do
-    %User{}
-    |> User.registration_changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking user changes.
-
-  ## Examples
-
-      iex> change_user_registration(user)
-      %Ecto.Changeset{data: %User{}}
-
-  """
-  def change_user_registration(%User{} = user, attrs \\ %{}) do
-    User.registration_changeset(user, attrs, hash_password: false, validate_email: false)
-  end
 
   ## Settings
 
@@ -352,8 +321,39 @@ defmodule Gatherly.Accounts do
   end
 
   def register_oauth_user(attrs) do
-    %User{}
-    |> User.oauth_registration_changeset(attrs)
-    |> Repo.insert()
+    email = attrs.info.email
+
+    if user = get_user_by_provider(to_string(attrs.provider), email) do
+      update_token(user, attrs.credentials.token)
+    else
+      %User{}
+      |> User.oauth_registration_changeset(attrs)
+      |> Repo.insert()
+    end
+  end
+
+  defp get_user_by_provider(provider, email) when provider in ["google"] do
+    query =
+      from(u in User,
+        join: i in assoc(u, :identities),
+        where:
+          i.provider == ^provider and
+            fragment("lower(?)", u.email) == ^String.downcase(email)
+      )
+
+    Repo.one(query)
+  end
+
+  defp update_token(%User{} = user, new_token) do
+    identity =
+      Repo.one!(from(i in Identity, where: i.user_id == ^user.id and i.provider == "google"))
+
+    {:ok, _} =
+      identity
+      |> change()
+      |> put_change(:provider_token, new_token)
+      |> Repo.update()
+
+    {:ok, Repo.preload(user, :identities, force: true)}
   end
 end

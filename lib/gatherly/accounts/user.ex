@@ -18,36 +18,6 @@ defmodule Gatherly.Accounts.User do
     timestamps(type: :utc_datetime)
   end
 
-  @doc """
-  A user changeset for registration.
-
-  It is important to validate the length of both email and password.
-  Otherwise databases may truncate the email without warnings, which
-  could lead to unpredictable or insecure behaviour. Long passwords may
-  also be very expensive to hash for certain algorithms.
-
-  ## Options
-
-    * `:hash_password` - Hashes the password so it can be stored securely
-      in the database and ensures the password field is cleared to prevent
-      leaks in the logs. If password hashing is not needed and clearing the
-      password field is not desired (like when using this changeset for
-      validations on a LiveView form), this option can be set to `false`.
-      Defaults to `true`.
-
-    * `:validate_email` - Validates the uniqueness of the email, in case
-      you don't want to validate the uniqueness of the email (like when
-      using this changeset for validations on a LiveView form before
-      submitting the form), this option can be set to `false`.
-      Defaults to `true`.
-  """
-  def registration_changeset(user, attrs, opts \\ []) do
-    user
-    |> cast(attrs, [:email, :name, :password])
-    |> validate_email(opts)
-    |> validate_password(opts)
-  end
-
   defp validate_email(changeset, opts) do
     changeset
     |> validate_required([:email])
@@ -164,10 +134,37 @@ defmodule Gatherly.Accounts.User do
   end
 
   def oauth_registration_changeset(user, attrs, opts \\ []) do
-    user
-    |> cast(attrs, [:email, :name, :image])
-    |> validate_required([:name, :email])
-    |> validate_email(opts)
-    |> put_change(:is_oauth_user, true)
+    identity_attr = %{
+      "provider" => to_string(attrs.provider),
+      "provider_id" => attrs.uid,
+      "provider_login" => attrs.info.email,
+      "provider_name" => attrs.info.name,
+      "provider_email" => attrs.info.email,
+      "provider_token" => attrs.credentials.token
+    }
+
+    identity_changeset =
+      %Identity{}
+      |> Identity.changeset(identity_attr)
+
+    if identity_changeset.valid? do
+      user_attrs = %{
+        "email" => attrs.info.email,
+        "name" => attrs.info.name,
+        "image" => attrs.info.image
+      }
+
+      user
+      |> cast(user_attrs, [:email, :name, :image])
+      |> validate_required([:name, :email])
+      |> validate_email(opts)
+      |> put_change(:is_oauth_user, true)
+      |> put_assoc(:identities, [identity_changeset])
+    else
+      user
+      |> change()
+      |> Map.put(:valid?, false)
+      |> put_assoc(:identities, [identity_changeset])
+    end
   end
 end
