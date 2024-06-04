@@ -21,7 +21,10 @@
 		],
 		"scripts": {
 			"test": ["mix test"],
-			"start": ["mix phx.server"]
+			"start": ["mix phx.server"],
+			"remote": [
+				"fly ssh console --pty --select -C \"/app/bin/gatherly remote\""
+			]
 		}
 	}
 }
