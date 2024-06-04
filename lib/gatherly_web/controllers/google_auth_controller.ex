@@ -25,7 +25,7 @@ defmodule GatherlyWeb.GoogleAuthController do
         |> redirect(to: ~p"/")
 
       {:error, reason} ->
-        Logger.debug("failed Google exchange #{inspect(reason)}")
+        Logger.error("failed Google exchange #{inspect(reason)}")
 
         conn
         |> put_flash(:error, "We were unable to contact GitHub. Please try again later")
