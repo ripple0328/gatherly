@@ -2,6 +2,8 @@ defmodule Gatherly.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Gatherly.Accounts.Identity
+
   schema "users" do
     field :email, :string
     field :name, :string
@@ -10,6 +12,8 @@ defmodule Gatherly.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     field :is_oauth_user, :boolean, default: false
+
+    has_many :identities, Identity
 
     timestamps(type: :utc_datetime)
   end
