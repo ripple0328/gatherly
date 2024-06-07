@@ -8,7 +8,7 @@ import Config
 config :gatherly, GatherlyWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   # Configures Swoosh API Client
-  force_ssl: [hsts: true]
+  force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Gatherly.Finch
 
