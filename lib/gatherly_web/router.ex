@@ -11,7 +11,8 @@ defmodule GatherlyWeb.Router do
     plug :protect_from_forgery
 
     plug :put_secure_browser_headers, %{
-      "content-security-policy" => "default-src 'self'; img-src 'self' lh3.googleusercontent.com"
+      "content-security-policy" =>
+        "default-src 'self'; img-src 'self' lh3.googleusercontent.com data:;  style-src 'self' 'unsafe-inline'"
     }
 
     plug :fetch_current_user
