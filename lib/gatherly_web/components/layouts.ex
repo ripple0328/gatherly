@@ -9,6 +9,9 @@ defmodule GatherlyWeb.Layouts do
   `use GatherlyWeb, :live_view`.
   """
   use GatherlyWeb, :html
+  import SaladUI.DropdownMenu
+  import SaladUI.Menu
+  import SaladUI.Avatar
 
   embed_templates "layouts/*"
 end
