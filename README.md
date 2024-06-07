@@ -68,3 +68,28 @@ mix test
 ```bash
 mix format
 ```
+
+## Trouble shooting
+
+### delete migration records
+```bash
+devbox run remote
+```
+
+```elixir
+alias Gatherly.Repo
+table_name = "schema_migrations"
+
+# Construct the query to delete all records
+import Ecto.Query, only: [from: 1]
+query = from(u in table_name)
+
+# Execute the deletion with error handling
+try do
+  Repo.delete_all(query)
+rescue
+  e in Ecto.QueryError -> IO.puts("Query Error: #{e.message}")
+  e in Postgrex.Error -> IO.puts("Postgrex Error: #{e.message}")
+  e in DBConnection.ConnectionError -> IO.puts("Connection Error: #{e.message}")
+end
+```
