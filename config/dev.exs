@@ -58,7 +58,7 @@ config :gatherly, GatherlyWeb.Endpoint,
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/gatherly_web/(controllers|live|components)/.*(ex|heex)$"
+      ~r"lib/gatherly_web/(controllers|live|components)/.*(ex|heex|neex)$"
     ]
   ]
 
@@ -80,6 +80,10 @@ config :phoenix_live_view,
   debug_heex_annotations: true,
   # Enable helpful, but potentially expensive runtime checks
   enable_expensive_runtime_checks: true
+
+config :live_view_native_stylesheet,
+  annotations: true,
+  pretty: true
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false

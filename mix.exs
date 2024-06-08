@@ -69,6 +69,10 @@ defmodule Gatherly.MixProject do
       {:poison, "~> 3.0"},
       {:hackney, "~> 1.9"},
       {:sweet_xml, "~> 0.6.6"},
+      {:live_view_native, "~> 0.3.0-rc.1"},
+      {:live_view_native_stylesheet, "~> 0.3.0-rc.1"},
+      {:live_view_native_swiftui, "~> 0.3.0-rc.1"},
+      {:live_view_native_live_form, "~> 0.3.0-rc.2"},
       {:salad_ui, github: "bluzky/salad_ui"}
     ]
   end

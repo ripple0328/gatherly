@@ -19,8 +19,9 @@ Gatherly is an application that allow coordinate party like activities.
 
 These instructions will guide you on how start the app locally for development
 
-0. Once off
+0. Once off setup
 
+Setup database with db and user
 ```bash
 cd gatherly
 direnv allow
@@ -38,20 +39,25 @@ exit
 
 create DB for this app
 
+install dependencies and run db setup
 ```
 mix deps.get
 mix setup
 ```
 
+app using google oauth, so need app id and secret, you can create it from [google cloud console](https://console.cloud.google.com/apis/credentials)
+
+```bash
 set secrets to mac keyvaults, direnv will populate that to local session
 ```bash
 envchain -s gatherly GOOGLE_CLIENT_ID
 envchain -s gatherly GOOGLE_CLIENT_SECRET
 ```
 
-1. Install dependencies
+1. start db and server
 
 ```bash
+devbox services start postgresql
 mix phx.server
 ```
 
@@ -68,6 +74,15 @@ mix test
 ```bash
 mix format
 ```
+## Apple Apps
+
+open project in xcode
+```bash
+open native/apple/ios/Gatherly.xcodeproj
+```
+give it time for initial dependency download and indexing
+
+run the app in simulator with |> button
 
 ## Trouble shooting
 
