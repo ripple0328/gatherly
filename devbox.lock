@@ -2,8 +2,8 @@
   "lockfile_version": "1",
   "packages": {
     "direnv@latest": {
-      "last_modified": "2024-05-22T06:18:38Z",
-      "resolved": "github:NixOS/nixpkgs/3f316d2a50699a78afe5e77ca486ad553169061e#direnv",
+      "last_modified": "2024-06-08T17:34:36Z",
+      "resolved": "github:NixOS/nixpkgs/cd18e2ae9ab8e2a0a8d715b60c91b54c0ac35ff9#direnv",
       "source": "devbox-search",
       "version": "2.34.0",
       "systems": {
@@ -11,11 +11,11 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/1nslf9a1isrmxh3hxvwkrbxy6ssr116s-direnv-2.34.0",
+              "path": "/nix/store/xhncafmn16byksbvf98sljwzdkzqp213-direnv-2.34.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/1nslf9a1isrmxh3hxvwkrbxy6ssr116s-direnv-2.34.0"
+          "store_path": "/nix/store/xhncafmn16byksbvf98sljwzdkzqp213-direnv-2.34.0"
         },
         "aarch64-linux": {
           "outputs": [
@@ -31,27 +31,27 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/qz0ik49dabgqgaz5ik39n47dnzdvyzaf-direnv-2.34.0",
+              "path": "/nix/store/f36shldnlxalh7ir5hdhmnp9qrmqgqph-direnv-2.34.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/qz0ik49dabgqgaz5ik39n47dnzdvyzaf-direnv-2.34.0"
+          "store_path": "/nix/store/f36shldnlxalh7ir5hdhmnp9qrmqgqph-direnv-2.34.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/35klgzald67mkslqb9kkv01gn98zfbza-direnv-2.34.0",
+              "path": "/nix/store/81cqmrlp1x77139nsx0s5jjqk6jxxxxw-direnv-2.34.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/35klgzald67mkslqb9kkv01gn98zfbza-direnv-2.34.0"
+          "store_path": "/nix/store/81cqmrlp1x77139nsx0s5jjqk6jxxxxw-direnv-2.34.0"
         }
       }
     },
     "elixir@latest": {
-      "last_modified": "2024-05-22T06:18:38Z",
-      "resolved": "github:NixOS/nixpkgs/3f316d2a50699a78afe5e77ca486ad553169061e#elixir",
+      "last_modified": "2024-06-07T15:28:25Z",
+      "resolved": "github:NixOS/nixpkgs/d226935fd75012939397c83f6c385e4d6d832288#elixir",
       "source": "devbox-search",
       "version": "1.16.3",
       "systems": {
@@ -59,31 +59,31 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/jw1pxbqg9v4948ydqj37rrwnl9nxikyi-elixir-1.16.3",
+              "path": "/nix/store/j4g1bnc4mzsn7bicygndvcl1vbqq1p4h-elixir-1.16.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/jw1pxbqg9v4948ydqj37rrwnl9nxikyi-elixir-1.16.3"
+          "store_path": "/nix/store/j4g1bnc4mzsn7bicygndvcl1vbqq1p4h-elixir-1.16.3"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/wdychbp1lrh20yrcnljlh3g30sqb7s81-elixir-1.16.3",
+              "path": "/nix/store/vsbdjg9wnxww6kkwnqkpi8r5h8yvm3il-elixir-1.16.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/wdychbp1lrh20yrcnljlh3g30sqb7s81-elixir-1.16.3"
+          "store_path": "/nix/store/vsbdjg9wnxww6kkwnqkpi8r5h8yvm3il-elixir-1.16.3"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/yz7j0l8dx6yp0mcr51kc0wwbq3fzbbq6-elixir-1.16.3",
+              "path": "/nix/store/d2isv30lhgaf2a19vr1a1xqk6v8bm0s5-elixir-1.16.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/yz7j0l8dx6yp0mcr51kc0wwbq3fzbbq6-elixir-1.16.3"
+          "store_path": "/nix/store/d2isv30lhgaf2a19vr1a1xqk6v8bm0s5-elixir-1.16.3"
         },
         "x86_64-linux": {
           "outputs": [
@@ -146,8 +146,8 @@
       }
     },
     "erlang@latest": {
-      "last_modified": "2024-05-22T06:18:38Z",
-      "resolved": "github:NixOS/nixpkgs/3f316d2a50699a78afe5e77ca486ad553169061e#erlang",
+      "last_modified": "2024-06-07T15:28:25Z",
+      "resolved": "github:NixOS/nixpkgs/d226935fd75012939397c83f6c385e4d6d832288#erlang",
       "source": "devbox-search",
       "version": "25.3.2.12",
       "systems": {
@@ -155,11 +155,11 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/0dn6dl6anrs09x7yf7dar9g3qq8zmbq5-erlang-25.3.2.12",
+              "path": "/nix/store/ymrhik530mx0n8n760s0dqmag5m3a3k0-erlang-25.3.2.12",
               "default": true
             }
           ],
-          "store_path": "/nix/store/0dn6dl6anrs09x7yf7dar9g3qq8zmbq5-erlang-25.3.2.12"
+          "store_path": "/nix/store/ymrhik530mx0n8n760s0dqmag5m3a3k0-erlang-25.3.2.12"
         },
         "aarch64-linux": {
           "outputs": [
@@ -175,28 +175,28 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/vrk6zjsl78ml419r5a708znhjf721zqm-erlang-25.3.2.12",
+              "path": "/nix/store/4hx2rpd0lj8n7pqj4b7h60d0s0z9wrfh-erlang-25.3.2.12",
               "default": true
             }
           ],
-          "store_path": "/nix/store/vrk6zjsl78ml419r5a708znhjf721zqm-erlang-25.3.2.12"
+          "store_path": "/nix/store/4hx2rpd0lj8n7pqj4b7h60d0s0z9wrfh-erlang-25.3.2.12"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/r4qf88cdlzc4w6shq7n6nd0as0qrmapn-erlang-25.3.2.12",
+              "path": "/nix/store/3wxw0rfgl5fscyvhls0sjan7rji195li-erlang-25.3.2.12",
               "default": true
             }
           ],
-          "store_path": "/nix/store/r4qf88cdlzc4w6shq7n6nd0as0qrmapn-erlang-25.3.2.12"
+          "store_path": "/nix/store/3wxw0rfgl5fscyvhls0sjan7rji195li-erlang-25.3.2.12"
         }
       }
     },
     "postgresql@latest": {
-      "last_modified": "2024-05-26T09:30:02Z",
+      "last_modified": "2024-06-03T15:57:46Z",
       "plugin_version": "0.0.2",
-      "resolved": "github:NixOS/nixpkgs/e2dd4e18cc1c7314e24154331bae07df76eb582f#postgresql",
+      "resolved": "github:NixOS/nixpkgs/d125f0e4d85f1517b639d4a8f848175da46fcd3e#postgresql",
       "source": "devbox-search",
       "version": "15.7",
       "systems": {
@@ -286,16 +286,16 @@
               "default": true
             },
             {
+              "name": "lib",
+              "path": "/nix/store/xb4h083j02mr2ix7pgj7iawxh2hk100l-postgresql-15.7-lib"
+            },
+            {
               "name": "debug",
               "path": "/nix/store/0wyfjxk51chyzvvzv06aklxdcgdi0256-postgresql-15.7-debug"
             },
             {
               "name": "doc",
               "path": "/nix/store/aydd0lh52si89mxm9rz5xzv3zs6gx8bl-postgresql-15.7-doc"
-            },
-            {
-              "name": "lib",
-              "path": "/nix/store/xb4h083j02mr2ix7pgj7iawxh2hk100l-postgresql-15.7-lib"
             }
           ],
           "store_path": "/nix/store/07s64wxjzk6z1glwxvl3yq81vdn42k40-postgresql-15.7"
