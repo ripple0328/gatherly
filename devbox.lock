@@ -49,51 +49,51 @@
         }
       }
     },
-    "elixir@latest": {
-      "last_modified": "2024-06-07T15:28:25Z",
-      "resolved": "github:NixOS/nixpkgs/d226935fd75012939397c83f6c385e4d6d832288#elixir",
+    "elixir_1_17@latest": {
+      "last_modified": "2024-06-18T20:33:49Z",
+      "resolved": "github:NixOS/nixpkgs/37a45fb6993f14555f50b18fbcf4945b82a35707#elixir_1_17",
       "source": "devbox-search",
-      "version": "1.16.3",
+      "version": "1.17.1",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/j4g1bnc4mzsn7bicygndvcl1vbqq1p4h-elixir-1.16.3",
+              "path": "/nix/store/lm8ac9ar54iqai0s07iv0zn884m8sg8x-elixir-1.17.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/j4g1bnc4mzsn7bicygndvcl1vbqq1p4h-elixir-1.16.3"
+          "store_path": "/nix/store/lm8ac9ar54iqai0s07iv0zn884m8sg8x-elixir-1.17.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/vsbdjg9wnxww6kkwnqkpi8r5h8yvm3il-elixir-1.16.3",
+              "path": "/nix/store/hyqp34kyzblahygk1ll1ybw0gmdrb5ap-elixir-1.17.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/vsbdjg9wnxww6kkwnqkpi8r5h8yvm3il-elixir-1.16.3"
+          "store_path": "/nix/store/hyqp34kyzblahygk1ll1ybw0gmdrb5ap-elixir-1.17.1"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/d2isv30lhgaf2a19vr1a1xqk6v8bm0s5-elixir-1.16.3",
+              "path": "/nix/store/762c8fwf9nnny6f9h07w3z7ql80hrw4d-elixir-1.17.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/d2isv30lhgaf2a19vr1a1xqk6v8bm0s5-elixir-1.16.3"
+          "store_path": "/nix/store/762c8fwf9nnny6f9h07w3z7ql80hrw4d-elixir-1.17.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/vah2w1gcg20qkrr4j3b2v4xjxnrv496s-elixir-1.16.3",
+              "path": "/nix/store/11az81y7wjr0x61zhmsjwhcnff8farlv-elixir-1.17.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/vah2w1gcg20qkrr4j3b2v4xjxnrv496s-elixir-1.16.3"
+          "store_path": "/nix/store/11az81y7wjr0x61zhmsjwhcnff8farlv-elixir-1.17.1"
         }
       }
     },
@@ -145,51 +145,51 @@
         }
       }
     },
-    "erlang@latest": {
-      "last_modified": "2024-06-07T15:28:25Z",
-      "resolved": "github:NixOS/nixpkgs/d226935fd75012939397c83f6c385e4d6d832288#erlang",
+    "erlang_27@latest": {
+      "last_modified": "2024-06-26T05:30:43Z",
+      "resolved": "github:NixOS/nixpkgs/b3f3c1b13fb08f3828442ee86630362e81136bbc#erlang_27",
       "source": "devbox-search",
-      "version": "25.3.2.12",
+      "version": "27.0",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/ymrhik530mx0n8n760s0dqmag5m3a3k0-erlang-25.3.2.12",
+              "path": "/nix/store/3n3alzm8nzvqc12xpbbfkr9xr0w3cicd-erlang-27.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/ymrhik530mx0n8n760s0dqmag5m3a3k0-erlang-25.3.2.12"
+          "store_path": "/nix/store/3n3alzm8nzvqc12xpbbfkr9xr0w3cicd-erlang-27.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/k1hgvpw5330av537qyj2rwfda45fz9yx-erlang-25.3.2.12",
+              "path": "/nix/store/mfrh6d8yv9i7c25idzz23ial5z9h92rg-erlang-27.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/k1hgvpw5330av537qyj2rwfda45fz9yx-erlang-25.3.2.12"
+          "store_path": "/nix/store/mfrh6d8yv9i7c25idzz23ial5z9h92rg-erlang-27.0"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/4hx2rpd0lj8n7pqj4b7h60d0s0z9wrfh-erlang-25.3.2.12",
+              "path": "/nix/store/la69qsyc700mpid7l3f8x381jqjq3lhz-erlang-27.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/4hx2rpd0lj8n7pqj4b7h60d0s0z9wrfh-erlang-25.3.2.12"
+          "store_path": "/nix/store/la69qsyc700mpid7l3f8x381jqjq3lhz-erlang-27.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/3wxw0rfgl5fscyvhls0sjan7rji195li-erlang-25.3.2.12",
+              "path": "/nix/store/i1q20kc4b0fnhpw2dlkzkz7wangr7f76-erlang-27.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/3wxw0rfgl5fscyvhls0sjan7rji195li-erlang-25.3.2.12"
+          "store_path": "/nix/store/i1q20kc4b0fnhpw2dlkzkz7wangr7f76-erlang-27.0"
         }
       }
     },
