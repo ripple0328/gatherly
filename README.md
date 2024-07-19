@@ -58,7 +58,7 @@ envchain -s gatherly GOOGLE_CLIENT_SECRET
 
 ```bash
 devbox services start postgresql
-mix phx.server
+devbox run start
 ```
 
 Accessing it via http://localhost:4000
@@ -66,7 +66,7 @@ Accessing it via http://localhost:4000
 2. Run tests
 
 ```bash
-mix test
+devbox run test
 ```
 
 3. format code
