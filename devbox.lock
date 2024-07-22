@@ -146,57 +146,57 @@
       }
     },
     "erlang_27@latest": {
-      "last_modified": "2024-07-12T02:08:50Z",
-      "resolved": "github:NixOS/nixpkgs/6794d064edc69918bb0fc0e0eda33ece324be17a#erlang_27",
+      "last_modified": "2024-07-17T09:45:27Z",
+      "resolved": "github:NixOS/nixpkgs/5e73714b16ca222dcb2fc3ea2618fd7ba698da65#erlang_27",
       "source": "devbox-search",
-      "version": "27.0.1",
+      "version": "27.0",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/3ip3yyh5ligwap2h8f6854506wz7w0gf-erlang-27.0.1",
+              "path": "/nix/store/i6wah197hz5ggg9l9kdddcj5s5lzxix6-erlang-27.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/3ip3yyh5ligwap2h8f6854506wz7w0gf-erlang-27.0.1"
+          "store_path": "/nix/store/i6wah197hz5ggg9l9kdddcj5s5lzxix6-erlang-27.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/sy15lj9qapxw0b6q96x50dafiq9qd6qb-erlang-27.0.1",
+              "path": "/nix/store/lqr0k41wa7vwzlk2nq2dc0fw7jsh2miy-erlang-27.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/sy15lj9qapxw0b6q96x50dafiq9qd6qb-erlang-27.0.1"
+          "store_path": "/nix/store/lqr0k41wa7vwzlk2nq2dc0fw7jsh2miy-erlang-27.0"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/s5q13fn6lqz9n0fqsxjmq4819w9q3gaz-erlang-27.0.1",
+              "path": "/nix/store/k9b32x76wpixjx7jlzcfrrmvi57ngs4s-erlang-27.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/s5q13fn6lqz9n0fqsxjmq4819w9q3gaz-erlang-27.0.1"
+          "store_path": "/nix/store/k9b32x76wpixjx7jlzcfrrmvi57ngs4s-erlang-27.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/bmfnyzvjhmivcmbj027k24vcnq71bsw8-erlang-27.0.1",
+              "path": "/nix/store/r55b108309ryxj8nnzhgr3jszg6zkyk8-erlang-27.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/bmfnyzvjhmivcmbj027k24vcnq71bsw8-erlang-27.0.1"
+          "store_path": "/nix/store/r55b108309ryxj8nnzhgr3jszg6zkyk8-erlang-27.0"
         }
       }
     },
     "postgresql@latest": {
-      "last_modified": "2024-07-15T04:07:31Z",
+      "last_modified": "2024-07-19T15:40:08Z",
       "plugin_version": "0.0.2",
-      "resolved": "github:NixOS/nixpkgs/a14c5d651cee9ed70f9cd9e83f323f1e531002db#postgresql",
+      "resolved": "github:NixOS/nixpkgs/ad0111043c09f7d0f6b9f039882cbf350d4f7d49#postgresql",
       "source": "devbox-search",
       "version": "15.7",
       "systems": {
@@ -263,12 +263,12 @@
               "default": true
             },
             {
-              "name": "doc",
-              "path": "/nix/store/jwp1aqs6fkbygfg9gpcx99lhc2dlalgc-postgresql-15.7-doc"
-            },
-            {
               "name": "lib",
               "path": "/nix/store/sngcqjdypd1bwxz6rs3hwy8jbjb9k690-postgresql-15.7-lib"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/jwp1aqs6fkbygfg9gpcx99lhc2dlalgc-postgresql-15.7-doc"
             }
           ],
           "store_path": "/nix/store/qvhjnll3n3d1va7rxlh1yd348gqwy4v1-postgresql-15.7"
@@ -286,16 +286,16 @@
               "default": true
             },
             {
-              "name": "lib",
-              "path": "/nix/store/3hd8s5jhwqcxz8h8i57w8n7ka85k4g4x-postgresql-15.7-lib"
-            },
-            {
               "name": "debug",
               "path": "/nix/store/4qnj6h95q6akmag8risjilrw5h7vxw8y-postgresql-15.7-debug"
             },
             {
               "name": "doc",
               "path": "/nix/store/bwfx3pfc2s5hjwjzq581i0f70y7fbs8s-postgresql-15.7-doc"
+            },
+            {
+              "name": "lib",
+              "path": "/nix/store/3hd8s5jhwqcxz8h8i57w8n7ka85k4g4x-postgresql-15.7-lib"
             }
           ],
           "store_path": "/nix/store/y20f3ng0g3qyvxdnrh6pj05a9gg1vhzc-postgresql-15.7"
