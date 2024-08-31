@@ -10,7 +10,7 @@
 	"env": {
 		"MIX_HOME": "$PWD/.nix-mix",
 		"HEX_HOME": "$PWD/.nix-hex",
-		"ERL_AFLAGS": "'-kernel shell_history enabled'"
+		"ERL_AFLAGS": "'-kernel shell_history enabled -enable-feature maybe_expr'"
 	},
 	"shell": {
 		"init_hook": [

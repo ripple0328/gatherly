@@ -4,7 +4,12 @@ defmodule GatherlyWeb.Router do
   import GatherlyWeb.UserAuth
 
   pipeline :browser do
-    plug :accepts, ["html", "swift"]
+    plug :accepts, [
+      "html",
+      "swift",
+      "swiftui"
+    ]
+
     plug :fetch_session
     plug :fetch_live_flash
 

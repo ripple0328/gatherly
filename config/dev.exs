@@ -58,7 +58,10 @@ config :gatherly, GatherlyWeb.Endpoint,
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/gatherly_web/(controllers|live|components)/.*(ex|heex|neex)$"
+      ~r"lib/gatherly_web/(controllers|live|components)/.*(ex|heex|neex)$",
+      ~r"lib/gatherly_web/(live|components)/.*neex$",
+      ~r"lib/gatherly_web/styles/*.ex$",
+      ~r"priv/static/*.styles$"
     ]
   ]
 

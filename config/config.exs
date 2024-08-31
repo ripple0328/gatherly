@@ -83,11 +83,13 @@ config :live_view_native_stylesheet,
   output: "priv/static/assets"
 
 config :mime, :types, %{
-  "text/swiftui" => ["swiftui"],
-  "text/styles" => ["styles"]
+  "text/styles" => ["styles"],
+  "text/swiftui" => ["swiftui"]
 }
 
 config :phoenix, :template_engines, neex: LiveViewNative.Engine
+
+config :phoenix_template, :format_encoders, swiftui: Phoenix.HTML.Engine
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
