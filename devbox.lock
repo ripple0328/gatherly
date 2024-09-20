@@ -194,9 +194,9 @@
       }
     },
     "postgresql@latest": {
-      "last_modified": "2024-09-16T10:17:16Z",
+      "last_modified": "2024-09-17T14:38:52Z",
       "plugin_version": "0.0.2",
-      "resolved": "github:NixOS/nixpkgs/20f9370d5f588fb8c72e844c54511cab054b5f40#postgresql",
+      "resolved": "github:NixOS/nixpkgs/658e7223191d2598641d50ee4e898126768fe847#postgresql",
       "source": "devbox-search",
       "version": "16.4",
       "systems": {
@@ -213,16 +213,16 @@
               "default": true
             },
             {
-              "name": "doc",
-              "path": "/nix/store/akn2wpw56q2cwwpa3kdd4isklaqk375s-postgresql-16.4-doc"
-            },
-            {
               "name": "lib",
               "path": "/nix/store/5i4svw3nbn239hhzrl857bkbqb5h1aq1-postgresql-16.4-lib"
             },
             {
               "name": "dev",
               "path": "/nix/store/63r8cs0kjscq50r93k97aijddx2mjwm9-postgresql-16.4-dev"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/akn2wpw56q2cwwpa3kdd4isklaqk375s-postgresql-16.4-doc"
             }
           ],
           "store_path": "/nix/store/fln3gcl40fwynfjr5fkpyqjhll4jqyhm-postgresql-16.4"
@@ -298,6 +298,10 @@
               "default": true
             },
             {
+              "name": "debug",
+              "path": "/nix/store/isrqqmd5ckwwsgk708q981h3h7ijixkv-postgresql-16.4-debug"
+            },
+            {
               "name": "dev",
               "path": "/nix/store/45if5nl708nhayxnaqh7h2scz9pn4mn8-postgresql-16.4-dev"
             },
@@ -308,10 +312,6 @@
             {
               "name": "lib",
               "path": "/nix/store/l54jqbzqhghvy3g9kqhmcha9z3vzzrxr-postgresql-16.4-lib"
-            },
-            {
-              "name": "debug",
-              "path": "/nix/store/isrqqmd5ckwwsgk708q981h3h7ijixkv-postgresql-16.4-debug"
             }
           ],
           "store_path": "/nix/store/1gax5xs6h1b70gk7z274kx4qh04hsn96-postgresql-16.4"

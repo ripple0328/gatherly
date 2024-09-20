@@ -31,11 +31,14 @@ defmodule GatherlyWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/" do
+    get("/metrics", TelemetryUI.Web, [], assigns: %{telemetry_ui_allowed: true})
+  end
+
   scope "/", GatherlyWeb do
     pipe_through :browser
     delete "/signout", GoogleAuthController, :delete
     get "/auth/google", GoogleAuthController, :request
-    get "/auth/google/callback", GoogleAuthController, :callback
   end
 
   # Other scopes may use custom stacks.

@@ -10,6 +10,7 @@ defmodule Gatherly.Application do
     children = [
       GatherlyWeb.Telemetry,
       Gatherly.Repo,
+      {TelemetryUI, telemetry_config()},
       {DNSCluster, query: Application.get_env(:gatherly, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Gatherly.PubSub},
       # Start the Finch HTTP client for sending emails
@@ -32,5 +33,36 @@ defmodule Gatherly.Application do
   def config_change(changed, _new, removed) do
     GatherlyWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp telemetry_config do
+    import TelemetryUI.Metrics
+
+    [
+      metrics: [
+        last_value("my_app.users.total_count",
+          description: "Number of users",
+          ui_options: [unit: " users"]
+        ),
+        counter("phoenix.router_dispatch.stop.duration",
+          description: "Number of requests",
+          unit: {:native, :millisecond},
+          ui_options: [unit: " requests"]
+        ),
+        value_over_time("vm.memory.total", unit: {:byte, :megabyte}),
+        distribution("phoenix.router_dispatch.stop.duration",
+          description: "Requests duration",
+          unit: {:native, :millisecond},
+          reporter_options: [buckets: [0, 100, 500, 2000]]
+        )
+      ],
+      backend: %TelemetryUI.Backend.EctoPostgres{
+        repo: Gatherly.Repo,
+        pruner_threshold: [months: -1],
+        pruner_interval_ms: 84_000,
+        max_buffer_size: 10_000,
+        flush_interval_ms: 10_000
+      }
+    ]
   end
 end
