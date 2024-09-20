@@ -35,6 +35,7 @@ defmodule GatherlyWeb.Router do
     pipe_through :browser
     delete "/signout", GoogleAuthController, :delete
     get "/auth/google", GoogleAuthController, :request
+    get "/auth/google/callback", GoogleAuthController, :callback
   end
 
   # Other scopes may use custom stacks.
