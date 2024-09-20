@@ -66,7 +66,7 @@ defmodule GatherlyWeb.Router do
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{GatherlyWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/", UserLoginLive, :new
+      live "/", HomeLive
       live "/signin", UserLoginLive, :new
     end
   end

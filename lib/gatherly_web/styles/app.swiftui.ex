@@ -5,6 +5,43 @@ defmodule GatherlyWeb.Styles.App.SwiftUI do
   # Refer to your client's documentation on what the proper syntax
   # is for defining rules within classes
   ~SHEET"""
+  "background-" <> color do
+     foregroundStyle(Color.{color})
+     ignoresSafeArea(.all)
+   end
+
+   "counter" do
+     font(.system(size: 300, weight: .light, design: .monospaced))
+     foregroundStyle(
+       .linearGradient(
+         colors: [.purple, .green],
+         startPoint: .top,
+         endPoint: .bottom
+       )
+     )
+     minimumScaleFactor(0.5)
+     lineLimit(1)
+     padding(.bottom, 20)
+   end
+
+   "button-border" do
+     stroke(.gray, lineWidth: 2)
+   end
+
+   "button-" <> color do
+     font(.system(size: 16, weight: .bold, design: .monispaced))
+     frame(width: 50, height: 50)
+     foregroundStyle(
+       .linearGradient(
+         colors: [.white, .{color}],
+         startPoint: .top,
+         endPoint: .bottom
+       )
+     )
+     overlay(content: :border)
+     background(Color.clear)
+     clipShape(.circle)
+   end
   """
 
   # If you need to have greater control over how your style rules are created

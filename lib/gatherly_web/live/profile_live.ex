@@ -1,6 +1,5 @@
 defmodule GatherlyWeb.ProfileLive do
   use GatherlyWeb, :live_view
-  use GatherlyNative, :live_view
 
   def render(assigns) do
     ~H"""

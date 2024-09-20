@@ -63,6 +63,7 @@ devbox run start
 
 Accessing it via http://localhost:4000
 Access telemetry dashboard at http://localhost:4000/metrics
+Access with NativeApp via LVN go App on http://localost:4000/
 
 2. Run tests
 
