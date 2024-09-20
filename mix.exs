@@ -74,9 +74,7 @@ defmodule Gatherly.MixProject do
       {:live_view_native_swiftui, "~> 0.3.0"},
       {:live_view_native_live_form, "~> 0.3.0"},
       {:salad_ui, github: "bluzky/salad_ui"},
-      {:telemetry_ui, "~> 4.0"},
-      {:vix, "~> 0.26"},
-      {:vega_lite_convert, "~> 0.6"}
+      {:telemetry_ui, "~> 4.0"}
     ]
   end
 
