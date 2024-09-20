@@ -60,6 +60,10 @@ defmodule GatherlyWeb.Router do
     end
   end
 
+  scope "/" do
+    get("/metrics", TelemetryUI.Web, [], assigns: %{telemetry_ui_allowed: true})
+  end
+
   ## Authentication routes
 
   scope "/", GatherlyWeb do
@@ -80,9 +84,5 @@ defmodule GatherlyWeb.Router do
       live "/:user_id", ProfileLive, :show
       live "/users/settings", UserSettingsLive, :edit
     end
-  end
-
-  scope "/" do
-    get("/metrics", TelemetryUI.Web, [], assigns: %{telemetry_ui_allowed: true})
   end
 end
