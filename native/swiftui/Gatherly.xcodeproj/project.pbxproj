@@ -3,38 +3,27 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		0CC3D71270F92E11586CE4C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C837F134F4A452176035F375 /* Assets.xcassets */; };
-		1DE42E0EFCE6BCCFA313806D /* LiveViewNativeLiveForm in Frameworks */ = {isa = PBXBuildFile; productRef = F75BDD0E7427FC8319EE144A /* LiveViewNativeLiveForm */; };
 		20242ACF2A3A94BB2F5B2E7C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB9EE8AF6A2A463762CE06AE /* Preview Assets.xcassets */; };
 		349E8F6EF6E647EFD111C41C /* LiveViewNativeLiveForm in Frameworks */ = {isa = PBXBuildFile; productRef = 4549541562AA0DF04E83F82B /* LiveViewNativeLiveForm */; };
 		384FC827BCF1453F58EC6C5E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48228E6EB33B3605F3133C7 /* ContentView.swift */; };
 		43ADFEC60F254B39E3B7D2DE /* LiveViewNative in Frameworks */ = {isa = PBXBuildFile; productRef = 88C9901AC12EA205D7B87896 /* LiveViewNative */; };
 		59B9EE739BFC9AFFFB2E84D0 /* DisconnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65F06A150C940B3FFC86588 /* DisconnectedView.swift */; };
-		59E4281A1097029FAB6598AC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB9EE8AF6A2A463762CE06AE /* Preview Assets.xcassets */; };
 		7434055B6B4CC4E4DC0949B5 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908DE19480D0F4846EFCCE48 /* ErrorView.swift */; };
 		7DB66C56B31DC67977A9A4C0 /* ReconnectingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7849663EBBDC703B2337CB96 /* ReconnectingView.swift */; };
-		821A1535DD34308197B29F68 /* ReconnectingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7849663EBBDC703B2337CB96 /* ReconnectingView.swift */; };
-		888F072B62DF30F0825C1752 /* Gatherly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB9178527AEF43F82038069 /* Gatherly.swift */; };
 		9BBD9F2B483C67FE27CA8860 /* ConnectingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F21351DB20B86886FBEBD7 /* ConnectingView.swift */; };
-		9D9705EA1850FAF6228212C5 /* DisconnectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65F06A150C940B3FFC86588 /* DisconnectedView.swift */; };
-		B16207360AEBCF135BDE0A2D /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908DE19480D0F4846EFCCE48 /* ErrorView.swift */; };
-		C24BDFEEDF07CF3C79C438B2 /* LiveViewNative in Frameworks */ = {isa = PBXBuildFile; productRef = 5FFB081E6D702A2A47F8A7D4 /* LiveViewNative */; };
-		D4C241962B0F59AE5D318DA6 /* ConnectingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F21351DB20B86886FBEBD7 /* ConnectingView.swift */; };
-		F3DAAA6FF18CF8D1A8B71209 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48228E6EB33B3605F3133C7 /* ContentView.swift */; };
 		F4CAD795330950ACDFFA6E84 /* Gatherly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB9178527AEF43F82038069 /* Gatherly.swift */; };
-		FCF80909BA7A004B1F18ADDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C837F134F4A452176035F375 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3D9522D7E23E3832341F83A3 /* Gatherly.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Gatherly.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D9522D7E23E3832341F83A3 /* Gatherly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gatherly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61F21351DB20B86886FBEBD7 /* ConnectingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectingView.swift; sourceTree = "<group>"; };
 		7849663EBBDC703B2337CB96 /* ReconnectingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconnectingView.swift; sourceTree = "<group>"; };
 		7AB9178527AEF43F82038069 /* Gatherly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gatherly.swift; sourceTree = "<group>"; };
-		7C7A18278FE55C1D6DF54E6D /* Gatherly Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gatherly Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		908DE19480D0F4846EFCCE48 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		B48228E6EB33B3605F3133C7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C837F134F4A452176035F375 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -52,22 +41,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E065A5A5513C25C1C70600A7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C24BDFEEDF07CF3C79C438B2 /* LiveViewNative in Frameworks */,
-				1DE42E0EFCE6BCCFA313806D /* LiveViewNativeLiveForm in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		1A7C89C3419DE082AFF74B86 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7C7A18278FE55C1D6DF54E6D /* Gatherly Watch App.app */,
 				3D9522D7E23E3832341F83A3 /* Gatherly.app */,
 			);
 			name = Products;
@@ -107,27 +86,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A78C2BB7C4F5B24291CF18A6 /* Gatherly Watch App */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 51B4E5B46E84E6E515DD7FBB /* Build configuration list for PBXNativeTarget "Gatherly Watch App" */;
-			buildPhases = (
-				AF3A7C782FCE87F914F46A08 /* Sources */,
-				16CAA57009AA285F1BB929E6 /* Resources */,
-				E065A5A5513C25C1C70600A7 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Gatherly Watch App";
-			packageProductDependencies = (
-				5FFB081E6D702A2A47F8A7D4 /* LiveViewNative */,
-				F75BDD0E7427FC8319EE144A /* LiveViewNativeLiveForm */,
-			);
-			productName = "Gatherly Watch App";
-			productReference = 7C7A18278FE55C1D6DF54E6D /* Gatherly Watch App.app */;
-			productType = "com.apple.product-type.application";
-		};
 		FDA1430CE9904925816FBC4C /* Gatherly */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7D3136CF080C0472D29F2E32 /* Build configuration list for PBXNativeTarget "Gatherly" */;
@@ -157,41 +115,30 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = ADB8A8233DEBFC45782AD09A /* Build configuration list for PBXProject "Gatherly" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
 				en,
+				"zh-Hans",
 			);
 			mainGroup = 5C055C9907B29CAED63412AD;
 			packageReferences = (
 				4A739BECABA2CF4357E52519 /* XCRemoteSwiftPackageReference "liveview-client-swiftui" */,
 				E50594AB2F00AE4D618CF89B /* XCRemoteSwiftPackageReference "liveview-native-live-form" */,
 			);
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				FDA1430CE9904925816FBC4C /* Gatherly */,
-				A78C2BB7C4F5B24291CF18A6 /* Gatherly Watch App */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		16CAA57009AA285F1BB929E6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FCF80909BA7A004B1F18ADDB /* Assets.xcassets in Resources */,
-				59E4281A1097029FAB6598AC /* Preview Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		CDD162B3C7F96A431DF41CA2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -214,19 +161,6 @@
 				7434055B6B4CC4E4DC0949B5 /* ErrorView.swift in Sources */,
 				F4CAD795330950ACDFFA6E84 /* Gatherly.swift in Sources */,
 				7DB66C56B31DC67977A9A4C0 /* ReconnectingView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AF3A7C782FCE87F914F46A08 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D4C241962B0F59AE5D318DA6 /* ConnectingView.swift in Sources */,
-				F3DAAA6FF18CF8D1A8B71209 /* ContentView.swift in Sources */,
-				9D9705EA1850FAF6228212C5 /* DisconnectedView.swift in Sources */,
-				B16207360AEBCF135BDE0A2D /* ErrorView.swift in Sources */,
-				888F072B62DF30F0825C1752 /* Gatherly.swift in Sources */,
-				821A1535DD34308197B29F68 /* ReconnectingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +240,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -317,17 +252,6 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-			};
-			name = Debug;
-		};
-		A9F6E6F6340B878A1E917CB8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Gatherly.watchkit;
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = Debug;
 		};
@@ -406,22 +330,12 @@
 			};
 			name = Debug;
 		};
-		F16A8345FD780CCD7B686565 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Gatherly.watchkit;
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-			};
-			name = Release;
-		};
 		FA817CA45A00F4D41E4277D7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -439,15 +353,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		51B4E5B46E84E6E515DD7FBB /* Build configuration list for PBXNativeTarget "Gatherly Watch App" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A9F6E6F6340B878A1E917CB8 /* Debug */,
-				F16A8345FD780CCD7B686565 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
 		7D3136CF080C0472D29F2E32 /* Build configuration list for PBXNativeTarget "Gatherly" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -493,20 +398,10 @@
 			package = E50594AB2F00AE4D618CF89B /* XCRemoteSwiftPackageReference "liveview-native-live-form" */;
 			productName = LiveViewNativeLiveForm;
 		};
-		5FFB081E6D702A2A47F8A7D4 /* LiveViewNative */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4A739BECABA2CF4357E52519 /* XCRemoteSwiftPackageReference "liveview-client-swiftui" */;
-			productName = LiveViewNative;
-		};
 		88C9901AC12EA205D7B87896 /* LiveViewNative */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4A739BECABA2CF4357E52519 /* XCRemoteSwiftPackageReference "liveview-client-swiftui" */;
 			productName = LiveViewNative;
-		};
-		F75BDD0E7427FC8319EE144A /* LiveViewNativeLiveForm */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E50594AB2F00AE4D618CF89B /* XCRemoteSwiftPackageReference "liveview-native-live-form" */;
-			productName = LiveViewNativeLiveForm;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
