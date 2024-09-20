@@ -62,6 +62,7 @@ devbox run start
 ```
 
 Accessing it via http://localhost:4000
+Access telemetry dashboard at http://localhost:4000/metrics
 
 2. Run tests
 
