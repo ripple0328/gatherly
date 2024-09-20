@@ -53,8 +53,7 @@ defmodule GatherlyWeb.CoreComponents.SwiftUI do
 
   attr :type, :string,
     default: "TextField",
-    values:
-      ~w(TextFieldLink DatePicker MultiDatePicker Picker SecureField Slider Stepper TextEditor TextField Toggle hidden)
+    values: ~w(TextFieldLink DatePicker MultiDatePicker Picker SecureField Slider Stepper TextEditor TextField Toggle hidden)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: `@form[:email]`"
@@ -76,7 +75,8 @@ defmodule GatherlyWeb.CoreComponents.SwiftUI do
     default: "on",
     values: ~w(on off)
 
-  attr :rest, :global, include: ~w(disabled step)
+  attr :rest, :global,
+    include: ~w(disabled step)
 
   slot :inner_block
 
@@ -88,22 +88,11 @@ defmodule GatherlyWeb.CoreComponents.SwiftUI do
     |> assign_new(:value, fn -> field.value end)
     |> assign(
       :rest,
-      Map.put(
-        assigns.rest,
-        :style,
-        [
-          Map.get(assigns.rest, :style, ""),
-          if(assigns.readonly or Map.get(assigns.rest, :disabled, false),
-            do: "disabled(true)",
-            else: ""
-          ),
-          if(assigns.autocomplete == "off",
-            do: "textInputAutocapitalization(.never) autocorrectionDisabled()",
-            else: ""
-          )
-        ]
-        |> Enum.join(" ")
-      )
+      Map.put(assigns.rest, :style, [
+        Map.get(assigns.rest, :style, ""),
+        (if assigns.readonly or Map.get(assigns.rest, :disabled, false), do: "disabled(true)", else: ""),
+        (if assigns.autocomplete == "off", do: "textInputAutocapitalization(.never) autocorrectionDisabled()", else: "")
+      ] |> Enum.join(" "))
     )
     |> input()
   end
@@ -431,7 +420,7 @@ defmodule GatherlyWeb.CoreComponents.SwiftUI do
 
   slot :inner_block, required: true
 
-  def button(%{type: "submit"} = assigns) do
+  def button(%{ type: "submit" } = assigns) do
     ~LVN"""
     <Section>
       <LiveSubmitButton style={[
@@ -564,9 +553,7 @@ defmodule GatherlyWeb.CoreComponents.SwiftUI do
 
   attr :url, :string, required: true
   attr :rest, :global
-
-  slot :empty,
-    doc: """
+  slot :empty, doc: """
     The empty state that will render before has successfully been downloaded.
 
         <.image url={~p"/assets/images/logo.png"}>
@@ -577,9 +564,7 @@ defmodule GatherlyWeb.CoreComponents.SwiftUI do
 
     [See SwiftUI docs](https://developer.apple.com/documentation/swiftui/asyncimagephase/success(_:))
     """
-
-  slot :success,
-    doc: """
+  slot :success, doc: """
     The success state that will render when the image has successfully been downloaded.
 
         <.image url={~p"/assets/images/logo.png"}>
@@ -587,22 +572,22 @@ defmodule GatherlyWeb.CoreComponents.SwiftUI do
         </.image>
 
     [See SwiftUI docs](https://developer.apple.com/documentation/swiftui/asyncimagephase/success(_:))
-    """ do
+    """
+  do
     attr :class, :string
     attr :style, :string
   end
+  slot :failure, doc: """
+    The failure state that will render when the image fails to downloaded.
 
-  slot :failure,
-    doc: """
-      The failure state that will render when the image fails to downloaded.
+        <.image url={~p"/assets/images/logo.png"}>
+          <:failure class="image-fail"/>
+        </.image>
 
-          <.image url={~p"/assets/images/logo.png"}>
-            <:failure class="image-fail"/>
-          </.image>
+    [See SwiftUI docs](https://developer.apple.com/documentation/swiftui/asyncimagephase/failure(_:))
 
-      [See SwiftUI docs](https://developer.apple.com/documentation/swiftui/asyncimagephase/failure(_:))
-
-    """ do
+  """
+  do
     attr :class, :string
     attr :style, :string
   end
@@ -619,7 +604,7 @@ defmodule GatherlyWeb.CoreComponents.SwiftUI do
     """
   end
 
-  defp image_success(%{slot: [%{inner_block: nil}]} = assigns) do
+  defp image_success(%{ slot: [%{ inner_block: nil }] } = assigns) do
     ~LVN"""
     <AsyncImage image template="phase.success" :for={slot <- @slot} class={Map.get(slot, :class)} {%{ style: Map.get(slot, :style) }} />
     """
@@ -633,7 +618,7 @@ defmodule GatherlyWeb.CoreComponents.SwiftUI do
     """
   end
 
-  defp image_failure(%{slot: [%{inner_block: nil}]} = assigns) do
+  defp image_failure(%{ slot: [%{ inner_block: nil }] } = assigns) do
     ~LVN"""
     <AsyncImage error template="phase.failure" :for={slot <- @slot} class={Map.get(slot, :class)} {%{ style: Map.get(slot, :style) }} />
     """
