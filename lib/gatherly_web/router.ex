@@ -31,10 +31,6 @@ defmodule GatherlyWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/" do
-    get("/metrics", TelemetryUI.Web, [], assigns: %{telemetry_ui_allowed: true})
-  end
-
   scope "/", GatherlyWeb do
     pipe_through :browser
     delete "/signout", GoogleAuthController, :delete
@@ -83,5 +79,9 @@ defmodule GatherlyWeb.Router do
       live "/:user_id", ProfileLive, :show
       live "/users/settings", UserSettingsLive, :edit
     end
+  end
+
+  scope "/" do
+    get("/metrics", TelemetryUI.Web, [], assigns: %{telemetry_ui_allowed: true})
   end
 end
