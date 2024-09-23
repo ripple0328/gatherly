@@ -27,7 +27,7 @@
       "check_format": ["mix format --check-formatted"],
       "format": ["mix format"],
       "npm_install": ["npm i --prefix assets"],
-      "coverage": ["mix coveralls.json"],
+      "coverage": ["MIX_ENV=test mix coveralls"],
       "postgres": ["devbox services start postgresql"],
       "deploy": ["flyctl deploy --remote-only"],
       "setup": ["mix setup"],
