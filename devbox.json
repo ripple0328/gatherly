@@ -25,8 +25,12 @@
       "test": ["mix test"],
       "start": ["mix phx.server"],
       "check_format": ["mix format --check-formatted"],
+      "format": ["mix format"],
+      "npm_install": ["npm i --prefix assets"],
       "coverage": ["mix coveralls.json"],
+      "postgres": ["devbox services start postgresql"],
       "deploy": ["flyctl deploy --remote-only"],
+      "setup": ["mix setup"],
       "remote": [
         "fly ssh console --pty --select -C \"/app/bin/gatherly remote\""
       ]

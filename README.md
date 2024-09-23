@@ -39,10 +39,9 @@ exit
 
 create DB for this app
 
-install dependencies and run db setup
+run db setup
 ```
-mix deps.get
-mix setup
+devbox run setup
 ```
 
 app using google oauth, so need app id and secret, you can create it from [google cloud console](https://console.cloud.google.com/apis/credentials)
@@ -54,10 +53,14 @@ envchain -s gatherly GOOGLE_CLIENT_ID
 envchain -s gatherly GOOGLE_CLIENT_SECRET
 ```
 
+install npm packages
+```bash
+devbox run npm_install
+```
 1. start db and server
 
 ```bash
-devbox services start postgresql
+devbox run postgres
 devbox run start
 ```
 
@@ -74,7 +77,7 @@ devbox run test
 3. format code
 
 ```bash
-mix format
+devbox run format
 ```
 ## Apple Apps
 
