@@ -22,17 +22,14 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Elixir
-        uses: erlef/setup-beam@v1
+      - name: Install devbox
+        uses: jetify-com/devbox-install-action@v0.9.0
         with:
-          elixir-version: v1.17-otp-27
-          otp-version: OTP-27
-      - name: Install Dependencies
-        run: mix deps.get
+          enable_cache: "true"
       - name: Check Format
-        run: mix format --check-formatted
+        run: devbox run check_format
       - name: Run tests
-        run: mix coveralls.json
+        run: devbox run coverage
         env:
           MIX_ENV: test
       - name: Upload coverage reports to Codecov
@@ -46,7 +43,10 @@ jobs:
     environment: prod
     steps:
       - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+      - name: Install devbox
+        uses: jetify-com/devbox-install-action@v0.9.0
+        with:
+          enable_cache: "true"
+      - run: devbox run deploy
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

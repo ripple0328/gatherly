@@ -5,7 +5,8 @@
     "postgresql@latest",
     "erlang_27@latest",
     "direnv@latest",
-    "envchain@latest"
+    "envchain@latest",
+    "flyctl@latest"
   ],
   "env": {
     "MIX_HOME": "$PWD/.nix-mix",
@@ -23,6 +24,9 @@
     "scripts": {
       "test": ["mix test"],
       "start": ["mix phx.server"],
+      "check_format": ["mix format --check-formatted"],
+      "coverage": ["mix coveralls.json"],
+      "deploy": ["flyctl deploy --remote-only"],
       "remote": [
         "fly ssh console --pty --select -C \"/app/bin/gatherly remote\""
       ]
