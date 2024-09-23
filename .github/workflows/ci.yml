@@ -29,7 +29,7 @@ jobs:
       - name: Check Format
         run: devbox run check_format
       - name: Run tests
-        run: devbox run coverage
+        run: devbox run postgres; devbox run coverage
         env:
           MIX_ENV: test
       - name: Upload coverage reports to Codecov
