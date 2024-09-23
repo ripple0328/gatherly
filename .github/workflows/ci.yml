@@ -40,7 +40,9 @@ jobs:
         env:
           MIX_ENV: test
       - name: Test Coverage
-        run: devbox run coverage
+        run: mix coveralls
+        env:
+          MIX_ENV: test
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         env:
