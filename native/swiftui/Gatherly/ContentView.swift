@@ -12,7 +12,7 @@ struct ContentView: View {
         #LiveView(
             .automatic(
                 development: .localhost(path: "/"),
-                production: URL(string: "https://example.com")!
+                production: URL(string: "https://gatherly.qingbo.io")!
             ),
             addons: [
                .liveForm
