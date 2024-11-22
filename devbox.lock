@@ -241,6 +241,54 @@
         }
       }
     },
+    "nodePackages.npm@latest": {
+      "last_modified": "2024-09-10T15:01:03Z",
+      "resolved": "github:NixOS/nixpkgs/5ed627539ac84809c78b2dd6d26a5cebeb5ae269#nodePackages.npm",
+      "source": "devbox-search",
+      "version": "10.8.3",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/d8iyr5aq1fs900ml37zqz0n1081642jp-npm-10.8.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/d8iyr5aq1fs900ml37zqz0n1081642jp-npm-10.8.3"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/iy2pv3h924cf4mqbyz4a05hwq0da1jcj-npm-10.8.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/iy2pv3h924cf4mqbyz4a05hwq0da1jcj-npm-10.8.3"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/66mg53a857hmdc418dj6fyq28bdfa6pc-npm-10.8.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/66mg53a857hmdc418dj6fyq28bdfa6pc-npm-10.8.3"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/91rs8y4165pm8gnh1xhc0hrhlnmbkvgy-npm-10.8.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/91rs8y4165pm8gnh1xhc0hrhlnmbkvgy-npm-10.8.3"
+        }
+      }
+    },
     "postgresql@latest": {
       "last_modified": "2024-11-05T18:23:38Z",
       "plugin_version": "0.0.2",

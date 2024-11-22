@@ -6,11 +6,12 @@
     "erlang_27@latest",
     "direnv@latest",
     "envchain@latest",
-    "flyctl@latest"
+    "flyctl@latest",
+    "nodePackages.npm@latest"
   ],
   "env": {
-    "MIX_HOME": "$PWD/.nix-mix",
-    "HEX_HOME": "$PWD/.nix-hex",
+    "MIX_HOME":   "$PWD/.nix-mix",
+    "HEX_HOME":   "$PWD/.nix-hex",
     "ERL_AFLAGS": "'-kernel shell_history enabled -enable-feature maybe_expr'"
   },
   "shell": {
@@ -22,15 +23,15 @@
       "mix deps.get"
     ],
     "scripts": {
-      "test": ["mix test"],
-      "start": ["mix phx.server"],
+      "test":         ["mix test"],
+      "start":        ["mix phx.server"],
       "check_format": ["mix format --check-formatted"],
-      "format": ["mix format"],
-      "npm_install": ["npm i --prefix assets"],
-      "coverage": ["MIX_ENV=test mix coveralls"],
-      "postgres": ["devbox services start postgresql"],
-      "deploy": ["flyctl deploy --remote-only"],
-      "setup": ["mix setup"],
+      "format":       ["mix format"],
+      "npm_install":  ["npm i --prefix assets"],
+      "coverage":     ["MIX_ENV=test mix coveralls"],
+      "db":           ["devbox services start postgresql"],
+      "deploy":       ["flyctl deploy --remote-only"],
+      "setup":        ["mix setup"],
       "remote": [
         "fly ssh console --pty --select -C \"/app/bin/gatherly remote\""
       ]

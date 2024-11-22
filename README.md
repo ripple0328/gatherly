@@ -26,17 +26,23 @@ Setup database with db and user
 cd gatherly
 direnv allow
 initdb
+devbox run db
 createdb $USER
 ```
 
 create role `postgres`
 
 ```
-psql
+$ psql
 # CREATE USER postgres SUPERUSER;
-exit
+# \q
 ```
 
+install npm packages
+```
+cd assets
+npm i
+```
 create DB for this app
 
 run db setup
