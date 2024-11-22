@@ -40,8 +40,7 @@ $ psql
 
 install npm packages
 ```
-cd assets
-npm i
+debox run npm_install
 ```
 create DB for this app
 
@@ -59,10 +58,6 @@ envchain -s gatherly GOOGLE_CLIENT_ID
 envchain -s gatherly GOOGLE_CLIENT_SECRET
 ```
 
-install npm packages
-```bash
-devbox run npm_install
-```
 1. start db and server
 
 ```bash
