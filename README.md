@@ -18,6 +18,11 @@ Gatherly is an application that allow coordinate party like activities.
 ## Getting Started
 
 These instructions will guide you on how start the app locally for development
+### Prerequist
+
+- 1password cli for secret env management
+- direnv
+- devbox
 
 ### Setup Once off
 
