@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetpack-io/devbox/0.10.4/.schema/devbox.schema.json",
   "packages": [
-    "elixir_1_17@latest",
+    "elixir@latest",
     "postgresql@latest",
     "erlang_27@latest",
     "direnv@latest",
