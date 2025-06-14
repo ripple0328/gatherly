@@ -1,5 +1,7 @@
 # AI Coding Agent Guidelines (Elixir/Phoenix)
+## General rules
 
+always update document about how to develop and operate this project
 ## General Elixir Style
 - Use **idiomatic Elixir** and follow the community style guide, including `mix format` for automated formatting.
 - Follow **naming conventions**: use `snake_case` for atoms, functions, variables, and file names, and `PascalCase` (CamelCase) for modules. Keep **one module per file**.
