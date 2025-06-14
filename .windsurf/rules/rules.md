@@ -19,6 +19,8 @@ always update document about how to develop and operate this project
 - Use **verified routes** (`~p`) everywhere to catch invalid paths at compile time.
 - Organize components in `lib/my_app_web/components/` and co-locate LiveView-specific components when needed.
 - Keep **controllers thin** and delegate logic to contexts. Use Phoenix views or function components for rendering.
+- use
+- always create reusable components
 
 ## LiveView Conventions
 - Prefer **LiveView** over JS for interactivity. Use `mount`, `render`, and `handle_event` to manage state and actions.
