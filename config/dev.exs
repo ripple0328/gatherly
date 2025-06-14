@@ -2,7 +2,8 @@ import Config
 
 # Configure your database
 config :gatherly, Gatherly.Repo,
-  username: "qingbo",  # Your system username is used as the default PostgreSQL user
+  # Your system username is used as the default PostgreSQL user
+  username: "qingbo",
   hostname: "localhost",
   database: "gatherly_dev",
   stacktrace: true,
