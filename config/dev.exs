@@ -2,7 +2,7 @@ import Config
 
 # Configure your database
 config :gatherly, Gatherly.Repo,
-  username: "qingbo",
+  username: "postgres",
   password: "postgres",
   hostname: "postgres",
   database: "gatherly_dev",

@@ -1,15 +1,19 @@
 {
   "workdir": "/workdir",
-  "base_image": "elixir:1.18-otp-27",
+
+  "base_image": "ubuntu:24.04",
   "setup_commands": [
-    "apt-get update \u0026\u0026 apt-get install -y curl git build-essential inotify-tools postgresql-client",
-    "curl -fsSL https://deb.nodesource.com/setup_20.x | bash -",
-    "apt-get install -y nodejs",
-    "mix local.hex --force",
-    "mix local.rebar --force"
+    "apt-get update \u0026\u0026 apt-get install -y curl git build-essential autoconf m4 libncurses5-dev libwxgtk3.2-dev libwxgtk-webview3.2-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk",
+    "curl -fsSL https://github.com/asdf-vm/asdf/archive/v0.14.0.tar.gz | tar -xz --strip-components=1 -C /opt",
+    "bash -c 'echo \"export PATH=/opt/bin:$PATH\" \u003e\u003e ~/.bashrc \u0026\u0026 echo \"source /opt/asdf.sh\" \u003e\u003e ~/.bashrc'",
+    "bash -c 'export PATH=/opt/bin:$PATH \u0026\u0026 . /opt/asdf.sh \u0026\u0026 asdf plugin add erlang \u0026\u0026 asdf plugin add elixir \u0026\u0026 asdf plugin add nodejs'",
+    "bash -c 'export PATH=/opt/bin:$PATH \u0026\u0026 . /opt/asdf.sh \u0026\u0026 asdf install elixir 1.18 \u0026\u0026 asdf install nodejs 24.2.0'",
+    "bash -c 'export PATH=/opt/bin:$PATH \u0026\u0026 . /opt/asdf.sh \u0026\u0026 asdf global elixir 1.18 \u0026\u0026 asdf global nodejs 24.2.0'",
+    "apt-get install -y postgresql-client"
   ],
   "env": [
-    "MIX_ENV=dev"
+    "MIX_ENV=dev",
+    "PORT=4000"
   ],
   "services": [
     {
@@ -20,7 +24,11 @@
       ],
       "env": [
         "POSTGRES_DB=gatherly_dev",
+<<<<<<< HEAD
         "POSTGRES_USER=qingbo",
+=======
+        "POSTGRES_USER=postgres",
+>>>>>>> container-use/gatherly-debug/charmed-burro
         "POSTGRES_PASSWORD=postgres"
       ]
     }

@@ -5,7 +5,7 @@ defmodule Gatherly.MixProject do
     [
       app: :gatherly,
       version: "0.1.0",
-      elixir: "~> 1.18",
+      elixir: ">= 1.18.0 and < 2.0.0",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -39,40 +39,40 @@ defmodule Gatherly.MixProject do
       {:phoenix_live_reload, "~> 1.4", only: :dev},
       {:phoenix_live_view, "~> 0.20.0"},
       {:phoenix_live_dashboard, "~> 0.8.0"},
-      
+
       # Database
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.17.0"},
-      
+
       # HTML parsing and testing
       {:floki, ">= 0.36.0", only: :test},
-      
+
       # Asset management
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.3.1", runtime: Mix.env() == :dev},
-      
+
       # HTTP client
       {:finch, "~> 0.16"},
-      
+
       # Email
       {:swoosh, "~> 1.14"},
-      
+
       # Telemetry and monitoring
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      
+
       # Internationalization
       {:gettext, "~> 0.22"},
-      
+
       # JSON handling
       {:jason, "~> 1.4"},
-      
+
       # Clustering
       {:dns_cluster, "~> 0.1"},
-      
+
       # Web server
       {:bandit, "~> 1.0"},
-      
+
       # Development tools
       {:tidewave, "~> 0.1", only: :dev},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},

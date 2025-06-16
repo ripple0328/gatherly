@@ -10,17 +10,6 @@ module.exports = {
 		extend: {
 			colors: {
 				brand: "#FD4F00",
-				primary: "#3b82f6",
-				secondary: "#f43f5e",
-				accent: "#8b5cf6",
-				neutral: "#1f2937",
-				"base-100": "#ffffff",
-				"base-200": "#f9fafb",
-				"base-300": "#f3f4f6",
-				info: "#3b82f6",
-				success: "#10b981",
-				warning: "#f59e0b",
-				error: "#ef4444",
 			},
 			fontFamily: {
 				sans: ["Inter", "system-ui", "sans-serif"],
@@ -61,13 +50,10 @@ module.exports = {
 			{
 				gatherly: {
 					primary: "#3b82f6",
-
 					secondary: "#f43f5e",
 					accent: "#8b5cf6",
 					neutral: "#1f2937",
 					"base-100": "#ffffff",
-					"base-200": "#f9fafb",
-					"base-300": "#f3f4f6",
 					info: "#3b82f6",
 					success: "#10b981",
 					warning: "#f59e0b",
