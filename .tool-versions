@@ -1,8 +1,7 @@
 # Elixir version (with OTP 28)
 elixir 1.19.0-rc.0-otp-28
-
 # Erlang/OTP version
 erlang 28.0
-
 # Node.js version (LTS version)
-nodejs 22.16.0
+nodejs 24.2.0
+python 3.13.5t
