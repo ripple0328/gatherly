@@ -1,5 +1,5 @@
 # Elixir version (with OTP 27)
-elixir 1.18.4-otp-27
+elixir 1.19.0-rc.0-otp-27
 # Erlang version
 erlang 27.0
 # Node.js version (LTS version)
