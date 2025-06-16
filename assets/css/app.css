@@ -20,101 +20,199 @@ body {
   animation: fadeIn 0.5s ease-in-out;
 }
 
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* Custom components - Converted from @apply to standard CSS */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 1.5rem;
-  border: 1px solid transparent;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  color: white;
-  background-color: #2563eb; /* blue-600 */
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
 }
 
-.btn:hover {
-  background-color: #1d4ed8; /* blue-700 */
+/* DaisyUI Button Extensions */
+.btn-primary {
+  @apply bg-primary border-primary text-primary-content;
 }
 
-.btn:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
-  --tw-ring-offset-width: 2px;
+.btn-primary:hover {
+  @apply bg-primary-focus border-primary-focus;
 }
 
 .btn-secondary {
-  background-color: white;
-  color: #374151; /* gray-700 */
-  border-color: #d1d5db; /* gray-300 */
+  @apply bg-secondary border-secondary text-secondary-content;
 }
 
 .btn-secondary:hover {
-  background-color: #f9fafb; /* gray-50 */
+  @apply bg-secondary-focus border-secondary-focus;
+}
+
+.btn-outline {
+  @apply bg-transparent border-current;
+}
+
+.btn-outline:hover {
+  @apply bg-current text-base-100;
+}
+
+.btn-lg {
+  @apply px-6 py-3 text-lg;
 }
 
 /* Custom form styles */
 .input {
-  display: block;
-  width: 100%;
-  border-radius: 0.375rem;
-  border-color: #d1d5db; /* gray-300 */
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  @apply block w-full rounded-md border-gray-300 shadow-sm text-sm;
 }
 
 .input:focus {
-  border-color: #3b82f6; /* blue-500 */
-  --tw-ring-color: #3b82f6; /* blue-500 */
-  --tw-ring-opacity: 1;
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  @apply border-blue-500 ring-blue-500 ring-1;
 }
 
 /* Custom card styles */
 .card {
-  background-color: white;
-  overflow: hidden;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-  border-radius: 0.5rem;
+  @apply bg-base-100 overflow-hidden shadow-md rounded-lg;
 }
 
-/* Custom container */
+.card-body {
+  @apply p-6;
+}
+
+.card-title {
+  @apply text-lg font-semibold mb-2;
+}
+
+/* Hero section background pattern */
+.bg-pattern-cubes {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='m0 40l40-40h-40v40zm40 0v-40h-40l40 40z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Footer */
+.footer {
+  @apply bg-neutral text-neutral-content p-10;
+}
+
+.footer-title {
+  @apply text-lg font-semibold mb-4 opacity-90;
+}
+
+.link {
+  @apply cursor-pointer;
+}
+
+.link-hover:hover {
+  @apply opacity-80;
+}
+
+/* Container override */
 .container {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  max-width: 80rem; /* max-w-7xl */
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
 
-@media (min-width: 640px) {
-  .container {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
+/* Text color utilities for gradients */
+.text-primary {
+  color: theme('colors.primary');
 }
 
-@media (min-width: 1024px) {
-  .container {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
+.text-secondary {
+  color: theme('colors.secondary');
+}
+
+.text-accent {
+  color: theme('colors.accent');
+}
+
+.bg-primary {
+  background-color: theme('colors.primary');
+}
+
+.bg-secondary {
+  background-color: theme('colors.secondary');
+}
+
+.bg-accent {
+  background-color: theme('colors.accent');
+}
+
+.bg-base-100 {
+  background-color: theme('colors.base-100');
+}
+
+.bg-base-200 {
+  background-color: theme('colors.base-200');
+}
+
+.bg-neutral {
+  background-color: theme('colors.neutral');
+}
+
+.border-primary {
+  border-color: theme('colors.primary');
+}
+
+.border-secondary {
+  border-color: theme('colors.secondary');
+}
+
+/* Primary focus states */
+.bg-primary-focus {
+  background-color: color-mix(in srgb, theme('colors.primary') 90%, black);
+}
+
+.bg-secondary-focus {
+  background-color: color-mix(in srgb, theme('colors.secondary') 90%, black);
+}
+
+.border-primary-focus {
+  border-color: color-mix(in srgb, theme('colors.primary') 90%, black);
+}
+
+.border-secondary-focus {
+  border-color: color-mix(in srgb, theme('colors.secondary') 90%, black);
+}
+
+.text-primary-content {
+  color: white;
+}
+
+.text-secondary-content {
+  color: white;
+}
+
+.text-neutral-content {
+  color: theme('colors.neutral-content');
+}
+
+/* Hover effects */
+.hover\:text-primary:hover {
+  color: theme('colors.primary');
+}
+
+.hover\:text-primary-focus:hover {
+  color: color-mix(in srgb, theme('colors.primary') 90%, black);
+}
+
+.hover\:bg-primary:hover {
+  background-color: theme('colors.primary');
+}
+
+.hover\:border-primary:hover {
+  border-color: theme('colors.primary');
 }
