@@ -25,7 +25,8 @@ config :gatherly, GatherlyWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "F4/ZRYH3udsQ9N+bnURZ76Fh3VkuxxHRe9d5EbH7HbIaHVh8uTF9NFo4IcBDXtjw",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:gatherly, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:gatherly, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:gatherly, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -64,8 +65,8 @@ config :gatherly, GatherlyWeb.Endpoint,
 # Enable dev routes for dashboard and mailbox
 config :gatherly, dev_routes: true
 
-# Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
+# Enable debug logging
+config :logger, level: :debug, format: "[$level] $message\n"
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.

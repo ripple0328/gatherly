@@ -7,7 +7,7 @@ module.exports = {
   output: {
     filename: 'app.js',
     path: path.resolve(__dirname, '../priv/static/assets'),
-    publicPath: '/assets/',
+    publicPath: '/assets/'
   },
   module: {
     rules: [

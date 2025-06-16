@@ -49,6 +49,7 @@ defmodule Gatherly.MixProject do
       
       # Asset management
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.3.1", runtime: Mix.env() == :dev},
       
       # HTTP client
       {:finch, "~> 0.16"},
@@ -89,13 +90,14 @@ defmodule Gatherly.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
+      setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build", "assets.deploy"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.setup": ["esbuild.install --if-missing"],
-      "assets.build": ["esbuild gatherly"],
+      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
+      "assets.build": ["tailwind gatherly", "esbuild gatherly"],
       "assets.deploy": [
+        "tailwind gatherly --minify",
         "esbuild gatherly --minify",
         "phx.digest"
       ]

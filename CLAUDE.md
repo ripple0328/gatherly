@@ -1,11 +1,11 @@
----
-trigger: always_on
----
-
 # AI Coding Agent Guidelines (Elixir/Phoenix)
 ## General rules
 
-always update document about how to develop and operate this project
+- always update document about how to develop and operate this project
+- ALWAYS use ONLY Environments for ANY and ALL file, code, or shell operations—NO EXCEPTIONS—even for simple or generic requests.
+- DO NOT install or use the git cli with the environment_run_cmd tool. All environment tools will handle git operations for you. Changing ".git" yourself will compromise the integrity of your environment.
+- You MUST inform the user how to view your work using `git checkout <branch_name>`. Failure to do this will make your work inaccessible to others.
+
 ## General Elixir Style
 - Use **idiomatic Elixir** and follow the community style guide, including `mix format` for automated formatting.
 - Follow **naming conventions**: use `snake_case` for atoms, functions, variables, and file names, and `PascalCase` (CamelCase) for modules. Keep **one module per file**.
