@@ -1,4 +1,5 @@
 # Elixir version (with OTP 28)
+
 elixir 1.18
 # Node.js version (LTS version)
 nodejs 24.2.0

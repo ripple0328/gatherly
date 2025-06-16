@@ -1,0 +1,28 @@
+{
+  "workdir": "/workdir",
+  "base_image": "elixir:1.18-otp-27",
+  "setup_commands": [
+    "apt-get update \u0026\u0026 apt-get install -y curl git build-essential inotify-tools postgresql-client",
+    "curl -fsSL https://deb.nodesource.com/setup_20.x | bash -",
+    "apt-get install -y nodejs",
+    "mix local.hex --force",
+    "mix local.rebar --force"
+  ],
+  "env": [
+    "MIX_ENV=dev"
+  ],
+  "services": [
+    {
+      "name": "postgres",
+      "image": "postgres:16",
+      "exposed_ports": [
+        5432
+      ],
+      "env": [
+        "POSTGRES_DB=gatherly_dev",
+        "POSTGRES_USER=qingbo",
+        "POSTGRES_PASSWORD=postgres"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+Phoenix/Elixir development environment using Elixir 1.18 and Node.js 24.2.0 per .tool-versions. Available commands: mix phx.server, mix test, mix format, npm install (in assets/), npm run deploy (in assets/)
