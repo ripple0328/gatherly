@@ -13,5 +13,19 @@
   "env": [
     "MIX_ENV=dev",
     "PORT=4000"
+  ],
+  "services": [
+    {
+      "name": "postgres",
+      "image": "postgres:16",
+      "exposed_ports": [
+        5432
+      ],
+      "env": [
+        "POSTGRES_DB=gatherly_dev",
+        "POSTGRES_USER=postgres",
+        "POSTGRES_PASSWORD=postgres"
+      ]
+    }
   ]
 }
