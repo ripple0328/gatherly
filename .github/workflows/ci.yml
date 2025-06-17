@@ -24,8 +24,7 @@ jobs:
 
       - name: Install Dagger CLI
         run: |
-          curl -L https://github.com/dagger/dagger/releases/latest/download/dagger_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/').tar.gz | tar -xz
-          sudo mv dagger /usr/local/bin/
+          curl -L https://dl.dagger.io/dagger/install.sh | sudo sh
           dagger version
 
       - name: Run Dependencies Check
