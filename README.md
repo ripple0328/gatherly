@@ -33,7 +33,7 @@ This project uses a modern CI/CD pipeline with automated testing, building, and 
 
 ### Deployment Flow
 ```
-main branch → CI → Quality Gate → Production (gatherly.qingbo.us)
+Direct to main → CI → Quality Gate → Production (gatherly.qingbo.us)
 ```
 
 ### Manual Deployment
@@ -82,7 +82,7 @@ mix dagger.ci --export ./release  # Export built release
 - ✅ Production build and artifact export
 
 **Automated Deployment to Fly.io**:
-- `main` branch → **Production** deployment with quality gate
+- Direct push to `main` → **Production** deployment with quality gate
 - Manual deployment capability
 - Rollback capability for production
 
@@ -114,7 +114,9 @@ mix phx.server
 
 **Production Deployment**:
 ```bash
-git checkout main
+# Work directly on main branch
+git add .
+git commit -m "your changes"
 git push origin main     # Triggers production deployment
 ```
 

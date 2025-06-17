@@ -82,7 +82,7 @@ mix dagger.ci --export ./release
 
 #### GitHub Actions Integration
 The CI pipeline uses `dagger/dagger-for-github` action for automated builds:
-- Automatically runs on push/PR to main branch
+- Automatically runs on push to main branch only
 - Uses containerized environment for consistency
 - Caches dependencies and build artifacts
 - Exports production builds as GitHub artifacts and deploys to Fly.io
@@ -99,7 +99,7 @@ dagger call build --source=. sync
 
 #### When to Use Each Approach
 - **Mix tasks**: Primary development workflow, IDE integration, local testing
-- **GitHub Actions**: Automated CI/CD, pull request validation, production deployment
+- **GitHub Actions**: Automated CI/CD, production deployment on main branch
 - **Dagger CLI**: Cross-platform consistency, advanced CI scenarios
 
 ### Key Benefits

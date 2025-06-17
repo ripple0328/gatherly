@@ -27,8 +27,7 @@ The Gatherly project uses a modern CI/CD pipeline with:
 ### 1. CI Workflow (`.github/workflows/ci.yml`)
 
 **Triggers:**
-- Push to `main` branch
-- Pull requests to `main`
+- Push to `main` branch only
 - Called by other workflows
 
 **Steps:**
@@ -36,8 +35,8 @@ The Gatherly project uses a modern CI/CD pipeline with:
 2. **Quality Checks**: Run code formatting, Credo linting, Dialyzer type checking
 3. **Security Scanning**: Check for vulnerabilities with `mix deps.audit` and `hex.audit`
 4. **Testing**: Full test suite with containerized PostgreSQL database
-5. **Building**: Production release with compiled assets (not on PRs)
-6. **Artifact Export**: Package release for deployment (not on PRs)
+5. **Building**: Production release with compiled assets
+6. **Artifact Export**: Package release for deployment
 
 **Outputs:**
 - Build artifacts ready for deployment
@@ -249,11 +248,9 @@ flyctl logs --app gatherly --region sjc
 ### Best Practices
 
 ### Development Workflow
-1. Create feature branch from `main`
-2. Run `mix dagger.ci --fast` locally
-3. Push to feature branch (triggers CI)
-4. Create PR to `main` (triggers full CI)
-5. Merge to `main` (triggers production deployment)
+1. Work directly on `main` branch
+2. Run `mix dagger.ci --fast` locally for validation
+3. Commit and push to `main` (triggers CI and production deployment)
 
 ### Deployment Strategy
 - Thorough local testing before production deployment
