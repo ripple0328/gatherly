@@ -1,6 +1,3 @@
-
-
-
 # 📘 Gatherly: Project Overview and Roadmap
 
 Gatherly is a collaborative, AI-powered event planning platform designed for casual group gatherings. Unlike traditional event tools that silo scheduling, invitations, and task coordination into separate apps, Gatherly brings everything together—so people can crowdsource their plans, distribute logistics, and make smarter decisions as a group.
@@ -77,7 +74,7 @@ Gatherly empowers every participant—not just the host—to contribute meaningf
 ### Phase 0 – Foundation (Weeks 1–2)
 - [ ] Phoenix + LiveView scaffolding
 - [ ] TailwindCSS setup
-- [ ] PWA support scaffold
+- [ ] modern design and stunning ui home page to show case the app's features and use cases
 - [ ] OAuth login + anonymous link join
 - [ ] deployment to fly.io
 

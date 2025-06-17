@@ -13,6 +13,7 @@ DO NOT install or use the git cli with the environment_run_cmd tool. All environ
 You MUST inform the user how to view your work using git checkout <branch_name>. Failure to do this will make your work inaccessible to others.
 ## Key Architecture Concepts
 - **Phoenix LiveView**: Primary framework for real-time web interfaces
+- **LiveView Native**: Native Phoenix LiveView components for seamless integration
 - **Ash Framework**: Preferred for domain modeling and business logic
 - **Context-based Architecture**: Domain logic in `lib/gatherly/`, web interface in `lib/gatherly_web/`
 - **Event-centric Design**: Everything revolves around events with different types (Potluck, Camping, Hiking, Game Night)

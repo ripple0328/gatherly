@@ -1,0 +1,32 @@
+<div class="navbar bg-base-100 border-b border-base-200">
+  <div class="navbar-start">
+    <a href="/" class="btn btn-ghost text-xl">
+      <img src={~p"/images/logo.svg"} width="36" alt="Gatherly" />
+      Gatherly
+    </a>
+  </div>
+  
+  <div class="navbar-center hidden lg:flex">
+    <div class="badge badge-primary badge-outline">
+      Phoenix v{Application.spec(:phoenix, :vsn)}
+    </div>
+  </div>
+  
+  <div class="navbar-end">
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn btn-ghost">
+        <.icon name="hero-bars-3" class="h-5 w-5" />
+      </div>
+      <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+        <li><a href="https://twitter.com/elixirphoenix" target="_blank">@elixirphoenix</a></li>
+        <li><a href="https://github.com/phoenixframework/phoenix" target="_blank">GitHub</a></li>
+        <li><a href="https://hexdocs.pm/phoenix/overview.html" target="_blank">Get Started</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<main class="container mx-auto px-4 py-8">
+  <.flash_group flash={@flash} />
+  {@inner_content}
+</main>
