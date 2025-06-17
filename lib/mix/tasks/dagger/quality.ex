@@ -24,7 +24,7 @@ defmodule Mix.Tasks.Dagger.Quality do
 
   @impl Mix.Task
   def run(args) do
-    {opts, _} = OptionParser.parse!(args, strict: [skip_dialyzer: :boolean])
+    {_opts, _} = OptionParser.parse!(args, strict: [skip_dialyzer: :boolean])
 
     Mix.shell().info("🔍 Running code quality checks in Dagger container...")
 

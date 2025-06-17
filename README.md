@@ -53,9 +53,16 @@ mix dagger.ci --fast         # Skip slower checks for quick feedback
 mix dagger.ci --export ./release  # Export built release
 ```
 
-#### Option 2: Direct Dagger CLI
+#### Option 2: GitHub Actions with Dagger
+The CI pipeline automatically runs on push/PR using `dagger/dagger-for-github` action:
+- Dependencies check and caching
+- Code quality checks (formatting, linting, static analysis)
+- Security vulnerability scanning
+- Full test suite with PostgreSQL
+- Production build and artifact export
+
+For local dagger CLI usage (if needed):
 ```bash
-# Alternative for CI environments or cross-language teams
 dagger call deps --source=. sync
 dagger call test --source=.
 dagger call quality --source=.
