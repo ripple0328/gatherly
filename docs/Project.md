@@ -74,7 +74,7 @@ Gatherly empowers every participant—not just the host—to contribute meaningf
 ### Phase 0 – Foundation (Weeks 1–2)
 - [ ] Phoenix + LiveView scaffolding
 - [ ] TailwindCSS setup
-- [ ] modern design and stunning ui home page to show case the app's features and use cases
+- [ ] modern designed stunning  home page to show case the app's features and use cases
 - [ ] OAuth login + anonymous link join
 - [ ] deployment to fly.io
 
