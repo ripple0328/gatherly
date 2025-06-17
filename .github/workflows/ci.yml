@@ -7,7 +7,6 @@ on:
     branches: [ main, develop ]
 
 env:
-  MIX_ENV: test
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
@@ -15,247 +14,43 @@ permissions:
   pull-requests: write
 
 jobs:
-  deps:
-    name: Dependencies
+  dagger-ci:
+    name: Dagger CI Pipeline
     runs-on: ubuntu-22.04
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Elixir
-        uses: erlef/setup-beam@v1
-        with:
-          version-file: .tool-versions
-          version-type: strict
-        env:
-          ImageOS: ubuntu22
-
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        id: cache-deps
-        with:
-          path: |
-            deps
-            _build/test
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}-${{ hashFiles('.tool-versions') }}
-          restore-keys: |
-            deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}-
-            deps-${{ runner.os }}-
-
-      - name: Install dependencies
-        if: steps.cache-deps.outputs.cache-hit != 'true'
+      - name: Install Dagger CLI
         run: |
-          mix deps.get
-          mix deps.compile
+          curl -L https://github.com/dagger/dagger/releases/latest/download/dagger_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/').tar.gz | tar -xz
+          sudo mv dagger /usr/local/bin/
+          dagger version
 
-  quality:
-    name: Code Quality
-    runs-on: ubuntu-22.04
-    needs: deps
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Run Dependencies Check
+        run: dagger call deps --source=. sync
 
-      - name: Set up Elixir
-        uses: erlef/setup-beam@v1
-        with:
-          version-file: .tool-versions
-          version-type: strict
-        env:
-          ImageOS: ubuntu22
+      - name: Run Code Quality Checks
+        run: dagger call quality --source=.
 
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            deps
-            _build/test
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}-${{ hashFiles('.tool-versions') }}
+      - name: Run Security Checks
+        run: dagger call security --source=.
 
-      - name: Check code formatting
-        run: mix format --check-formatted
+      - name: Run Tests with Database
+        run: dagger call test --source=.
 
-      - name: Run Credo (static analysis)
-        run: mix credo --strict --format github
+      - name: Build Production Release
+        run: dagger call build --source=. sync
 
-      - name: Cache PLT files
-        uses: actions/cache@v4
-        id: cache-plt
-        with:
-          path: priv/plts
-          key: plt-${{ runner.os }}-${{ hashFiles('mix.lock') }}-${{ hashFiles('.tool-versions') }}
-          restore-keys: |
-            plt-${{ runner.os }}-${{ hashFiles('mix.lock') }}-
-            plt-${{ runner.os }}-
-
-      - name: Create PLTs directory
-        if: steps.cache-plt.outputs.cache-hit != 'true'
-        run: mkdir -p priv/plts
-
-      - name: Run Dialyzer (type checking)
-        run: mix dialyzer --format github
-
-  test:
-    name: Tests
-    runs-on: ubuntu-22.04
-    needs: deps
-    
-    services:
-      postgres:
-        image: postgres:15
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: gatherly_test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Elixir
-        uses: erlef/setup-beam@v1
-        with:
-          version-file: .tool-versions
-          version-type: strict
-        env:
-          ImageOS: ubuntu22
-
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            deps
-            _build/test
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}-${{ hashFiles('.tool-versions') }}
-
-      - name: Set up database
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/gatherly_test
+      - name: Export Build Artifacts
         run: |
-          mix ecto.create
-          mix ecto.migrate
-
-      - name: Run tests
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/gatherly_test
-        run: mix test --cover --export-coverage default
-
-      - name: Generate coverage report
-        run: mix test.coverage --threshold 20
-
-      - name: Upload coverage to Codecov
-        if: github.actor != 'dependabot[bot]'
-        uses: codecov/codecov-action@v4
-        with:
-          files: ./cover/lcov.info
-          fail_ci_if_error: false
-          verbose: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-  build:
-    name: Build Application
-    runs-on: ubuntu-22.04
-    needs: [quality, test]
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Elixir
-        uses: erlef/setup-beam@v1
-        with:
-          version-file: .tool-versions
-          version-type: strict
-        env:
-          ImageOS: ubuntu22
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24.2.0'
-          cache: 'npm'
-          cache-dependency-path: assets/package-lock.json
-
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            deps
-            _build/prod
-          key: build-deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}-${{ hashFiles('.tool-versions') }}
-          restore-keys: |
-            build-deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}-
-            build-deps-${{ runner.os }}-
-
-      - name: Install dependencies
-        env:
-          MIX_ENV: prod
-        run: |
-          mix deps.get --only prod
-          mix deps.compile
-
-      - name: Install Node.js dependencies
-        working-directory: assets
-        run: npm ci
-
-      - name: Build assets
-        env:
-          MIX_ENV: prod
-        run: mix assets.deploy
-
-      - name: Compile application
-        env:
-          MIX_ENV: prod
-        run: mix compile
-
-      - name: Build release
-        env:
-          MIX_ENV: prod
-        run: mix release
+          mkdir -p artifacts
+          dagger call artifacts --source=. export --path=./artifacts/gatherly-release
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: gatherly-release
-          path: _build/prod/rel/gatherly/
+          path: ./artifacts/gatherly-release/
           retention-days: 1
-
-  security:
-    name: Security Checks
-    runs-on: ubuntu-22.04
-    needs: deps
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Elixir
-        uses: erlef/setup-beam@v1
-        with:
-          version-file: .tool-versions
-          version-type: strict
-        env:
-          ImageOS: ubuntu22
-
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            deps
-            _build/test
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}-${{ hashFiles('.tool-versions') }}
-
-      - name: Check for security vulnerabilities
-        run: mix deps.audit
-
-      - name: Check for retired packages
-        run: mix hex.audit

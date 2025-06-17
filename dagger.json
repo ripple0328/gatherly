@@ -1,0 +1,8 @@
+{
+  "name": "gatherly-ci",
+  "engineVersion": "v0.18.10",
+  "sdk": {
+    "source": "elixir"
+  },
+  "source": ".dagger"
+}

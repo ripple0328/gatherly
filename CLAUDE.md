@@ -52,5 +52,59 @@ You MUST inform the user how to view your work using git checkout <branch_name>.
 - Use immutable data structures
 - One module per file
 
+## CI/CD and Development Workflow
+
+### Dagger Containerized CI/CD
+This project uses Dagger with the Elixir SDK for consistent, containerized CI/CD across local development and production environments.
+
+#### Local Development with Mix Tasks (Recommended)
+```bash
+# Install dependencies in container
+mix dagger.deps
+
+# Run code quality checks (formatting, Credo, Dialyzer)
+mix dagger.quality
+
+# Run security vulnerability scanning
+mix dagger.security
+
+# Run tests with PostgreSQL database in container
+mix dagger.test
+
+# Build production release
+mix dagger.build
+
+# Run complete CI pipeline locally
+mix dagger.ci
+mix dagger.ci --fast        # Skip slower checks
+mix dagger.ci --export ./release
+```
+
+#### Alternative: Direct Dagger CLI Usage
+```bash
+# For CI environments or when mix tasks aren't available
+dagger call deps --source=. sync
+dagger call quality --source=.
+dagger call security --source=.
+dagger call test --source=.
+dagger call build --source=. sync
+```
+
+#### When to Use Each Approach
+- **Mix tasks**: Daily development, IDE integration, local testing
+- **Dagger CLI**: CI/CD, GitHub Actions, cross-language teams
+
+### Key Benefits
+- **Consistency**: Same environment locally and in CI
+- **Isolation**: Containerized dependencies and databases
+- **Speed**: Dagger's intelligent caching and parallelization
+- **Portability**: Works on any machine with Docker + Dagger
+
+### Configuration Files
+- `/dagger.json`: Dagger module configuration
+- `/.dagger/lib/gatherly_ci.ex`: Complete CI pipeline implementation
+- `/.github/workflows/ci.yml`: GitHub Actions using Dagger
+- `/lib/mix/tasks/dagger/`: Mix task implementations
+
 ## Current Status
-Project is in planning phase - no code has been written yet. The next step is to scaffold the Phoenix application and begin Phase 0 foundation work.
+Project has Phoenix LiveView scaffolding with comprehensive Dagger CI/CD pipeline. The CI system includes containerized testing with PostgreSQL, security scanning, and production release builds.

@@ -16,7 +16,13 @@ Gatherly is a collaborative, AI-powered event planning platform built with Phoen
 
 ## 🚀 Development
 
-### Local Development
+### Prerequisites
+- Elixir 1.18+ and Erlang 27+
+- PostgreSQL (for local development)
+- Docker (for containerized workflows)
+- [Dagger CLI](https://dagger.io) (for CI/CD workflows)
+
+### Quick Start
 ```bash
 # Install dependencies
 mix setup
@@ -27,16 +33,49 @@ mix phx.server
 # Visit localhost:4000
 ```
 
-### Container Development (Recommended)
-Using container-use for isolated, reproducible environments:
+### Containerized Development (Recommended)
+
+#### Option 1: Mix Tasks (Most Developer Friendly)
 ```bash
-# Create development environment (via Claude Code)
+# Install Dagger CLI
+curl -L https://github.com/dagger/dagger/releases/latest/download/dagger_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/').tar.gz | tar -xz && sudo mv dagger /usr/local/bin/
+
+# Run containerized development tasks
+mix dagger.deps              # Install dependencies in container
+mix dagger.test              # Run tests with PostgreSQL in container
+mix dagger.quality           # Code quality checks (formatting, Credo, Dialyzer)
+mix dagger.security          # Security vulnerability scanning
+mix dagger.build             # Build production release
+
+# Complete CI pipeline locally (matches GitHub Actions exactly)
+mix dagger.ci                # Full pipeline
+mix dagger.ci --fast         # Skip slower checks for quick feedback
+mix dagger.ci --export ./release  # Export built release
+```
+
+#### Option 2: Direct Dagger CLI
+```bash
+# Alternative for CI environments or cross-language teams
+dagger call deps --source=. sync
+dagger call test --source=.
+dagger call quality --source=.
+dagger call build --source=. sync
+```
+
+#### Option 3: Container-use (Via Claude Code)
+```bash
+# Create development environment
 mcp__container-use__environment_open --source . --name gatherly-dev
 
 # Inside container
 mix deps.get
 mix phx.server
 ```
+
+### Local vs Containerized Development
+- **Local** (`mix test`): Fast iteration, debugging
+- **Containerized** (`mix dagger.test`): CI-identical environment, database included
+- **Hybrid approach**: Use local for development, containerized before pushing
 
 ## 🎨 UI Framework
 
@@ -76,20 +115,30 @@ claude mcp list
 - **Framework**: Phoenix LiveView 1.7+
 - **Database**: PostgreSQL (Fly.io managed)
 - **Styling**: DaisyUI + TailwindCSS
+- **CI/CD**: Dagger with Elixir SDK for containerized pipelines
 - **Deployment**: Fly.io with Docker
-- **Development**: Container-use for isolation
+- **Development**: Multiple options (local, containerized, container-use)
 
 ## 🔧 Key Features
 
+### Event Planning
 - Real-time collaborative event planning
 - RSVP management and proposal voting
 - Responsive UI with DaisyUI components
-- Production deployment with zero-downtime updates
-- MCP integration for AI-assisted development
+
+### Development & Deployment
+- **Containerized CI/CD**: Dagger pipeline with Elixir SDK
+- **Developer Experience**: Mix tasks for local containerized workflows
+- **Production Deployment**: Fly.io with zero-downtime updates
+- **Quality Assurance**: Automated formatting, static analysis, type checking
+- **Security Scanning**: Dependency vulnerability and retirement checks
+- **Database Testing**: Automated PostgreSQL integration testing
+- **MCP Integration**: AI-assisted development with Claude Code
 
 ## Learn More
 
 - **Phoenix Framework**: https://www.phoenixframework.org/
 - **DaisyUI Components**: https://daisyui.com/components/
+- **Dagger CI/CD**: https://dagger.io/ & [Elixir SDK](https://dagger.io/blog/dagger-elixir-sdk)
 - **Fly.io Deployment**: https://fly.io/docs/elixir/
 - **Container-use**: https://github.com/dagger/container-use
