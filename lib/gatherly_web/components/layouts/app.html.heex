@@ -1,26 +1,32 @@
-<div class="navbar bg-base-100 border-b border-base-200">
+<div class="navbar bg-base-100 border-b border-base-200 shadow-sm">
   <div class="navbar-start">
-    <a href="/" class="btn btn-ghost text-xl">
-      <img src={~p"/images/logo.svg"} width="36" alt="Gatherly" />
-      Gatherly
+    <a href="/" class="btn btn-ghost text-xl hover:bg-primary/5 transition-colors">
+      <img src={~p"/images/logo-icon.svg"} width="32" height="32" alt="Gatherly" class="drop-shadow-sm" />
+      <span class="font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Gatherly</span>
     </a>
   </div>
   
   <div class="navbar-center hidden lg:flex">
     <div class="badge badge-primary badge-outline">
-      Phoenix v{Application.spec(:phoenix, :vsn)}
+      AI-Powered Event Planning
     </div>
   </div>
   
   <div class="navbar-end">
+    <div class="hidden sm:flex gap-2 mr-4">
+      <a href="#features" class="btn btn-sm btn-ghost">Features</a>
+      <a href="#events" class="btn btn-sm btn-ghost">Event Types</a>
+    </div>
     <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
         <.icon name="hero-bars-3" class="h-5 w-5" />
       </div>
-      <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-        <li><a href="https://twitter.com/elixirphoenix" target="_blank">@elixirphoenix</a></li>
-        <li><a href="https://github.com/phoenixframework/phoenix" target="_blank">GitHub</a></li>
-        <li><a href="https://hexdocs.pm/phoenix/overview.html" target="_blank">Get Started</a></li>
+      <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow-lg border">
+        <li><a href="#" class="hover:bg-primary/5">Sign In</a></li>
+        <li><a href="#" class="hover:bg-primary/5">Create Account</a></li>
+        <li><hr class="my-2" /></li>
+        <li><a href="#" class="hover:bg-primary/5">Support</a></li>
+        <li><a href="#" class="hover:bg-primary/5">Documentation</a></li>
       </ul>
     </div>
   </div>

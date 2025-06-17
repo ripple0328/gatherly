@@ -1,0 +1,35 @@
+{
+  "name": "Gatherly - AI-Powered Event Planning",
+  "short_name": "Gatherly",
+  "description": "Effortless event planning made collaborative. Transform your group events from chaotic planning to seamless experiences.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#7c3aed",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "categories": ["productivity", "social", "lifestyle"],
+  "icons": [
+    {
+      "src": "/images/favicon-16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/logo-icon-256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

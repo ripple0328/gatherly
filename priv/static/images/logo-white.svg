@@ -1,0 +1,43 @@
+<svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- White logo gradient for dark backgrounds -->
+    <linearGradient id="logoGradientWhite" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- White icon gradient -->
+    <linearGradient id="iconGradientWhite" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Logo Icon - Interconnected circles representing people gathering -->
+  <g transform="translate(8, 8)">
+    <!-- Central hub -->
+    <circle cx="22" cy="22" r="6" fill="url(#iconGradientWhite)" opacity="0.9"/>
+    
+    <!-- Surrounding elements (people/nodes) -->
+    <circle cx="10" cy="10" r="4" fill="url(#iconGradientWhite)" opacity="0.7"/>
+    <circle cx="34" cy="10" r="4" fill="url(#iconGradientWhite)" opacity="0.8"/>
+    <circle cx="40" cy="26" r="4" fill="url(#iconGradientWhite)" opacity="0.7"/>
+    <circle cx="32" cy="38" r="4" fill="url(#iconGradientWhite)" opacity="0.8"/>
+    <circle cx="12" cy="34" r="4" fill="url(#iconGradientWhite)" opacity="0.7"/>
+    <circle cx="4" cy="22" r="4" fill="url(#iconGradientWhite)" opacity="0.8"/>
+    
+    <!-- Connection lines -->
+    <line x1="22" y1="22" x2="10" y2="10" stroke="url(#iconGradientWhite)" stroke-width="2" opacity="0.4"/>
+    <line x1="22" y1="22" x2="34" y2="10" stroke="url(#iconGradientWhite)" stroke-width="2" opacity="0.4"/>
+    <line x1="22" y1="22" x2="40" y2="26" stroke="url(#iconGradientWhite)" stroke-width="2" opacity="0.4"/>
+    <line x1="22" y1="22" x2="32" y2="38" stroke="url(#iconGradientWhite)" stroke-width="2" opacity="0.4"/>
+    <line x1="22" y1="22" x2="12" y2="34" stroke="url(#iconGradientWhite)" stroke-width="2" opacity="0.4"/>
+    <line x1="22" y1="22" x2="4" y2="22" stroke="url(#iconGradientWhite)" stroke-width="2" opacity="0.4"/>
+  </g>
+  
+  <!-- Logo Text -->
+  <text x="60" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="700" fill="url(#logoGradientWhite)">
+    Gatherly
+  </text>
+</svg>

@@ -1,6 +1,11 @@
 # Gatherly
 
-Gatherly is a collaborative, AI-powered event planning platform built with Phoenix LiveView and DaisyUI.
+<div align="center">
+  <img src="priv/static/images/logo.svg" alt="Gatherly Logo" width="200" />
+  <p><em>Effortless Event Planning Made Collaborative</em></p>
+</div>
+
+Gatherly is a collaborative, AI-powered event planning platform built with Phoenix LiveView and DaisyUI. Transform your group events from chaotic planning to seamless experiences with intelligent coordination, real-time collaboration, and smart logistics.
 
 ## 🌍 Live App
 
