@@ -82,10 +82,10 @@ mix dagger.ci --export ./release
 
 #### GitHub Actions Integration
 The CI pipeline uses `dagger/dagger-for-github` action for automated builds:
-- Automatically runs on push/PR to main/develop branches
+- Automatically runs on push/PR to main branch
 - Uses containerized environment for consistency
 - Caches dependencies and build artifacts
-- Exports production builds as GitHub artifacts
+- Exports production builds as GitHub artifacts and deploys to Fly.io
 
 #### Direct Dagger CLI (Optional)
 ```bash
@@ -99,7 +99,7 @@ dagger call build --source=. sync
 
 #### When to Use Each Approach
 - **Mix tasks**: Primary development workflow, IDE integration, local testing
-- **GitHub Actions**: Automated CI/CD, pull request validation
+- **GitHub Actions**: Automated CI/CD, pull request validation, production deployment
 - **Dagger CLI**: Cross-platform consistency, advanced CI scenarios
 
 ### Key Benefits
@@ -111,8 +111,10 @@ dagger call build --source=. sync
 ### Configuration Files
 - `/dagger.json`: Dagger module configuration
 - `/.dagger/lib/gatherly_ci.ex`: Complete CI pipeline implementation
-- `/.github/workflows/ci.yml`: GitHub Actions using Dagger
+- `/.github/workflows/ci.yml`: GitHub Actions using Dagger for CI
+- `/.github/workflows/deploy.yml`: GitHub Actions for Fly.io deployment
 - `/lib/mix/tasks/dagger/`: Mix task implementations
+- `/fly.toml`: Fly.io production deployment configuration
 
 ## Current Status
-Project has Phoenix LiveView scaffolding with comprehensive Dagger CI/CD pipeline. The CI system includes containerized testing with PostgreSQL, security scanning, and production release builds.
+Project has Phoenix LiveView scaffolding with comprehensive Dagger CI/CD pipeline and automated Fly.io deployment. The CI system includes containerized testing with PostgreSQL, security scanning, production release builds, and automated deployment to production on main branch pushes.

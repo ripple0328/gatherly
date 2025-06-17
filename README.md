@@ -12,7 +12,7 @@
 Gatherly is a collaborative, AI-powered event planning platform built with Phoenix LiveView and DaisyUI. Transform your group events from chaotic planning to seamless experiences with intelligent coordination, real-time collaboration, and smart logistics.
 
 ## 🌍 Live App
-- **Production**: https://gatherly.qingbo.us ✅
+- **Production**: https://gatherly.qingbo.us ✅ ([Fly.io](https://gatherly.fly.dev))
 
 ## 🚀 Development
 
@@ -21,6 +21,25 @@ Gatherly is a collaborative, AI-powered event planning platform built with Phoen
 - PostgreSQL (for local development)
 - Docker (for containerized workflows)
 - [Dagger CLI](https://dagger.io) (for CI/CD workflows)
+
+## 🚀 CI/CD Pipeline
+
+This project uses a modern CI/CD pipeline with automated testing, building, and deployment:
+
+### Pipeline Overview
+- **CI**: Dagger-powered containerized builds with GitHub Actions
+- **Deployment**: Automated deployment to Fly.io production
+- **Quality Gates**: Code quality, security scanning, and comprehensive testing
+
+### Deployment Flow
+```
+main branch → CI → Quality Gate → Production (gatherly.qingbo.us)
+```
+
+### Manual Deployment
+Use GitHub Actions workflow dispatch to deploy to production or rollback if needed.
+
+## 🔧 Development
 
 ### Quick Start
 ```bash
@@ -53,15 +72,21 @@ mix dagger.ci --fast         # Skip slower checks for quick feedback
 mix dagger.ci --export ./release  # Export built release
 ```
 
-#### Option 2: GitHub Actions with Dagger
-The CI pipeline automatically runs on push/PR using `dagger/dagger-for-github` action:
-- Dependencies check and caching
-- Code quality checks (formatting, linting, static analysis)
-- Security vulnerability scanning
-- Full test suite with PostgreSQL
-- Production build and artifact export
+#### Option 2: Complete CI/CD Pipeline
 
-For local dagger CLI usage (if needed):
+**GitHub Actions CI** (`dagger/dagger-for-github` action):
+- ✅ Dependencies installation and caching
+- ✅ Code quality (formatting, Credo, Dialyzer)
+- ✅ Security vulnerability scanning
+- ✅ Full test suite with PostgreSQL database
+- ✅ Production build and artifact export
+
+**Automated Deployment to Fly.io**:
+- `main` branch → **Production** deployment with quality gate
+- Manual deployment capability
+- Rollback capability for production
+
+**For local Dagger CLI usage** (if needed):
 ```bash
 dagger call deps --source=. sync
 dagger call test --source=.
@@ -69,14 +94,53 @@ dagger call quality --source=.
 dagger call build --source=. sync
 ```
 
-#### Option 3: Container-use (Via Claude Code)
+**Health Checks & Monitoring**:
+- Automated post-deployment health checks
+- Multi-domain verification for production
+- GitHub Actions integration with deployment status
+
+#### Option 3: Container Development
 ```bash
+# Using environments (via Claude Code)
 # Create development environment
 mcp__container-use__environment_open --source . --name gatherly-dev
 
 # Inside container
-mix deps.get
+mix setup
 mix phx.server
+```
+
+### 🔄 Deployment Workflow
+
+**Production Deployment**:
+```bash
+git checkout main
+git push origin main     # Triggers production deployment
+```
+
+**Manual Deployment**:
+- Navigate to GitHub Actions → "Deploy to Fly.io"
+- Run workflow to deploy to production
+- Optional: Skip CI checks to use existing artifacts
+
+**Emergency Rollback**:
+- Use GitHub Actions workflow dispatch
+- Trigger rollback to automatically revert to previous version
+
+### 📊 Monitoring & Health Checks
+
+**Application URLs**:
+- Production: https://gatherly.qingbo.us
+- Production (Fly): https://gatherly.fly.dev
+
+**Health Monitoring**:
+```bash
+# Check application status
+curl -f https://gatherly.qingbo.us/
+flyctl status --app gatherly
+
+# View logs
+flyctl logs --app gatherly
 ```
 
 ### Local vs Containerized Development

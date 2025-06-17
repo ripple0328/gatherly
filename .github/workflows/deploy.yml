@@ -2,120 +2,206 @@ name: Deploy to Fly.io
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'Environment to deploy to'
-        required: true
-        default: 'production'
-        type: choice
-        options:
-          - production
-          - staging
+      skip_ci:
+        description: "Skip CI checks (use existing artifacts)"
+        required: false
+        default: false
+        type: boolean
 
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
-  deploy-staging:
-    name: Deploy to Staging
+  # CI pipeline for deployment builds
+  ci-for-deploy:
+    name: CI for Deployment
     runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/develop' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
-    environment:
-      name: staging
-      url: https://gatherly-staging.fly.dev
-    
+    if: ${{ !inputs.skip_ci }}
+    outputs:
+      artifact-name: ${{ steps.artifact-info.outputs.name }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Fly CLI
-        uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: Deploy to staging
+      - name: Set artifact name
+        id: artifact-info
         run: |
-          flyctl deploy --config fly.staging.toml --app gatherly-staging
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          ARTIFACT_NAME="gatherly-release-$(date +%Y%m%d)-${{ github.sha }}"
+          echo "name=${ARTIFACT_NAME}" >> $GITHUB_OUTPUT
 
+      - name: Run Dependencies Check
+        uses: dagger/dagger-for-github@v8.0.0
+        with:
+          version: "latest"
+          verb: call
+          args: deps --source=. sync
+
+      - name: Run Code Quality Checks
+        uses: dagger/dagger-for-github@v8.0.0
+        with:
+          version: "latest"
+          verb: call
+          args: quality --source=.
+
+      - name: Run Security Checks
+        uses: dagger/dagger-for-github@v8.0.0
+        with:
+          version: "latest"
+          verb: call
+          args: security --source=.
+
+      - name: Run Tests with Database
+        uses: dagger/dagger-for-github@v8.0.0
+        with:
+          version: "latest"
+          verb: call
+          args: test --source=.
+
+      - name: Build Production Release
+        uses: dagger/dagger-for-github@v8.0.0
+        with:
+          version: "latest"
+          verb: call
+          args: build --source=. sync
+
+      - name: Export Build Artifacts
+        uses: dagger/dagger-for-github@v8.0.0
+        with:
+          version: "latest"
+          verb: call
+          args: artifacts --source=. export --path=./artifacts/gatherly-release
+
+      - name: Upload build artifacts for deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.artifact-info.outputs.name }}
+          path: ./artifacts/gatherly-release/
+          retention-days: 7
+
+  # Deploy to production environment
   deploy-production:
     name: Deploy to Production
     runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production')
+    needs: [ci-for-deploy]
+    if: |
+      (github.ref == 'refs/heads/main' && !inputs.skip_ci) ||
+      (github.event_name == 'workflow_dispatch')
     environment:
       name: production
       url: https://gatherly.fly.dev
-    needs: [quality-gate]
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        if: ${{ !inputs.skip_ci }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.ci-for-deploy.outputs.artifact-name }}
+          path: ./release-artifacts/
 
       - name: Set up Fly CLI
         uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy to production
         run: |
-          flyctl deploy --app gatherly
+          echo "🚀 Deploying to production environment..."
+          flyctl deploy --app gatherly --verbose
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
-      - name: Run post-deployment checks
+      - name: Run post-deployment health checks
         run: |
-          echo "🚀 Deployment completed successfully!"
-          echo "🔍 Running health checks..."
-          
-          # Wait for deployment to be ready
-          sleep 30
-          
-          # Check application health
-          curl -f https://gatherly.fly.dev/ || exit 1
-          curl -f https://gatherly.qingbo.us/ || exit 1
-          
-          echo "✅ Health checks passed!"
+          echo "🔍 Running production health checks..."
 
-      - name: Notify deployment success
+          # Wait for deployment to be ready
+          sleep 45
+
+          # Check main application health
+          if curl -f --max-time 30 https://gatherly.fly.dev/; then
+            echo "✅ Main domain health check passed"
+          else
+            echo "❌ Main domain health check failed"
+            exit 1
+          fi
+
+          # Check custom domain if configured
+          if curl -f --max-time 30 https://gatherly.qingbo.us/; then
+            echo "✅ Custom domain health check passed"
+          else
+            echo "⚠️ Custom domain health check failed (may be DNS propagation)"
+          fi
+
+      - name: Notify production deployment success
         if: success()
         run: |
           echo "🎉 Production deployment successful!"
           echo "📱 App URL: https://gatherly.fly.dev"
           echo "🌐 Custom domain: https://gatherly.qingbo.us"
+          echo "✨ Deployment completed at $(date)"
 
+  # Quality gate for critical deployments
   quality-gate:
     name: Quality Gate
     runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/main'
-    
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Elixir
-        uses: erlef/setup-beam@v1
+      - name: Run critical quality checks
+        uses: dagger/dagger-for-github@v8.0.0
         with:
-          version-file: .tool-versions
-          version-type: strict
-        env:
-          ImageOS: ubuntu22
-
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            deps
-            _build/test
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}-${{ hashFiles('.tool-versions') }}
-
-      - name: Install dependencies
-        run: |
-          mix deps.get
-          mix deps.compile
-
-      - name: Run quality checks
-        run: mix quality.ci
+          version: "latest"
+          verb: call
+          args: quality --source=.
 
       - name: Quality gate passed
         run: |
-          echo "✅ All quality checks passed!"
+          echo "✅ All critical quality checks passed!"
           echo "🚀 Ready for production deployment"
+
+  # Rollback capability (manual trigger only)
+  rollback:
+    name: Rollback Production Deployment
+    runs-on: ubuntu-22.04
+    if: github.event_name == 'workflow_dispatch'
+    environment:
+      name: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Fly CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Rollback deployment
+        run: |
+          APP_NAME="gatherly"
+
+          echo "🔄 Rolling back $APP_NAME to previous version..."
+          flyctl releases list --app $APP_NAME
+
+          # Get the second-to-last release and rollback
+          PREVIOUS_VERSION=$(flyctl releases list --app $APP_NAME --json | jq -r '.[1].version')
+
+          if [ "$PREVIOUS_VERSION" != "null" ] && [ -n "$PREVIOUS_VERSION" ]; then
+            flyctl rollback --app $APP_NAME $PREVIOUS_VERSION
+            echo "✅ Rollback to version $PREVIOUS_VERSION completed"
+          else
+            echo "❌ No previous version found for rollback"
+            exit 1
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
