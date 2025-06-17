@@ -1,56 +1,73 @@
 <!-- Hero Section -->
-<div class="hero min-h-screen bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10">
-  <div class="hero-content text-center max-w-6xl">
+<div class="hero min-h-screen bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 relative overflow-hidden">
+  <!-- Animated Background Elements -->
+  <div class="absolute inset-0 opacity-20">
+    <div class="absolute top-20 left-10 w-32 h-32 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
+    <div class="absolute top-40 right-20 w-24 h-24 bg-secondary/20 rounded-full blur-xl animate-pulse delay-75"></div>
+    <div class="absolute bottom-40 left-20 w-20 h-20 bg-accent/20 rounded-full blur-xl animate-pulse delay-150"></div>
+  </div>
+  
+  <div class="hero-content text-center max-w-6xl relative z-10">
     <div class="max-w-4xl">
       <!-- Brand & Logo -->
-      <div class="flex justify-center items-center gap-4 mb-8">
-        <div class="avatar">
-          <div class="w-16 rounded-full bg-primary/10 p-3">
+      <div class="flex justify-center items-center gap-4 mb-8 animate-fade-in">
+        <div class="avatar hover:scale-110 transition-transform duration-300">
+          <div class="w-20 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 p-4 shadow-lg">
             <.icon name="hero-calendar-days" class="h-full w-full text-primary" />
           </div>
         </div>
-        <h1 class="text-6xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        <h1 class="text-6xl md:text-7xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-gradient">
           Gatherly
         </h1>
       </div>
       
       <!-- Main Headline -->
-      <h2 class="text-4xl md:text-5xl font-bold text-base-content mb-6 leading-tight">
-        Effortless Event Planning<br/>
-        <span class="text-primary">Made Collaborative</span>
-      </h2>
+      <div class="animate-fade-in-up delay-200">
+        <h2 class="text-4xl md:text-6xl font-bold text-base-content mb-6 leading-tight">
+          Effortless Event Planning<br/>
+          <span class="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text animate-gradient">Made Collaborative</span>
+        </h2>
+      </div>
       
       <!-- Subheading -->
-      <p class="text-xl md:text-2xl text-base-content/80 mb-8 max-w-3xl mx-auto leading-relaxed">
-        Transform your group events from chaotic planning to seamless experiences. 
-        AI-powered coordination, real-time collaboration, and smart logistics—all in one platform.
-      </p>
+      <div class="animate-fade-in-up delay-400">
+        <p class="text-xl md:text-2xl text-base-content/80 mb-8 max-w-3xl mx-auto leading-relaxed">
+          Transform your group events from chaotic planning to seamless experiences. 
+          <span class="font-semibold text-primary">AI-powered coordination</span>, 
+          <span class="font-semibold text-secondary">real-time collaboration</span>, and 
+          <span class="font-semibold text-accent">smart logistics</span>—all in one platform.
+        </p>
+      </div>
       
       <!-- CTAs -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-        <button class="btn btn-primary btn-lg text-lg px-8">
-          <.icon name="hero-rocket-launch" class="h-5 w-5" />
-          Start Planning Free
-        </button>
-        <button class="btn btn-outline btn-lg text-lg px-8">
-          <.icon name="hero-play" class="h-5 w-5" />
-          Watch Demo
-        </button>
+      <div class="animate-fade-in-up delay-600">
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <button class="btn btn-primary btn-lg text-lg px-8 hover:scale-105 transition-transform shadow-lg hover:shadow-xl">
+            <.icon name="hero-rocket-launch" class="h-5 w-5" />
+            Start Planning Free
+          </button>
+          <button class="btn btn-outline btn-primary btn-lg text-lg px-8 hover:scale-105 transition-transform">
+            <.icon name="hero-play" class="h-5 w-5" />
+            Watch Demo
+          </button>
+        </div>
       </div>
       
       <!-- Social Proof -->
-      <div class="flex flex-wrap justify-center items-center gap-8 text-base-content/60">
-        <div class="stat">
-          <div class="stat-value text-2xl text-primary">1,000+</div>
-          <div class="stat-desc">Events Planned</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value text-2xl text-primary">50+</div>
-          <div class="stat-desc">Happy Groups</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value text-2xl text-primary">99%</div>
-          <div class="stat-desc">Success Rate</div>
+      <div class="animate-fade-in-up delay-800">
+        <div class="stats stats-horizontal shadow-lg bg-base-100/80 backdrop-blur-sm">
+          <div class="stat place-items-center">
+            <div class="stat-value text-3xl text-primary counter" data-target="1000">1,000+</div>
+            <div class="stat-desc font-semibold">Events Planned</div>
+          </div>
+          <div class="stat place-items-center">
+            <div class="stat-value text-3xl text-secondary counter" data-target="50">50+</div>
+            <div class="stat-desc font-semibold">Happy Groups</div>
+          </div>
+          <div class="stat place-items-center">
+            <div class="stat-value text-3xl text-accent counter" data-target="99">99%</div>
+            <div class="stat-desc font-semibold">Success Rate</div>
+          </div>
         </div>
       </div>
     </div>
@@ -61,8 +78,9 @@
 <div class="bg-base-100 py-20">
   <div class="container mx-auto px-4 max-w-7xl">
     <div class="text-center mb-16">
+      <div class="badge badge-primary badge-lg mb-4">✨ Core Features</div>
       <h2 class="text-4xl md:text-5xl font-bold text-base-content mb-6">
-        Everything You Need to Plan <span class="text-primary">Perfect Events</span>
+        Everything You Need to Plan <span class="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">Perfect Events</span>
       </h2>
       <p class="text-xl text-base-content/70 max-w-3xl mx-auto">
         From initial idea to final execution, Gatherly provides intelligent tools that make group coordination effortless and enjoyable.
@@ -169,12 +187,108 @@
   </div>
 </div>
 
+<!-- Testimonials Section -->
+<div class="bg-gradient-to-r from-base-200 to-base-300 py-20">
+  <div class="container mx-auto px-4 max-w-6xl">
+    <div class="text-center mb-16">
+      <div class="badge badge-secondary badge-lg mb-4">💬 What People Say</div>
+      <h2 class="text-4xl md:text-5xl font-bold text-base-content mb-6">
+        Loved by <span class="text-transparent bg-gradient-to-r from-secondary to-accent bg-clip-text">Event Planners</span>
+      </h2>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Testimonial 1 -->
+      <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+        <div class="card-body">
+          <div class="rating rating-sm mb-4">
+            <input type="radio" name="rating-1" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-1" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-1" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-1" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-1" class="mask mask-star-2 bg-orange-400" checked disabled />
+          </div>
+          <p class="text-base-content/80 mb-4">
+            "Gatherly transformed our monthly potlucks from chaos to seamless coordination. The dish tracking feature is genius!"
+          </p>
+          <div class="flex items-center gap-3">
+            <div class="avatar">
+              <div class="w-10 rounded-full bg-gradient-to-r from-primary to-secondary p-2">
+                <.icon name="hero-user" class="h-full w-full text-white" />
+              </div>
+            </div>
+            <div>
+              <div class="font-semibold text-sm">Sarah M.</div>
+              <div class="text-xs text-base-content/60">Community Organizer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+        <div class="card-body">
+          <div class="rating rating-sm mb-4">
+            <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" checked disabled />
+          </div>
+          <p class="text-base-content/80 mb-4">
+            "Planning our camping trips used to take weeks. Now it's done in minutes with smart gear suggestions and coordination."
+          </p>
+          <div class="flex items-center gap-3">
+            <div class="avatar">
+              <div class="w-10 rounded-full bg-gradient-to-r from-secondary to-accent p-2">
+                <.icon name="hero-user" class="h-full w-full text-white" />
+              </div>
+            </div>
+            <div>
+              <div class="font-semibold text-sm">Mike R.</div>
+              <div class="text-xs text-base-content/60">Outdoor Enthusiast</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 3 -->
+      <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+        <div class="card-body">
+          <div class="rating rating-sm mb-4">
+            <input type="radio" name="rating-3" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-3" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-3" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-3" class="mask mask-star-2 bg-orange-400" checked disabled />
+            <input type="radio" name="rating-3" class="mask mask-star-2 bg-orange-400" checked disabled />
+          </div>
+          <p class="text-base-content/80 mb-4">
+            "The AI suggestions are spot-on! It recommended the perfect game mix for our group and handled all the logistics."
+          </p>
+          <div class="flex items-center gap-3">
+            <div class="avatar">
+              <div class="w-10 rounded-full bg-gradient-to-r from-accent to-primary p-2">
+                <.icon name="hero-user" class="h-full w-full text-white" />
+              </div>
+            </div>
+            <div>
+              <div class="font-semibold text-sm">Jessica L.</div>
+              <div class="text-xs text-base-content/60">Game Night Host</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Event Types Section -->
 <div class="bg-base-200 py-20">
   <div class="container mx-auto px-4 max-w-7xl">
     <div class="text-center mb-16">
+      <div class="badge badge-accent badge-lg mb-4">🎉 Event Types</div>
       <h2 class="text-4xl md:text-5xl font-bold text-base-content mb-6">
-        Perfect for <span class="text-primary">Every Occasion</span>
+        Perfect for <span class="text-transparent bg-gradient-to-r from-accent to-primary bg-clip-text">Every Occasion</span>
       </h2>
       <p class="text-xl text-base-content/70 max-w-3xl mx-auto">
         Whether it's a casual potluck or an adventurous camping trip, Gatherly adapts to your event's unique needs.
@@ -262,28 +376,95 @@
 </div>
 
 <!-- CTA Section -->
-<div class="bg-gradient-to-r from-primary/10 via-secondary/5 to-accent/10 py-20">
-  <div class="container mx-auto px-4 text-center max-w-4xl">
-    <h2 class="text-4xl md:text-5xl font-bold text-base-content mb-6">
-      Ready to Transform Your <span class="text-primary">Event Planning?</span>
+<div class="bg-gradient-to-r from-primary/10 via-secondary/5 to-accent/10 py-20 relative overflow-hidden">
+  <!-- Background Pattern -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-10 left-20 w-40 h-40 bg-primary/30 rounded-full blur-2xl animate-pulse"></div>
+    <div class="absolute bottom-20 right-10 w-32 h-32 bg-secondary/30 rounded-full blur-2xl animate-pulse delay-75"></div>
+  </div>
+  
+  <div class="container mx-auto px-4 text-center max-w-4xl relative z-10">
+    <div class="badge badge-primary badge-lg mb-6">🚀 Get Started</div>
+    <h2 class="text-4xl md:text-6xl font-bold text-base-content mb-6">
+      Ready to Transform Your <span class="text-transparent bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text animate-gradient">Event Planning?</span>
     </h2>
     <p class="text-xl text-base-content/80 mb-8 max-w-2xl mx-auto">
-      Join thousands of groups who've made event planning effortless with Gatherly's AI-powered platform.
+      Join thousands of groups who've made event planning effortless with Gatherly's 
+      <span class="font-semibold text-primary">AI-powered platform</span>.
     </p>
     
     <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-      <button class="btn btn-primary btn-lg text-lg px-8">
+      <button class="btn btn-primary btn-lg text-lg px-8 hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
         <.icon name="hero-rocket-launch" class="h-5 w-5" />
         Start Your First Event
+        <div class="badge badge-secondary badge-sm ml-2">Free</div>
       </button>
-      <button class="btn btn-outline btn-lg text-lg px-8">
+      <button class="btn btn-outline btn-primary btn-lg text-lg px-8 hover:scale-105 transition-all duration-300">
         <.icon name="hero-phone" class="h-5 w-5" />
         Schedule Demo
       </button>
     </div>
     
-    <p class="text-sm text-base-content/60">
-      Free forever for small groups • No credit card required • Setup in 60 seconds
-    </p>
+    <div class="flex flex-wrap justify-center gap-6 text-sm text-base-content/70 mb-8">
+      <div class="flex items-center gap-2">
+        <.icon name="hero-check-circle" class="h-4 w-4 text-success" />
+        <span>Free forever for small groups</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <.icon name="hero-credit-card" class="h-4 w-4 text-success" />
+        <span>No credit card required</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <.icon name="hero-clock" class="h-4 w-4 text-success" />
+        <span>Setup in 60 seconds</span>
+      </div>
+    </div>
+    
+    <!-- Trust Badges -->
+    <div class="flex justify-center items-center gap-8 opacity-60">
+      <div class="text-xs font-semibold tracking-wider">TRUSTED BY</div>
+      <div class="flex gap-4 text-base-content/40">
+        <div class="font-mono text-sm">Teams</div>
+        <div class="font-mono text-sm">Communities</div>
+        <div class="font-mono text-sm">Organizations</div>
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- Custom Styles -->
+<style>
+  @keyframes gradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+  
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out;
+  }
+  
+  .animate-fade-in-up {
+    animation: fade-in 0.8s ease-out;
+  }
+  
+  .delay-200 { animation-delay: 0.2s; }
+  .delay-400 { animation-delay: 0.4s; }
+  .delay-600 { animation-delay: 0.6s; }
+  .delay-800 { animation-delay: 0.8s; }
+  
+  /* Initially hide animated elements */
+  .animate-fade-in, .animate-fade-in-up {
+    opacity: 0;
+    animation-fill-mode: both;
+  }
+</style>
