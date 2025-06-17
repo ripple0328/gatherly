@@ -34,9 +34,9 @@ defmodule GatherlyWeb.Endpoint do
     plug Phoenix.Ecto.CheckRepoStatus, otp_app: :gatherly
   end
 
-  # Add Tidewave plug for development
+  # Add Tidewave plug for development with remote access enabled
   if Code.ensure_loaded?(Tidewave) do
-    plug Tidewave
+    plug Tidewave, allow_remote_access: true
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,
