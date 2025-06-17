@@ -1,4 +1,14 @@
 {
   "workdir": "/workdir",
-  "base_image": "ubuntu:24.04"
+  "base_image": "elixir:1.18.4-alpine",
+  "setup_commands": [
+    "apk add --no-cache build-base git nodejs npm postgresql-client inotify-tools",
+    "mix local.hex --force",
+    "mix local.rebar --force",
+    "mix archive.install hex phx_new --force"
+  ],
+  "env": [
+    "MIX_ENV=dev",
+    "PORT=4000"
+  ]
 }
