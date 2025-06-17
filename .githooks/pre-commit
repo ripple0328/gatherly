@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# Pre-commit hook for Gatherly project
+# This hook runs code quality checks before allowing commits
+#
+
+echo "🔍 Running pre-commit checks..."
+
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# Check if we're in a git repository
+if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+    echo "❌ Not in a git repository"
+    exit 1
+fi
+
+# Function to run a command and capture its output
+run_check() {
+    local name="$1"
+    local command="$2"
+    
+    echo "  📋 $name..."
+    
+    if eval "$command"; then
+        echo "  ✅ $name passed"
+    else
+        echo "  ❌ $name failed"
+        return 1
+    fi
+}
+
+# 1. Check code formatting
+run_check "Code formatting" "mix format --check-formatted"
+
+# 2. Run Credo for static analysis
+run_check "Static analysis (Credo)" "mix credo --strict"
+
+# 3. Run tests
+run_check "Tests" "mix test"
+
+# 4. Run Dialyzer (optional, can be slow)
+if [ "$SKIP_DIALYZER" != "true" ]; then
+    run_check "Type analysis (Dialyzer)" "mix dialyzer"
+else
+    echo "  ⏭️  Skipping Dialyzer (SKIP_DIALYZER=true)"
+fi
+
+echo "🎉 All pre-commit checks passed!"
+echo ""
+echo "💡 Tip: To skip Dialyzer (for faster commits), use:"
+echo "   export SKIP_DIALYZER=true"
+echo ""

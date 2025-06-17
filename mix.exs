@@ -9,7 +9,21 @@ defmodule Gatherly.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      
+      # Dialyzer configuration
+      dialyzer: [
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"},
+        plt_add_apps: [:mix, :ex_unit],
+        flags: [:error_handling, :race_conditions, :underspecs],
+        ignore_warnings: ".dialyzer_ignore.exs"
+      ],
+      
+      # Docs configuration
+      docs: [
+        main: "readme",
+        extras: ["README.md", "docs/StyleGuide.md", "docs/Branding.md"]
+      ]
     ]
   end
 
@@ -58,7 +72,13 @@ defmodule Gatherly.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
-      {:tidewave, "~> 0.1", only: :dev}
+      {:tidewave, "~> 0.1", only: :dev},
+      
+      # Code quality and static analysis
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.31", only: :dev, runtime: false},
+      {:doctor, "~> 0.21", only: :dev}
     ]
   end
 
@@ -80,7 +100,14 @@ defmodule Gatherly.MixProject do
         "tailwind gatherly --minify",
         "esbuild gatherly --minify",
         "phx.digest"
-      ]
+      ],
+      
+      # Code quality aliases
+      "quality": ["format", "credo --strict", "dialyzer", "test"],
+      "quality.ci": ["format --check-formatted", "credo --strict", "dialyzer", "test"],
+      lint: ["format", "credo --strict"],
+      "lint.ci": ["format --check-formatted", "credo --strict"],
+      docs: ["docs", "doctor"]
     ]
   end
 end
