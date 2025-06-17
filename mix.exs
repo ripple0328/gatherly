@@ -10,6 +10,7 @@ defmodule Gatherly.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      test_coverage: [threshold: 20],
 
       # Dialyzer configuration
       dialyzer: [
@@ -73,7 +74,8 @@ defmodule Gatherly.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false},
-      {:doctor, "~> 0.21", only: :dev}
+      {:doctor, "~> 0.21", only: :dev},
+      {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false}
     ]
   end
 

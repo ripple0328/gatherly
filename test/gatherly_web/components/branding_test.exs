@@ -12,7 +12,7 @@ defmodule GatherlyWeb.BrandingTest do
       assert response =~ "text-primary"
       assert response =~ "bg-primary"
 
-      # Secondary color usage  
+      # Secondary color usage
       assert response =~ "secondary"
       assert response =~ "via-secondary"
       assert response =~ "to-secondary"
