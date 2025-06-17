@@ -80,9 +80,16 @@ mix dagger.ci --fast        # Skip slower checks
 mix dagger.ci --export ./release
 ```
 
-#### Alternative: Direct Dagger CLI Usage
+#### GitHub Actions Integration
+The CI pipeline uses `dagger/dagger-for-github` action for automated builds:
+- Automatically runs on push/PR to main/develop branches
+- Uses containerized environment for consistency
+- Caches dependencies and build artifacts
+- Exports production builds as GitHub artifacts
+
+#### Direct Dagger CLI (Optional)
 ```bash
-# For CI environments or when mix tasks aren't available
+# For local dagger usage when needed
 dagger call deps --source=. sync
 dagger call quality --source=.
 dagger call security --source=.
@@ -91,8 +98,9 @@ dagger call build --source=. sync
 ```
 
 #### When to Use Each Approach
-- **Mix tasks**: Daily development, IDE integration, local testing
-- **Dagger CLI**: CI/CD, GitHub Actions, cross-language teams
+- **Mix tasks**: Primary development workflow, IDE integration, local testing
+- **GitHub Actions**: Automated CI/CD, pull request validation
+- **Dagger CLI**: Cross-platform consistency, advanced CI scenarios
 
 ### Key Benefits
 - **Consistency**: Same environment locally and in CI
