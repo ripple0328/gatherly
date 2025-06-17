@@ -31,9 +31,9 @@ The CI pipeline automatically runs using the `dagger/dagger-for-github` action:
 
 ```yaml
 - name: Run Tests with Database
-  uses: dagger/dagger-for-github@v6
+  uses: dagger/dagger-for-github@v8.0.0
   with:
-    version: "latest"
+    version: "v0.18.10"
     verb: call
     args: test --source=.
 ```
