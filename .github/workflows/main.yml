@@ -1,0 +1,158 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+permissions:
+  contents: read
+  pull-requests: write
+  actions: read
+
+jobs:
+  dependencies:
+    name: Install Dependencies
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install and cache dependencies
+        uses: dagger/dagger-for-github@8.0.0
+        with:
+          version: "latest"
+          verb: call
+          args: deps --source=. sync
+
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-22.04
+    needs: [dependencies]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run code quality checks
+        uses: dagger/dagger-for-github@8.0.0
+        with:
+          version: "latest"
+          verb: call
+          args: quality --source=.
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-22.04
+    needs: [dependencies]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run security vulnerability checks
+        uses: dagger/dagger-for-github@8.0.0
+        with:
+          version: "latest"
+          verb: call
+          args: security --source=.
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-22.04
+    needs: [dependencies]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run tests with database
+        uses: dagger/dagger-for-github@8.0.0
+        with:
+          version: "latest"
+          verb: call
+          args: test --source=.
+
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-22.04
+    needs: [quality, security, test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: production
+      url: https://gatherly.fly.dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Fly CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to production
+        run: |
+          echo "🚀 Deploying to production environment..."
+          flyctl deploy --app gatherly --verbose
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Run post-deployment health checks
+        run: |
+          echo "🔍 Running production health checks..."
+
+          # Wait for deployment to be ready
+          sleep 45
+
+          # Check main application health
+          if curl -f --max-time 30 https://gatherly.fly.dev/; then
+            echo "✅ Main domain health check passed"
+          else
+            echo "❌ Main domain health check failed"
+            exit 1
+          fi
+
+          # Check custom domain if configured
+          if curl -f --max-time 30 https://gatherly.qingbo.us/; then
+            echo "✅ Custom domain health check passed"
+          else
+            echo "⚠️ Custom domain health check failed (may be DNS propagation)"
+          fi
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "🎉 Production deployment successful!"
+          echo "📱 App URL: https://gatherly.fly.dev"
+          echo "🌐 Custom domain: https://gatherly.qingbo.us"
+          echo "✨ Deployment completed at $(date)"
+
+  summary:
+    name: Pipeline Summary
+    runs-on: ubuntu-22.04
+    needs: [quality, security, test, deploy]
+    if: always()
+    steps:
+      - name: Pipeline Summary
+        run: |
+          echo "## 🎯 CI/CD Pipeline Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📊 Job Results:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Dependencies**: ${{ needs.dependencies.result || 'skipped' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Code Quality**: ${{ needs.quality.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Security Scan**: ${{ needs.security.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tests**: ${{ needs.test.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployment**: ${{ needs.deploy.result || 'skipped' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [[ "${{ needs.quality.result }}" == "success" && "${{ needs.security.result }}" == "success" && "${{ needs.test.result }}" == "success" ]]; then
+            echo "### ✅ All checks passed!" >> $GITHUB_STEP_SUMMARY
+            if [[ "${{ needs.deploy.result }}" == "success" ]]; then
+              echo "### 🚀 Deployment successful!" >> $GITHUB_STEP_SUMMARY
+            elif [[ "${{ github.ref }}" != "refs/heads/main" ]]; then
+              echo "### 📝 Ready for deployment when merged to main" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "### ❌ Some checks failed" >> $GITHUB_STEP_SUMMARY
+          fi
