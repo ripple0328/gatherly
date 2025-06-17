@@ -4,8 +4,8 @@ Gatherly is a collaborative, AI-powered event planning platform built with Phoen
 
 ## 🌍 Live App
 
-- **Production**: https://gatherly.fly.dev
-- **Custom Domain**: https://gatherly.qingbo.us
+- **Production**: https://gatherly.fly.dev ✅
+- **Custom Domain**: https://gatherly.qingbo.us ✅
 
 ## 🚀 Development
 
