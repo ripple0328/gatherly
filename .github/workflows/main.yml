@@ -96,7 +96,7 @@ jobs:
           echo "🚀 Deploying to production environment..."
           flyctl deploy --app gatherly --verbose
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN || vars.FLY_API_TOKEN }}
 
       - name: Run post-deployment health checks
         run: |
@@ -131,7 +131,7 @@ jobs:
   summary:
     name: Pipeline Summary
     runs-on: ubuntu-22.04
-    needs: [quality, security, test, deploy]
+    needs: [dependencies, quality, security, test, deploy]
     if: always()
     steps:
       - name: Pipeline Summary
