@@ -3,11 +3,8 @@ name: CI
 on:
   push:
     branches: [main]
-  workflow_call:
-    outputs:
-      artifact-name:
-        description: "Name of the build artifact"
-        value: ${{ jobs.dagger-ci.outputs.artifact-name }}
+  pull_request:
+    branches: [main]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -20,18 +17,10 @@ jobs:
   dagger-ci:
     name: Dagger CI Pipeline
     runs-on: ubuntu-22.04
-    outputs:
-      artifact-name: ${{ steps.artifact-info.outputs.name }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set artifact name
-        id: artifact-info
-        run: |
-          ARTIFACT_NAME="gatherly-release-$(date +%Y%m%d)-${{ github.sha }}"
-          echo "name=${ARTIFACT_NAME}" >> $GITHUB_OUTPUT
 
       - name: Run Dependencies Check
         uses: dagger/dagger-for-github@8.0.0
@@ -61,27 +50,6 @@ jobs:
           verb: call
           args: test --source=.
 
-      - name: Build Production Release
-        uses: dagger/dagger-for-github@8.0.0
-        with:
-          version: "latest"
-          verb: call
-          args: build --source=. sync
-
-      - name: Export Build Artifacts
-        uses: dagger/dagger-for-github@8.0.0
-        with:
-          version: "latest"
-          verb: call
-          args: artifacts --source=. export --path=./artifacts/gatherly-release
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ steps.artifact-info.outputs.name }}
-          path: ./artifacts/gatherly-release/
-          retention-days: 7
-
       - name: CI Summary
         run: |
           echo "## 🎉 CI Pipeline Completed Successfully" >> $GITHUB_STEP_SUMMARY
@@ -91,8 +59,5 @@ jobs:
           echo "- Code quality (formatting, Credo, Dialyzer)" >> $GITHUB_STEP_SUMMARY
           echo "- Security vulnerability scanning" >> $GITHUB_STEP_SUMMARY
           echo "- Full test suite with PostgreSQL" >> $GITHUB_STEP_SUMMARY
-          echo "- Production build and artifact export" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📦 Build Artifact:" >> $GITHUB_STEP_SUMMARY
-          echo "- Name: \`${{ steps.artifact-info.outputs.name }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- Ready for deployment" >> $GITHUB_STEP_SUMMARY
+          echo "### 🚀 Ready for deployment!" >> $GITHUB_STEP_SUMMARY
