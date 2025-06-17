@@ -103,7 +103,7 @@ defmodule Gatherly.MixProject do
       ],
       
       # Code quality aliases
-      "quality": ["format", "credo --strict", "dialyzer", "test"],
+      quality: ["format", "credo --strict", "dialyzer", "test"],
       "quality.ci": ["format --check-formatted", "credo --strict", "dialyzer", "test"],
       lint: ["format", "credo --strict"],
       "lint.ci": ["format --check-formatted", "credo --strict"],
