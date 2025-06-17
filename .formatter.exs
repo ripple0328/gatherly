@@ -1,30 +1,30 @@
 [
   # Import formatter configuration from dependencies
   import_deps: [:ecto, :ecto_sql, :phoenix],
-  
+
   # Format files in subdirectories (like database migrations)
   subdirectories: ["priv/*/migrations"],
-  
+
   # Use Phoenix LiveView HTML formatter for .heex files
   plugins: [Phoenix.LiveView.HTMLFormatter],
-  
+
   # Specify which files to format
   inputs: [
     "*.{heex,ex,exs}",
     "{config,lib,test}/**/*.{heex,ex,exs}",
     "priv/*/seeds.exs"
   ],
-  
+
   # Line length configuration (matches our style guide)
   line_length: 120,
-  
+
   # Function formatting - prefer explicit parentheses for clarity
   normalize_bitstring_modifiers: true,
   normalize_charlists_as_sigils: true,
-  
+
   # Import/alias sorting and grouping
   import_deps: [:ecto, :ecto_sql, :phoenix, :phoenix_ecto, :phoenix_html, :phoenix_live_view],
-  
+
   # Locals without parentheses - common Phoenix/Ecto functions
   locals_without_parens: [
     # Ecto Schema
@@ -44,7 +44,7 @@
     embeds_many: 3,
     timestamps: 0,
     timestamps: 1,
-    
+
     # Ecto Query
     from: 1,
     from: 2,
@@ -82,7 +82,7 @@
     cross_join: 5,
     preload: 2,
     preload: 3,
-    
+
     # Ecto Changeset
     cast: 3,
     cast: 4,
@@ -120,13 +120,13 @@
     check_constraint: 3,
     exclusion_constraint: 2,
     exclusion_constraint: 3,
-    
+
     # Phoenix Controller
     pipe_through: 1,
     plug: 1,
     plug: 2,
     action_fallback: 1,
-    
+
     # Phoenix Router
     resources: 2,
     resources: 3,
@@ -171,7 +171,7 @@
     live: 4,
     live_session: 2,
     live_session: 3,
-    
+
     # Phoenix LiveView
     assign: 2,
     assign: 3,
@@ -183,7 +183,7 @@
     put_flash: 3,
     clear_flash: 1,
     clear_flash: 2,
-    
+
     # Testing
     assert: 1,
     assert: 2,
@@ -203,7 +203,7 @@
     refute_received: 2,
     flunk: 0,
     flunk: 1,
-    
+
     # ExUnit setup
     setup: 1,
     setup: 2,

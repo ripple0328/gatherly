@@ -10,7 +10,7 @@ defmodule Gatherly.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      
+
       # Dialyzer configuration
       dialyzer: [
         plt_file: {:no_warn, "priv/plts/dialyzer.plt"},
@@ -18,7 +18,7 @@ defmodule Gatherly.MixProject do
         flags: [:error_handling, :race_conditions, :underspecs],
         ignore_warnings: ".dialyzer_ignore.exs"
       ],
-      
+
       # Docs configuration
       docs: [
         main: "readme",
@@ -58,12 +58,7 @@ defmodule Gatherly.MixProject do
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:heroicons,
-       github: "tailwindlabs/heroicons",
-       tag: "v2.1.1",
-       sparse: "optimized",
-       app: false,
-       compile: false,
-       depth: 1},
+       github: "tailwindlabs/heroicons", tag: "v2.1.1", sparse: "optimized", app: false, compile: false, depth: 1},
       {:swoosh, "~> 1.5"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
@@ -73,7 +68,7 @@ defmodule Gatherly.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:tidewave, "~> 0.1", only: :dev},
-      
+
       # Code quality and static analysis
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
@@ -101,7 +96,7 @@ defmodule Gatherly.MixProject do
         "esbuild gatherly --minify",
         "phx.digest"
       ],
-      
+
       # Code quality aliases
       quality: ["format", "credo --strict", "dialyzer", "test"],
       "quality.ci": ["format --check-formatted", "credo --strict", "dialyzer", "test"],
