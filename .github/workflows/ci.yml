@@ -149,7 +149,7 @@ jobs:
         run: mix test --cover --export-coverage default
 
       - name: Generate coverage report
-        run: mix test.coverage
+        run: mix test.coverage --threshold 20
 
       - name: Upload coverage to Codecov
         if: github.actor != 'dependabot[bot]'

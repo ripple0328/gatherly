@@ -157,6 +157,10 @@
           #
           # Checks scheduled for next check update (opt-in for now)
           {Credo.Check.Refactor.UtcNowTruncate, []},
+          
+          #
+          # Design suggestions (non-critical)
+          {Credo.Check.Design.AliasUsage, []},
 
           #
           # Controversial and experimental checks (opt-in, just move the check to `:enabled`
