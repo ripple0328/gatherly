@@ -81,7 +81,7 @@ jobs:
     needs: [quality, security, test]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment:
-      name: prod
+      name: production
       url: https://gatherly.fly.dev
 
     steps:
@@ -145,7 +145,7 @@ jobs:
           echo "- **Tests**: ${{ needs.test.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Deployment**: ${{ needs.deploy.result || 'skipped' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           if [[ "${{ needs.quality.result }}" == "success" && "${{ needs.security.result }}" == "success" && "${{ needs.test.result }}" == "success" ]]; then
             echo "### ✅ All checks passed!" >> $GITHUB_STEP_SUMMARY
             if [[ "${{ needs.deploy.result }}" == "success" ]]; then
