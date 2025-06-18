@@ -10,11 +10,19 @@
   <div class="hero-content text-center max-w-6xl relative z-10">
     <div class="max-w-4xl">
       <!-- Brand & Logo -->
-      <div class="flex justify-center items-center gap-6 mb-8 animate-fade-in">
-        <div class="hover:scale-110 transition-transform duration-300">
-          <img src={~p"/images/logo-icon.svg"} alt="Gatherly Logo" class="w-20 h-20 drop-shadow-lg" />
+      <div class="flex justify-center items-center gap-4 md:gap-6 mb-8 animate-fade-in">
+        <div class="hover:scale-110 hover:rotate-3 transition-all duration-300 group">
+          <img
+            src={~p"/images/logo-icon.svg"}
+            alt="Gatherly Logo"
+            class="w-16 h-16 md:w-20 md:h-20 drop-shadow-lg group-hover:drop-shadow-xl transition-all duration-300"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+          />
+          <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center text-white font-bold text-2xl md:text-3xl hidden">
+            G
+          </div>
         </div>
-        <h1 class="text-6xl md:text-7xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-gradient">
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-gradient hover:scale-105 transition-transform duration-300 cursor-default">
           Gatherly
         </h1>
       </div>
@@ -39,28 +47,50 @@
 <!-- CTAs -->
       <div class="animate-fade-in-up delay-600">
         <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <button class="btn btn-primary btn-lg text-lg px-8 hover:scale-105 transition-transform shadow-lg hover:shadow-xl">
-            <.icon name="hero-rocket-launch" class="h-5 w-5" /> Start Planning Free
-          </button>
-          <button class="btn btn-outline btn-primary btn-lg text-lg px-8 hover:scale-105 transition-transform">
-            <.icon name="hero-play" class="h-5 w-5" /> Watch Demo
+          <a
+            href="#events"
+            class="btn btn-primary btn-lg text-lg px-8 hover:scale-105 transition-transform shadow-lg hover:shadow-xl hover:bg-primary/90 group"
+          >
+            <.icon name="hero-rocket-launch" class="h-5 w-5 group-hover:rotate-12 transition-transform" />
+            Start Planning Free
+          </a>
+          <button
+            onclick="showDemo()"
+            class="btn btn-outline btn-primary btn-lg text-lg px-8 hover:scale-105 transition-transform hover:bg-primary hover:text-primary-content group"
+          >
+            <.icon name="hero-play" class="h-5 w-5 group-hover:scale-110 transition-transform" /> Watch Demo
           </button>
         </div>
       </div>
       
 <!-- Social Proof -->
       <div class="animate-fade-in-up delay-800">
-        <div class="stats stats-horizontal shadow-lg bg-base-100/80 backdrop-blur-sm">
-          <div class="stat place-items-center">
-            <div class="stat-value text-3xl text-primary counter" data-target="1000">1,000+</div>
+        <div class="stats stats-horizontal shadow-lg bg-base-100/80 backdrop-blur-sm hover:shadow-xl transition-all duration-300">
+          <div class="stat place-items-center hover:bg-primary/5 transition-colors duration-300 group">
+            <div
+              class="stat-value text-3xl text-primary counter group-hover:scale-110 transition-transform duration-300"
+              data-target="1000"
+            >
+              1,000+
+            </div>
             <div class="stat-desc font-semibold">Events Planned</div>
           </div>
-          <div class="stat place-items-center">
-            <div class="stat-value text-3xl text-secondary counter" data-target="50">50+</div>
+          <div class="stat place-items-center hover:bg-secondary/5 transition-colors duration-300 group">
+            <div
+              class="stat-value text-3xl text-secondary counter group-hover:scale-110 transition-transform duration-300"
+              data-target="50"
+            >
+              50+
+            </div>
             <div class="stat-desc font-semibold">Happy Groups</div>
           </div>
-          <div class="stat place-items-center">
-            <div class="stat-value text-3xl text-accent counter" data-target="99">99%</div>
+          <div class="stat place-items-center hover:bg-accent/5 transition-colors duration-300 group">
+            <div
+              class="stat-value text-3xl text-accent counter group-hover:scale-110 transition-transform duration-300"
+              data-target="99"
+            >
+              99%
+            </div>
             <div class="stat-desc font-semibold">Success Rate</div>
           </div>
         </div>
@@ -395,12 +425,19 @@
     </p>
 
     <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-      <button class="btn btn-primary btn-lg text-lg px-8 hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
-        <.icon name="hero-rocket-launch" class="h-5 w-5" /> Start Your First Event
+      <a
+        href="#events"
+        class="btn btn-primary btn-lg text-lg px-8 hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl hover:bg-primary/90 group"
+      >
+        <.icon name="hero-rocket-launch" class="h-5 w-5 group-hover:rotate-12 transition-transform" />
+        Start Your First Event
         <div class="badge badge-secondary badge-sm ml-2">Free</div>
-      </button>
-      <button class="btn btn-outline btn-primary btn-lg text-lg px-8 hover:scale-105 transition-all duration-300">
-        <.icon name="hero-phone" class="h-5 w-5" /> Schedule Demo
+      </a>
+      <button
+        onclick="scheduleDemo()"
+        class="btn btn-outline btn-primary btn-lg text-lg px-8 hover:scale-105 transition-all duration-300 hover:bg-primary hover:text-primary-content group"
+      >
+        <.icon name="hero-phone" class="h-5 w-5 group-hover:scale-110 transition-transform" /> Schedule Demo
       </button>
     </div>
 
@@ -466,4 +503,96 @@
     opacity: 0;
     animation-fill-mode: both;
   }
+
+  /* Smooth scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Enhanced hover effects */
+  .card:hover {
+    transform: translateY(-4px);
+  }
 </style>
+
+<!-- Interactive JavaScript -->
+<script>
+  function showDemo() {
+    // Create modal overlay
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm';
+    modal.innerHTML = `
+      <div class="card bg-base-100 shadow-2xl max-w-md mx-4 animate-fade-in">
+        <div class="card-body text-center">
+          <h3 class="text-2xl font-bold mb-4">🎬 Demo Coming Soon!</h3>
+          <p class="text-base-content/80 mb-6">
+            We're preparing an exciting demo to showcase Gatherly's powerful features. 
+            In the meantime, scroll down to explore our event types!
+          </p>
+          <div class="card-actions justify-center gap-2">
+            <button onclick="closeModal()" class="btn btn-outline">Close</button>
+            <a href="#events" onclick="closeModal()" class="btn btn-primary">Explore Events</a>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // Close on click outside
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  function scheduleDemo() {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm';
+    modal.innerHTML = `
+      <div class="card bg-base-100 shadow-2xl max-w-md mx-4 animate-fade-in">
+        <div class="card-body text-center">
+          <h3 class="text-2xl font-bold mb-4">📞 Schedule a Demo</h3>
+          <p class="text-base-content/80 mb-6">
+            Ready to see Gatherly in action? We'd love to show you how our AI-powered platform 
+            can transform your event planning experience.
+          </p>
+          <div class="card-actions justify-center gap-2">
+            <button onclick="closeModal()" class="btn btn-outline">Maybe Later</button>
+            <button onclick="contactUs()" class="btn btn-primary">Contact Us</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  function contactUs() {
+    alert('📧 Coming soon: Direct demo scheduling! For now, check out our features below.');
+    closeModal();
+    document.querySelector('#features').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function closeModal() {
+    const modals = document.querySelectorAll('.fixed.inset-0');
+    modals.forEach(modal => modal.remove());
+  }
+
+  // Add keyboard support for modals
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Add parallax effect to background elements
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const parallaxElements = document.querySelectorAll('.absolute.opacity-20 > div');
+    
+    parallaxElements.forEach((el, index) => {
+      const speed = 0.5 + (index * 0.1);
+      el.style.transform = `translateY(${scrolled * speed}px)`;
+    });
+  });
+</script>

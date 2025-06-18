@@ -143,7 +143,7 @@ defmodule GatherlyWeb.BrandingTest do
 
       # Responsive text sizing
       # Hero title
-      assert response =~ "text-6xl md:text-7xl"
+      assert response =~ "text-4xl md:text-6xl lg:text-7xl"
       # Section headers
       assert response =~ "text-4xl md:text-6xl"
       # Subsection headers
