@@ -6,7 +6,7 @@
   
   [![CI Status](https://github.com/ripple0328/gatherly/workflows/CI/badge.svg)](https://github.com/ripple0328/gatherly/actions/workflows/ci.yml)
   [![Code Quality](https://img.shields.io/badge/code%20quality-credo-brightgreen)](https://github.com/rrrene/credo)
-  [![Deploy Status](https://github.com/ripple0328/gatherly/workflows/Deploy%20to%20Fly.io/badge.svg)](https://github.com/ripple0328/gatherly/actions/workflows/deploy.yml)
+  [![Deploy Status](https://github.com/ripple0328/gatherly/workflows/CI%2FCD%20Pipeline/badge.svg)](https://github.com/ripple0328/gatherly/actions/workflows/main.yml)
 </div>
 
 Gatherly is a collaborative, AI-powered event planning platform built with Phoenix LiveView and DaisyUI. Transform your group events from chaotic planning to seamless experiences with intelligent coordination, real-time collaboration, and smart logistics.
