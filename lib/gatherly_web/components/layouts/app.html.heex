@@ -1,35 +1,69 @@
 <!-- Main content wrapper with data-theme attribute for DaisyUI theming -->
 <div data-theme="gatherly" class="min-h-screen flex flex-col">
   <!-- Navigation -->
-  <div class="navbar bg-base-100 shadow-md px-4 sm:px-8">
-    <div class="flex-1">
-      <a href="/" class="btn btn-ghost normal-case text-xl">Gatherly</a>
-    </div>
-    <div class="flex-none">
-      <ul class="menu menu-horizontal px-1 hidden sm:flex">
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#features">Features</a></li>
-      </ul>
-      <div class="dropdown dropdown-end ml-2">
-        <label tabindex="0" class="btn btn-ghost sm:hidden">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </label>
-        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-          <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="#features">Features</a></li>
-          <li class="divider"></li>
-          <li><a href="/login" class="text-primary">Log In</a></li>
-          <li><a href="/sign_up" class="btn btn-primary btn-sm mt-2 w-full">Sign Up</a></li>
-        </ul>
+  <nav class="bg-white shadow-md border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0">
+          <a href="/" class="text-2xl font-bold text-gray-900 hover:text-gray-700 transition-colors">
+            Gatherly
+          </a>
+        </div>
+        
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#features" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            Features
+          </a>
+          <a href="#use-cases" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            Use Cases
+          </a>
+          <a href="#how-it-works" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            How It Works
+          </a>
+        </div>
+        
+        <!-- Desktop Auth Buttons -->
+        <div class="hidden md:flex items-center space-x-4">
+          <a href="/login" class="btn btn-secondary">Log In</a>
+          <a href="/sign_up" class="btn">Sign Up</a>
+        </div>
+        
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button type="button" class="mobile-menu-button p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
-    <div class="hidden sm:flex items-center">
-      <a href="/login" class="btn btn-ghost">Log In</a>
-      <a href="/sign_up" class="btn btn-primary ml-2">Sign Up</a>
+    
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-menu hidden md:hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
+        <a href="#features" class="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md text-base font-medium">
+          Features
+        </a>
+        <a href="#use-cases" class="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md text-base font-medium">
+          Use Cases
+        </a>
+        <a href="#how-it-works" class="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md text-base font-medium">
+          How It Works
+        </a>
+        <div class="border-t border-gray-200 pt-3 mt-3">
+          <a href="/login" class="block px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md text-base font-medium">
+            Log In
+          </a>
+          <a href="/sign_up" class="block mx-3 mt-2 btn">
+            Sign Up
+          </a>
+        </div>
+      </div>
     </div>
-  </div>
+  </nav>
 
   <!-- Page content -->
   <main class="flex-grow">
@@ -49,8 +83,21 @@
   </div>
 </div>
 
-<!-- Theme toggle script -->
+<!-- Mobile menu and theme toggle script -->
 <script>
+  // Mobile menu toggle
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  });
+
+  // Theme toggle functionality
   const themeToggleBtn = document.querySelector('[data-toggle-theme]');
   
   if (themeToggleBtn) {

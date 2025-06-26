@@ -1,504 +1,322 @@
-<!-- Navigation -->
-<header class="fixed w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
-  <div class="container mx-auto px-4 py-4">
-    <div class="flex justify-between items-center">
-      <a href="/" class="flex items-center space-x-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" />
-        </svg>
-        <span class="text-2xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Gatherly</span>
-      </a>
-      <nav class="hidden md:flex items-center space-x-8">
-        <a href="#features" class="text-gray-700 hover:text-primary transition-colors font-medium">Features</a>
-        <a href="#how-it-works" class="text-gray-700 hover:text-primary transition-colors font-medium">How It Works</a>
-        <a href="#testimonials" class="text-gray-700 hover:text-primary transition-colors font-medium">Testimonials</a>
-        <a href="#pricing" class="text-gray-700 hover:text-primary transition-colors font-medium">Pricing</a>
-      </nav>
-      <div class="flex items-center space-x-4">
-        <a href="/login" class="hidden md:inline-block px-4 py-2 text-gray-700 hover:text-primary font-medium transition-colors">Log In</a>
-        <a href="/signup" class="btn btn-primary rounded-full px-6 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-          Get Started Free
-        </a>
-      </div>
-      <button class="md:hidden text-gray-700 hover:text-primary focus:outline-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
-    </div>
+<div class="min-h-screen scroll-smooth relative overflow-hidden" style="background: linear-gradient(135deg, #f7f3e9 0%, #ede8d3 50%, #e6ddc4 100%)">
+  
+  <!-- Organic Background Elements -->
+  <div class="absolute inset-0 pointer-events-none">
+    <!-- Floating organic shapes -->
+    <div class="absolute top-20 left-10 w-32 h-32 rounded-full bg-gradient-to-br from-green-200/30 to-green-300/20 animate-float"></div>
+    <div class="absolute top-40 right-20 w-24 h-24 rounded-full bg-gradient-to-br from-blue-200/30 to-blue-300/20 animate-float-delayed"></div>
+    <div class="absolute bottom-32 left-1/4 w-40 h-40 rounded-full bg-gradient-to-br from-orange-200/30 to-orange-300/20 animate-float-slow"></div>
+    <div class="absolute bottom-20 right-1/3 w-28 h-28 rounded-full bg-gradient-to-br from-purple-200/30 to-purple-300/20 animate-float"></div>
   </div>
-</header>
 
-<!-- Hero Section -->
-<section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-  <!-- Background gradient -->
-  <div class="absolute inset-0 -z-10">
-    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-white to-secondary/5"></div>
-    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
-  </div>
-  
-  <!-- Animated elements -->
-  <div class="absolute -top-24 -right-24 w-96 h-96 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-  <div class="absolute -bottom-24 left-20 w-96 h-96 bg-secondary/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
-  
-  <div class="container mx-auto px-4">
-    <div class="flex flex-col lg:flex-row items-center">
-      <!-- Left column -->
-      <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12">
-        <div class="relative">
-          <span class="inline-block px-4 py-1.5 text-sm font-semibold text-primary bg-primary/10 rounded-full mb-6 animate-fade-in">✨ Organize. Coordinate. Celebrate.</span>
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-            Plan Perfect <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Gatherings</span> with Ease
-          </h1>
-          <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-lg">
-            Gatherly is your all-in-one solution for organizing and coordinating group events. From potlucks to camping trips, make planning fun and stress-free for everyone involved.
-          </p>
-          <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <a href="/signup" class="btn btn-primary btn-lg rounded-full px-8 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-              Get Started Free
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 -mr-1" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-              </svg>
-            </a>
-            <a href="#how-it-works" class="btn btn-outline btn-lg rounded-full border-2 hover:border-primary hover:bg-transparent hover:text-primary transition-all duration-200">
-              See How It Works
-            </a>
+
+  <!-- Announcement Banner -->
+  <section class="pt-6 pb-6">
+    <div class="max-w-4xl mx-auto text-center px-6">
+      <a href="#" class="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-emerald-100 to-teal-100 border border-emerald-200 hover:from-emerald-200 hover:to-teal-200 transition-all group">
+        <span class="text-2xl mr-3">🎉</span>
+        <span class="text-emerald-800 font-semibold mr-2">Now open source!</span>
+        <span class="text-emerald-700">Join 10,000+ event organizers worldwide</span>
+        <svg class="w-4 h-4 ml-2 text-emerald-600 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Hero Section -->
+  <section class="py-16 px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h1 class="text-6xl lg:text-8xl font-bold mb-8 leading-tight">
+          <span class="bg-gradient-to-r from-amber-800 via-orange-700 to-red-700 bg-clip-text text-transparent">The single platform</span>
+          <br />
+          <span class="text-stone-800">to plan, vote, and organize events</span>
+        </h1>
+        
+        <!-- Trusted by section -->
+        <div class="mb-12">
+          <p class="text-stone-600 font-medium mb-6 text-lg">Trusted by</p>
+          <div class="flex justify-center items-center space-x-8 opacity-60">
+            <div class="text-stone-700 font-semibold">Family Groups</div>
+            <div class="text-stone-700 font-semibold">Community Centers</div>
+            <div class="text-stone-700 font-semibold">Event Organizers</div>
+            <div class="text-stone-700 font-semibold">Friend Circles</div>
           </div>
-          <div class="mt-10 flex items-center space-x-4">
-            <div class="flex -space-x-2">
-              <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/12.jpg" alt="User 1">
-              <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User 2">
-              <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/44.jpg" alt="User 3">
-            </div>
-            <div class="text-sm text-gray-600">
-              <p class="font-medium">Trusted by 10,000+ organizers</p>
-              <div class="flex items-center">
-                <span class="text-yellow-400 mr-1">★★★★★</span>
-                <span class="text-gray-500">4.9/5 from 2,000+ reviews</span>
+        </div>
+      </div>
+
+      <!-- Screenshot/Visual placeholder -->
+      <div class="relative">
+        <div class="mx-auto max-w-4xl">
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-white to-stone-100 border border-stone-200">
+            <div class="aspect-video flex items-center justify-center bg-gradient-to-br from-stone-50 to-amber-50">
+              <div class="text-center text-stone-600 font-medium">
+                <div class="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-amber-200 to-orange-300 rounded-2xl flex items-center justify-center">
+                  <svg class="w-12 h-12 text-amber-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                </div>
+                <p class="text-lg">A calm interface featuring collaborative event planning</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
-      <!-- Right column -->
-      <div class="lg:w-1/2 relative">
-        <div class="relative z-10 rounded-2xl shadow-2xl overflow-hidden border-8 border-white transform rotate-1 hover:rotate-0 transition-transform duration-500">
-          <img 
-            src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&q=80" 
-            class="w-full h-auto" 
-            alt="People gathering together"
-            loading="eager"
-          />
-        </div>
-        <!-- Decorative elements -->
-        <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-primary/10 rounded-full -z-10"></div>
-        <div class="absolute -top-6 -right-6 w-24 h-24 bg-secondary/10 rounded-full -z-10"></div>
-      </div>
     </div>
-  </div>
-  
-  <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-    <a href="#how-it-works" class="flex flex-col items-center text-gray-500 hover:text-primary transition-colors group">
-      <span class="text-sm mb-2">Scroll to explore</span>
-      <div class="w-8 h-12 border-2 border-gray-300 rounded-full flex justify-center p-1 group-hover:border-primary transition-colors">
-        <div class="w-1 h-3 bg-gray-400 rounded-full animate-bounce group-hover:bg-primary transition-colors"></div>
-      </div>
-    </a>
-  </div>
-</section>
+  </section>
 
-<!-- How It Works Section -->
-<section id="how-it-works" class="relative py-24 bg-gradient-to-b from-white to-base-100">
-  <!-- Background elements -->
-  <div class="absolute inset-0 overflow-hidden">
-    <div class="absolute -top-1/2 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-full blur-3xl opacity-30"></div>
-  </div>
-  
-  <div class="container mx-auto px-4 relative z-10">
-    <!-- Section header -->
-    <div class="text-center max-w-3xl mx-auto mb-20">
-      <span class="inline-block px-4 py-1.5 text-sm font-semibold text-primary bg-primary/10 rounded-full mb-4">HOW IT WORKS</span>
-      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Organize Your Next Gathering in 3 Simple Steps</h2>
-      <p class="text-xl text-gray-600">From planning to celebration, we've got you covered every step of the way</p>
+  <!-- Features Tabs Section -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <div class="lg:order-first flex justify-center">
+          <div class="relative max-w-md w-full">
+            <div class="rounded-3xl overflow-hidden shadow-xl bg-white border border-stone-200">
+              <div class="p-6 bg-gradient-to-br from-stone-50 to-amber-50">
+                <div class="text-sm font-medium text-stone-600 mb-4">Shared Event</div>
+                <div class="space-y-3">
+                  <div class="flex items-center p-3 rounded-lg bg-white shadow-sm">
+                    <div class="w-3 h-3 rounded-full bg-emerald-400 mr-3"></div>
+                    <span class="text-stone-800 font-medium">Summer Potluck</span>
+                  </div>
+                  <div class="flex items-center p-3 rounded-lg bg-white shadow-sm">
+                    <div class="w-3 h-3 rounded-full bg-blue-400 mr-3"></div>
+                    <span class="text-stone-800 font-medium">Weekend Camping</span>
+                  </div>
+                  <div class="flex items-center p-3 rounded-lg bg-white shadow-sm">
+                    <div class="w-3 h-3 rounded-full bg-purple-400 mr-3"></div>
+                    <span class="text-stone-800 font-medium">Game Night</span>
+                  </div>
+                  <div class="flex items-center p-3 rounded-lg bg-white shadow-sm">
+                    <div class="w-3 h-3 rounded-full bg-orange-400 mr-3"></div>
+                    <span class="text-stone-800 font-medium">Trail Logistics</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex flex-col justify-center">
+          <!-- Tab Navigation -->
+          <div class="space-y-4 mb-8">
+            <div class="flex items-center p-4 rounded-2xl bg-gradient-to-r from-amber-100 to-orange-100 border-l-4 border-amber-500">
+              <div class="flex items-center mr-4 flex-shrink-0">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mr-3">
+                  <span class="text-white font-bold">01</span>
+                </div>
+                <span class="text-amber-800 font-semibold">Create</span>
+              </div>
+              <div class="text-amber-700">
+                <div class="font-semibold">Event coordination made simple</div>
+                <div class="text-sm mt-1">Set up events with templates for potlucks, camping, hiking, and game nights.</div>
+              </div>
+            </div>
+            
+            <div class="flex items-center p-4 rounded-2xl bg-gradient-to-r from-emerald-100 to-teal-100 border-l-4 border-emerald-500">
+              <div class="flex items-center mr-4 flex-shrink-0">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mr-3">
+                  <span class="text-white font-bold">02</span>
+                </div>
+                <span class="text-emerald-800 font-semibold">Collaborate</span>
+              </div>
+              <div class="text-emerald-700">
+                <div class="font-semibold">Democratic decision making</div>
+                <div class="text-sm mt-1">Everyone votes on dates, times, and locations with intelligent suggestions.</div>
+              </div>
+            </div>
+            
+            <div class="flex items-center p-4 rounded-2xl bg-gradient-to-r from-purple-100 to-indigo-100 border-l-4 border-purple-500">
+              <div class="flex items-center mr-4 flex-shrink-0">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center mr-3">
+                  <span class="text-white font-bold">03</span>
+                </div>
+                <span class="text-purple-800 font-semibold">Execute</span>
+              </div>
+              <div class="text-purple-700">
+                <div class="font-semibold">AI-powered logistics</div>
+                <div class="text-sm mt-1">Smart task assignment and progress tracking ensure nothing is forgotten.</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <p class="text-stone-600">Learn more</p>
+            <div class="flex space-x-6">
+              <a href="#" class="text-amber-700 hover:text-amber-800 font-medium">Templates</a>
+              <a href="#" class="text-amber-700 hover:text-amber-800 font-medium">AI Features</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <!-- Steps -->
-    <div class="grid md:grid-cols-3 gap-8 md:gap-12">
-      <!-- Step 1 -->
-      <div class="group relative bg-white rounded-2xl shadow-xl p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-        <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-bold shadow-lg">1</div>
-        <div class="w-20 h-20 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-          </svg>
-        </div>
-        <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">Create & Invite</h3>
-        <p class="text-gray-600 text-center mb-6">Start a new event in seconds and invite friends with a simple link. No account needed to participate!</p>
-        <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="py-20 bg-gradient-to-r from-stone-100/50 to-amber-100/50">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl lg:text-5xl font-bold text-stone-800 mb-6">Precisely engineered for seamless collaboration</h2>
+        <p class="text-xl text-stone-600 max-w-3xl mx-auto">Gatherly powers event coordination for groups of all sizes with unmatched ease and reliability.</p>
       </div>
       
-      <!-- Step 2 -->
-      <div class="group relative bg-white rounded-2xl shadow-xl p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-        <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 bg-secondary text-white rounded-full flex items-center justify-center text-2xl font-bold shadow-lg">2</div>
-        <div class="w-20 h-20 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="text-center">
+          <div class="text-5xl lg:text-6xl font-bold text-stone-800 mb-2">
+            <span class="counter" data-target="10">0</span>K+
+          </div>
+          <div class="text-stone-600 font-medium text-lg">Events organized</div>
+          <div class="text-stone-500 text-sm mt-2">Growing every day</div>
         </div>
-        <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">Coordinate Plans</h3>
-        <p class="text-gray-600 text-center mb-6">Propose dates, vote on locations, and assign tasks—all in one place. Keep everyone in sync with real-time updates.</p>
-        <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-secondary animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
+        
+        <div class="text-center">
+          <div class="text-5xl lg:text-6xl font-bold text-stone-800 mb-2">
+            <span class="counter" data-target="4">0</span>
+          </div>
+          <div class="text-stone-600 font-medium text-lg">Event templates</div>
+          <div class="text-stone-500 text-sm mt-2">Perfectly optimized</div>
         </div>
-      </div>
-      
-      <!-- Step 3 -->
-      <div class="group relative bg-white rounded-2xl shadow-xl p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-        <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 bg-accent text-white rounded-full flex items-center justify-center text-2xl font-bold shadow-lg">3</div>
-        <div class="w-20 h-20 bg-accent/10 text-accent rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 15.536c-1.171 1.952-3.07 1.952-4.242 0-1.172-1.953-1.172-5.119 0-7.072 1.171-1.952 3.07-1.952 4.242 0M8 10.5h4m-4 3h4m9-1.5a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+        
+        <div class="text-center">
+          <div class="text-5xl lg:text-6xl font-bold text-stone-800 mb-2">
+            <span class="counter" data-target="100">0</span>%
+          </div>
+          <div class="text-stone-600 font-medium text-lg">Open source</div>
+          <div class="text-stone-500 text-sm mt-2">Free forever</div>
         </div>
-        <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">Celebrate Together</h3>
-        <p class="text-gray-600 text-center mb-6">Enjoy your event knowing everything is taken care of. Share photos and memories with your group afterward.</p>
-        <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
+        
+        <div class="text-center">
+          <div class="text-5xl lg:text-6xl font-bold text-stone-800 mb-2">
+            <span class="counter" data-target="99">0</span>.<span class="counter" data-target="9">0</span>%
+          </div>
+          <div class="text-stone-600 font-medium text-lg">Success rate</div>
+          <div class="text-stone-500 text-sm mt-2">Events run smoothly</div>
         </div>
       </div>
     </div>
-    
-    <!-- CTA -->
-    <div class="mt-16 text-center">
-      <a href="/signup" class="btn btn-primary btn-lg rounded-full px-8 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 inline-flex items-center">
-        Start Planning Now
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 -mr-1" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+  </section>
+
+  <!-- Use Cases Section -->
+  <section id="use-cases" class="py-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl lg:text-5xl font-bold text-stone-800 mb-6">Built for every gathering</h2>
+        <p class="text-xl text-stone-600 max-w-3xl mx-auto">From intimate family dinners to adventure expeditions, Gatherly adapts to your needs with intelligent templates and AI guidance.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="group p-8 rounded-3xl bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 hover:shadow-xl transition-all hover:-translate-y-2">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.5 2.5 0 003 18.5V19a1 1 0 001 1h16a1 1 0 001-1v-.5a2.5 2.5 0 00-.546-1.546z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-stone-800 mb-4">Potluck Dinners</h3>
+          <p class="text-stone-600 mb-6">Coordinate dishes, dietary preferences, and quantities with AI-powered menu balancing to ensure variety and coverage.</p>
+          <div class="text-sm text-stone-500 space-y-1">
+            <div>• Smart dish coordination</div>
+            <div>• Dietary restriction tracking</div>
+            <div>• AI menu optimization</div>
+          </div>
+        </div>
+
+        <div class="group p-8 rounded-3xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 hover:shadow-xl transition-all hover:-translate-y-2">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l7 7 7-7M5 21l7-7 7 7"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-stone-800 mb-4">Camping Trips</h3>
+          <p class="text-stone-600 mb-6">Plan gear lists, assign responsibilities, and get weather-aware suggestions for safe outdoor adventures.</p>
+          <div class="text-sm text-stone-500 space-y-1">
+            <div>• Comprehensive gear checklists</div>
+            <div>• Weather integration</div>
+            <div>• Safety planning tools</div>
+          </div>
+        </div>
+
+        <div class="group p-8 rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 hover:shadow-xl transition-all hover:-translate-y-2">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-stone-800 mb-4">Group Hikes</h3>
+          <p class="text-stone-600 mb-6">Match fitness levels, plan routes, and ensure everyone's prepared for the trail with intelligent guidance.</p>
+          <div class="text-sm text-stone-500 space-y-1">
+            <div>• Trail planning & routes</div>
+            <div>• Fitness level matching</div>
+            <div>• Emergency preparedness</div>
+          </div>
+        </div>
+
+        <div class="group p-8 rounded-3xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 hover:shadow-xl transition-all hover:-translate-y-2">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.01M15 10h1.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-stone-800 mb-4">Game Nights</h3>
+          <p class="text-stone-600 mb-6">Coordinate games, snacks, and space planning to create the perfect gaming environment for your group.</p>
+          <div class="text-sm text-stone-500 space-y-1">
+            <div>• Game library coordination</div>
+            <div>• Snack & drink planning</div>
+            <div>• Space optimization</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-24 bg-gradient-to-br from-amber-600 to-orange-700 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-amber-900/20 to-orange-900/20"></div>
+    <div class="relative max-w-4xl mx-auto text-center px-6 lg:px-8">
+      <h2 class="text-5xl lg:text-6xl font-bold text-white mb-6">Start your journey with Gatherly</h2>
+      <p class="text-xl text-amber-100 mb-10 max-w-2xl mx-auto">Join thousands of organizers who are revolutionizing event planning. Free and open source forever.</p>
+      <a href="#" class="inline-flex items-center px-8 py-4 bg-white text-amber-700 rounded-full font-bold text-lg hover:bg-amber-50 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+        Get Started Free
+        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
       </a>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Occasions Section -->
-<section class="py-24 bg-gradient-to-b from-base-100 to-base-200">
-  <div class="container mx-auto px-4">
-    <div class="text-center max-w-3xl mx-auto mb-16">
-      <span class="inline-block px-4 py-1.5 text-sm font-semibold text-secondary bg-secondary/10 rounded-full mb-4">OCCASIONS</span>
-      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Perfect for Any Gathering</h2>
-      <p class="text-xl text-gray-600">Tailored planning tools for every type of event, big or small</p>
-    </div>
-    
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- Occasion 1 -->
-      <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-        <div class="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 mb-3">Dinner Parties</h3>
-        <p class="text-gray-600">Coordinate dishes, dietary restrictions, and RSVPs with ease.</p>
-      </div>
-      
-      <!-- Occasion 2 -->
-      <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-        <div class="w-16 h-16 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:text-white transition-colors duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 mb-3">Camping Trips</h3>
-        <p class="text-gray-600">Plan gear, food, and activities for your outdoor adventure.</p>
-      </div>
-      
-      <!-- Occasion 3 -->
-      <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-        <div class="w-16 h-16 bg-accent/10 text-accent rounded-2xl flex items-center justify-center mb-6 group-hover:bg-accent group-hover:text-white transition-colors duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 mb-3">Birthdays</h3>
-        <p class="text-gray-600">Organize surprise parties and gift contributions with ease.</p>
-      </div>
-      
-      <!-- Occasion 4 -->
-      <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-        <div class="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 mb-3">Weekend Getaways</h3>
-        <p class="text-gray-600">Coordinate travel plans, accommodations, and activities.</p>
-      </div>
-    </div>
-    
-    <div class="mt-16 text-center">
-      <a href="/explore" class="inline-flex items-center text-primary font-medium hover:text-primary-focus transition-colors">
-        View all event types
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-        </svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- Event Types Section -->
-<div class="py-16 bg-base-200">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold mb-4">Perfect for Any Occasion</h2>
-      <p class="text-lg text-gray-600 max-w-3xl mx-auto">Tailored planning tools for every type of gathering</p>
-    </div>
-    
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- Potluck -->
-      <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-        <figure class="px-10 pt-10">
-          <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-          </div>
-        </figure>
-        <div class="card-body items-center text-center">
-          <h3 class="card-title">Potlucks</h3>
-          <p class="text-sm">Coordinate dishes, track dietary needs, and ensure a perfect meal spread.</p>
-        </div>
-      </div>
-      
-      <!-- Camping -->
-      <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-        <figure class="px-10 pt-10">
-          <div class="w-16 h-16 bg-secondary/10 rounded-lg flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-          </div>
-        </figure>
-        <div class="card-body items-center text-center">
-          <h3 class="card-title">Camping Trips</h3>
-          <p class="text-sm">Organize gear, plan meals, and coordinate rides for the perfect outdoor adventure.</p>
-        </div>
-      </div>
-      
-      <!-- Hiking -->
-      <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-        <figure class="px-10 pt-10">
-          <div class="w-16 h-16 bg-accent/10 rounded-lg flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-        </figure>
-        <div class="card-body items-center text-center">
-          <h3 class="card-title">Hiking</h3>
-          <p class="text-sm">Plan trails, share equipment lists, and ensure everyone's prepared for the journey.</p>
-        </div>
-      </div>
-      
-      <!-- Game Nights -->
-      <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-        <figure class="px-10 pt-10">
-          <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-        </figure>
-        <div class="card-body items-center text-center">
-          <h3 class="card-title">Game Nights</h3>
-          <p class="text-sm">Coordinate games, snacks, and seating for an epic game night with friends.</p>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
-<!-- CTA Section -->
-<div class="py-20 px-4">
-  <div class="max-w-4xl mx-auto text-center">
-    <h2 class="text-4xl font-bold mb-6">Ready to Plan Your Next Gathering?</h2>
-    <p class="text-xl mb-8 text-gray-600">Join thousands of people who are making their events more organized and enjoyable with Gatherly.</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="/sign_up" class="btn btn-primary btn-lg">Get Started for Free</a>
-      <a href="#how-it-works" class="btn btn-outline btn-lg">Learn More</a>
-    </div>
-  </div>
-</div>
-
-<!-- Footer -->
-<!-- Testimonials Section -->
-<section class="py-24 bg-gradient-to-b from-base-200 to-base-100 relative overflow-hidden">
-  <!-- Decorative elements -->
-  <div class="absolute inset-0">
-    <div class="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl opacity-30"></div>
-    <div class="absolute -bottom-1/4 -left-1/4 w-[800px] h-[800px] bg-gradient-to-tr from-secondary/5 to-transparent rounded-full blur-3xl opacity-30"></div>
-  </div>
+<script>
+// Animated counter function
+function animateCounters() {
+  const counters = document.querySelectorAll('.counter');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const counter = entry.target;
+        const target = parseInt(counter.getAttribute('data-target'));
+        const increment = target / 50;
+        let current = 0;
+        
+        const updateCounter = () => {
+          current += increment;
+          if (current < target) {
+            counter.textContent = Math.floor(current);
+            requestAnimationFrame(updateCounter);
+          } else {
+            counter.textContent = target;
+          }
+        };
+        
+        updateCounter();
+        observer.unobserve(counter);
+      }
+    });
+  });
   
-  <div class="container mx-auto px-4 relative z-10">
-    <div class="text-center max-w-3xl mx-auto mb-16">
-      <span class="inline-block px-4 py-1.5 text-sm font-semibold text-accent bg-accent/10 rounded-full mb-4">TESTIMONIALS</span>
-      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Trusted by Thousands of Organizers</h2>
-      <p class="text-xl text-gray-600">Don't just take our word for it—here's what our community has to say</p>
-    </div>
-    
-    <div class="grid md:grid-cols-3 gap-8">
-      <!-- Testimonial 1 -->
-      <div class="group relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-        <div class="absolute -top-4 right-6 w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-4xl text-primary/20 font-serif transform group-hover:scale-110 transition-transform duration-300">"</div>
-        <div class="flex mb-6">
-          <div class="text-yellow-400 text-xl">
-            <span class="inline-block mr-1">★</span><span class="inline-block mr-1">★</span><span class="inline-block mr-1">★</span><span class="inline-block mr-1">★</span><span class="inline-block">★</span>
-          </div>
-        </div>
-        <p class="text-gray-700 text-lg mb-8 relative z-10">"Gatherly made planning our family reunion a breeze. The potluck sign-up and RSVP features saved us countless emails and texts."</p>
-        <div class="flex items-center">
-          <div class="relative">
-            <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Sarah M." class="w-14 h-14 rounded-full border-4 border-white shadow-md mr-4 group-hover:scale-110 transition-transform duration-300">
-            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold">✓</div>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900">Sarah M.</h4>
-            <p class="text-sm text-gray-500">Family Reunion Organizer</p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Testimonial 2 -->
-      <div class="group relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-        <div class="absolute -top-4 right-6 w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center text-4xl text-secondary/20 font-serif transform group-hover:scale-110 transition-transform duration-300">"</div>
-        <div class="flex mb-6">
-          <div class="text-yellow-400 text-xl">
-            <span class="inline-block mr-1">★</span><span class="inline-block mr-1">★</span><span class="inline-block mr-1">★</span><span class="inline-block mr-1">★</span><span class="inline-block">★</span>
-          </div>
-        </div>
-        <p class="text-gray-700 text-lg mb-8 relative z-10">"As the social chair for our book club, Gatherly has been a game-changer. The voting feature helps us pick our next read and meeting date effortlessly."</p>
-        <div class="flex items-center">
-          <div class="relative">
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="James T." class="w-14 h-14 rounded-full border-4 border-white shadow-md mr-4 group-hover:scale-110 transition-transform duration-300">
-            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-secondary rounded-full flex items-center justify-center text-white text-xs font-bold">✓</div>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900">James T.</h4>
-            <p class="text-sm text-gray-500">Book Club Coordinator</p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Testimonial 3 -->
-      <div class="group relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-        <div class="absolute -top-4 right-6 w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center text-4xl text-accent/20 font-serif transform group-hover:scale-110 transition-transform duration-300">"</div>
-        <div class="flex mb-6">
-          <div class="text-yellow-400 text-xl">
-            <span class="inline-block mr-1">★</span><span class="inline-block mr-1">★</span><span class="inline-block mr-1">★</span><span class="inline-block mr-1">★</span><span class="inline-block text-gray-300">★</span>
-          </div>
-        </div>
-        <p class="text-gray-700 text-lg mb-8 relative z-10">"Used Gatherly for our camping trip with friends. The gear checklist and meal planning tools were incredibly helpful. Would definitely use again!"</p>
-        <div class="flex items-center">
-          <div class="relative">
-            <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Priya K." class="w-14 h-14 rounded-full border-4 border-white shadow-md mr-4 group-hover:scale-110 transition-transform duration-300">
-            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-accent rounded-full flex items-center justify-center text-white text-xs font-bold">✓</div>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900">Priya K.</h4>
-            <p class="text-sm text-gray-500">Outdoor Enthusiast</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="mt-16 text-center">
-      <a href="/testimonials" class="inline-flex items-center text-primary font-medium hover:text-primary-focus transition-colors">
-        Read more success stories
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-        </svg>
-      </a>
-    </div>
-  </div>
-</section>
+  counters.forEach(counter => observer.observe(counter));
+}
 
-<!-- CTA Section -->
-<section class="relative py-24 bg-gradient-to-r from-primary to-primary-focus text-white overflow-hidden">
-  <!-- Background elements -->
-  <div class="absolute inset-0">
-    <div class="absolute -top-1/2 -right-1/2 w-[800px] h-[800px] bg-white/5 rounded-full blur-3xl"></div>
-    <div class="absolute -bottom-1/2 -left-1/2 w-[800px] h-[800px] bg-white/5 rounded-full blur-3xl"></div>
-  </div>
-  
-  <div class="container mx-auto px-4 relative z-10">
-    <div class="max-w-4xl mx-auto text-center">
-      <span class="inline-block px-4 py-1.5 text-sm font-semibold text-white/90 bg-white/10 rounded-full mb-6">START ORGANIZING TODAY</span>
-      <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Ready to Make Your Next Gathering Unforgettable?</h2>
-      <p class="text-xl text-white/90 mb-10 max-w-3xl mx-auto">Join over 100,000 organizers who trust Gatherly to make their events seamless and stress-free.</p>
-      
-      <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-        <a href="/sign_up" class="btn btn-secondary btn-lg rounded-full px-8 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center">
-          Get Started Free
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-          </svg>
-        </a>
-        <a href="#how-it-works" class="btn btn-outline btn-lg rounded-full border-2 border-white/20 hover:bg-white/10 hover:border-white/30 transition-all duration-200">
-          See How It Works
-        </a>
-      </div>
-      
-      <div class="mt-10 flex items-center justify-center space-x-6">
-        <div class="flex -space-x-3">
-          <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/12.jpg" alt="User 1" loading="lazy">
-          <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User 2" loading="lazy">
-          <img class="w-10 h-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/44.jpg" alt="User 3" loading="lazy">
-        </div>
-        <div class="text-left">
-          <div class="flex items-center">
-            <span class="text-yellow-300 text-xl mr-1">★★★★★</span>
-          </div>
-          <p class="text-sm text-white/80 mt-1">Rated 4.9/5 from 2,000+ reviews</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="footer p-10 bg-neutral text-neutral-content">
-  <div>
-    <span class="footer-title">Gatherly</span> 
-    <p>Making group planning simple, fun, and stress-free since 2023</p>
-  </div> 
-  <div>
-    <span class="footer-title">Product</span> 
-    <a class="link link-hover">Features</a> 
-    <a class="link link-hover">Pricing</a> 
-    <a class="link link-hover">Download</a> 
-  </div> 
-  <div>
-    <span class="footer-title">Company</span> 
-    <a class="link link-hover">About us</a> 
-    <a class="link link-hover">Contact</a> 
-    <a class="link link-hover">Careers</a>
-  </div> 
-  <div>
-    <span class="footer-title">Legal</span> 
-    <a class="link link-hover">Terms of use</a> 
-    <a class="link link-hover">Privacy policy</a> 
-    <a class="link link-hover">Cookie policy</a>
-  </div>
-</footer>
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', animateCounters);
+</script>
