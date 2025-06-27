@@ -9,7 +9,8 @@ defmodule Gatherly.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      listeners: listeners(Mix.env())
     ]
   end
 
@@ -27,57 +28,61 @@ defmodule Gatherly.MixProject do
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
+  # Specifies which listeners to use per environment.
+  defp listeners(:dev), do: [Phoenix.CodeReloader]
+  defp listeners(_), do: []
+
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      # Phoenix framework
-      {:phoenix, "~> 1.7.0"},
-      {:phoenix_ecto, "~> 4.5"},
-      {:phoenix_html, "~> 4.0"},
-      {:phoenix_live_reload, "~> 1.4", only: :dev},
-      {:phoenix_live_view, "~> 0.20.0"},
-      {:phoenix_live_dashboard, "~> 0.8.0"},
+      # Phoenix framework - Upgraded to 1.8.0-rc.3
+      {:phoenix, "~> 1.8.0-rc.3"},
+      {:phoenix_ecto, "~> 4.6"},
+      {:phoenix_html, "~> 4.1"},
+      {:phoenix_live_reload, "~> 1.5", only: :dev},
+      {:phoenix_live_view, "~> 1.0.0"},
+      {:phoenix_live_dashboard, "~> 0.8.5"},
 
-      # Database
-      {:ecto_sql, "~> 3.10"},
-      {:postgrex, ">= 0.17.0"},
+      # Database - Updated versions
+      {:ecto_sql, "~> 3.12"},
+      {:postgrex, "~> 0.19.0"},
 
-      # HTML parsing and testing
-      {:floki, ">= 0.36.0", only: :test},
+      # HTML parsing and testing - Updated
+      {:floki, "~> 0.36.0", only: :test},
 
-      # Asset management
-      {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
+      # Asset management - Updated
+      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.3.1", runtime: Mix.env() == :dev},
 
-      # HTTP client
-      {:finch, "~> 0.16"},
+      # HTTP client - Updated
+      {:finch, "~> 0.19"},
 
-      # Email
-      {:swoosh, "~> 1.14"},
+      # Email - Updated
+      {:swoosh, "~> 1.17"},
 
-      # Telemetry and monitoring
-      {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"},
+      # Telemetry and monitoring - Updated
+      {:telemetry_metrics, "~> 1.0"},
+      {:telemetry_poller, "~> 1.1"},
 
-      # Internationalization
-      {:gettext, "~> 0.22"},
+      # Internationalization - Updated
+      {:gettext, "~> 0.26"},
 
-      # JSON handling
+      # JSON handling - Updated
       {:jason, "~> 1.4"},
 
-      # Clustering
+      # Clustering - Updated
       {:dns_cluster, "~> 0.1"},
 
-      # Web server
-      {:bandit, "~> 1.0"},
+      # Web server - Updated
+      {:bandit, "~> 1.6"},
 
-      # Development tools
+      # Development tools - Updated
       {:tidewave, "~> 0.1", only: :dev},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:ex_machina, "~> 2.7", only: :test},
+      {:ex_machina, "~> 2.8", only: :test},
       {:mox, "~> 1.1", only: :test}
     ]
   end

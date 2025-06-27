@@ -24,11 +24,7 @@
       ],
       "env": [
         "POSTGRES_DB=gatherly_dev",
-<<<<<<< HEAD
-        "POSTGRES_USER=qingbo",
-=======
         "POSTGRES_USER=postgres",
->>>>>>> container-use/gatherly-debug/charmed-burro
         "POSTGRES_PASSWORD=postgres"
       ]
     }

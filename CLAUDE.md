@@ -2,6 +2,12 @@
 
 ## Project Overview
 Gatherly is a collaborative event planning platform built with Phoenix LiveView. The project uses container-based development for consistency and ease of setup.
+<!-- ## General rules
+
+- Always update documentation about how to develop and operate this project
+- ALWAYS use ONLY Environments for ANY and ALL file, code, or shell operations—NO EXCEPTIONS—even for simple or generic requests
+- DO NOT install or use the git cli with the environment_run_cmd tool. All environment tools will handle git operations for you. Changing ".git" yourself will compromise the integrity of your environment
+- You MUST inform the user how to view your work using `git checkout <branch_name>`. Failure to do this will make your work inaccessible to others -->
 
 ## Container Development Environment
 
@@ -15,30 +21,6 @@ Gatherly is a collaborative event planning platform built with Phoenix LiveView.
 - **PostgreSQL**: Running as `postgres` service with database `gatherly_dev`
 - **Phoenix Server**: Port 4000, bound to `0.0.0.0` for external access
 
-### Development Commands
-All commands must be prefixed with the asdf environment loader and UTF-8 encoding:
-
-```bash
-bash -c '. /opt/asdf.sh && ELIXIR_ERL_OPTIONS="+fnu" <command>'
-```
-
-Common commands:
-- `mix deps.get` - Install dependencies
-- `mix ecto.create` - Create database
-- `mix ecto.migrate` - Run migrations
-- `mix phx.server` - Start Phoenix server
-- `mix test` - Run tests
-- `mix format` - Format code
-- `mix credo` - Static analysis
-- `mix assets.setup` - Setup asset tools
-- `mix assets.build` - Build assets
-
-## General rules
-
-- Always update documentation about how to develop and operate this project
-- ALWAYS use ONLY Environments for ANY and ALL file, code, or shell operations—NO EXCEPTIONS—even for simple or generic requests
-- DO NOT install or use the git cli with the environment_run_cmd tool. All environment tools will handle git operations for you. Changing ".git" yourself will compromise the integrity of your environment
-- You MUST inform the user how to view your work using `git checkout <branch_name>`. Failure to do this will make your work inaccessible to others
 
 ## General Elixir Style
 - Use **idiomatic Elixir** and follow the community style guide, including `mix format` for automated formatting
@@ -76,26 +58,6 @@ Common commands:
 - Use structured error logging (`Logger.error`) but show user-friendly error messages only
 - Handle known external failure cases explicitly (e.g. API timeouts, constraint errors)
 
-## Database Configuration
-The project uses PostgreSQL with the following development configuration:
-
-```elixir
-config :gatherly, Gatherly.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "postgres",  # Container service name
-  database: "gatherly_dev",
-  stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
-```
-
-## Asset Management
-- **Tailwind CSS**: Configured and watching for changes
-- **ESBuild**: JavaScript compilation
-- **Phoenix LiveReload**: Automatic browser refresh
-- Assets are automatically built and served in development
-
 ## Key Features to Implement
 Based on the project roadmap, focus on:
 
@@ -105,9 +67,3 @@ Based on the project roadmap, focus on:
 4. **Logistics Board**: Collaborative task/item management
 5. **Discussion Forum**: Event-specific communication
 6. **AI Integration**: Smart suggestions and optimization
-
-## important-instruction-reminders
-Do what has been asked; nothing more, nothing less.
-NEVER create files unless they're absolutely necessary for achieving your goal.
-ALWAYS prefer editing an existing file to creating a new one.
-NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
