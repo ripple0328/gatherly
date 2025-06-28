@@ -13,8 +13,6 @@ Development commands:
 - `mix test` - Run tests
 - `mix format` - Format code
 - `mix credo` - Run static analysis
-- `cd assets && npm install` - Install frontend dependencies
-- `cd assets && npm run build` - Build frontend assets
 
 Project structure:
 - lib/gatherly/ - Core domain logic and contexts
