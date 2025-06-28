@@ -18,9 +18,8 @@ Gatherly uses a container-based development approach that provides:
 The container environment is configured with the exact versions specified in `.tool-versions`:
 
 ```
-elixir 1.18.4-otp-27
-erlang 27.0
-nodejs 24.2.0
+elixir 1.18.4-otp-28
+erlang 28.0.1
 ```
 
 ### Services
@@ -40,8 +39,7 @@ Using Claude Code or compatible container tooling:
 1. Open the project directory
 2. The container environment will automatically:
    - Pull the Ubuntu 24.04 base image
-   - Install Elixir 1.18.4 with Erlang/OTP 27
-   - Install Node.js 24.2.0
+   - Install Elixir 1.18.4 with Erlang/OTP 28.0.1
    - Set up PostgreSQL service
    - Install project dependencies
    - Build frontend assets
@@ -62,7 +60,7 @@ Internal URL: http://container-name:4000
 All code changes are automatically synced between your local filesystem and the container. The Phoenix server includes hot reloading, so changes to:
 
 - Elixir code (`.ex`, `.exs` files)
-- Templates (`.heex` files) 
+- Templates (`.heex` files)
 - CSS (Tailwind classes)
 - JavaScript files
 
@@ -155,7 +153,7 @@ The container environment uses the following database configuration:
 ```elixir
 config :gatherly, Gatherly.Repo,
   username: "postgres",
-  password: "postgres", 
+  password: "postgres",
   hostname: "postgres",  # Service name in container
   database: "gatherly_dev",
   stacktrace: true,
@@ -173,7 +171,7 @@ config :gatherly, Gatherly.Repo,
 │   └── tailwind.config.js # Tailwind configuration
 ├── config/                # Application configuration
 │   ├── config.exs         # Base config
-│   ├── dev.exs           # Development config  
+│   ├── dev.exs           # Development config
 │   ├── prod.exs          # Production config
 │   └── test.exs          # Test config
 ├── lib/
@@ -218,7 +216,7 @@ psql -h postgres -U postgres -d gatherly_dev
 The container environment automatically manages git operations:
 
 1. **Automatic Commits**: Changes are automatically committed to a container branch
-2. **Branch Naming**: Container branches follow the pattern `container-use/environment-name/random-id`  
+2. **Branch Naming**: Container branches follow the pattern `container-use/environment-name/random-id`
 3. **Merging Changes**: To merge container changes to main:
 
 ```bash
@@ -243,7 +241,7 @@ git push origin main
 If you need to completely reset the environment:
 
 1. Stop the container
-2. Remove the container and associated volumes  
+2. Remove the container and associated volumes
 3. Restart with a fresh environment
 
 ### Checking Service Status
@@ -269,7 +267,7 @@ bash -c '. /opt/asdf.sh && node --version'
 Once your development environment is running:
 
 1. Explore the existing Phoenix application structure
-2. Review the test suite with `mix test`  
+2. Review the test suite with `mix test`
 3. Check code quality with `mix credo`
 4. Start implementing features following the project roadmap
 5. Use the collaborative workflow to share your progress

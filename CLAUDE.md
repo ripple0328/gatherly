@@ -12,9 +12,8 @@ Gatherly is a collaborative event planning platform built with Phoenix LiveView.
 ## Container Development Environment
 
 ### Tool Versions (Verified Working)
-- **Elixir**: 1.18.4-otp-27
-- **Erlang/OTP**: 27.0
-- **Node.js**: 24.2.0
+- **Elixir**: 1.18.4-otp-28
+- **Erlang/OTP**: 28.0.1
 - **PostgreSQL**: 16
 
 ### Services

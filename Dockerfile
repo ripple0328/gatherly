@@ -1,24 +1,24 @@
 # Use the official Elixir image with the required OTP version
-FROM elixir:1.18.4-otp-27
+FROM elixir:1.18.4-otp-28
 
 # Install required system dependencies
 RUN apt-get update && \
-    apt-get install -y \
-    build-essential \
-    inotify-tools \
-    postgresql-client \
-    && rm -rf /var/lib/apt/lists/*
+	apt-get install -y \
+	build-essential \
+	inotify-tools \
+	postgresql-client \
+	&& rm -rf /var/lib/apt/lists/*
 
 # Install Node.js 24.x
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
-    apt-get install -y nodejs
+	apt-get install -y nodejs
 
 # Create app directory and copy the Mixfile and mix.lock to cache the deps
 WORKDIR /app
 
 # Install hex package manager
 RUN mix local.hex --force && \
-    mix local.rebar --force
+	mix local.rebar --force
 
 # Copy mix files for dependency caching
 COPY mix.exs mix.lock ./
@@ -32,8 +32,8 @@ COPY . .
 
 # Install Node.js dependencies
 RUN cd assets && \
-    npm install && \
-    cd ..
+	npm install && \
+	cd ..
 
 # Compile the project
 RUN mix do compile

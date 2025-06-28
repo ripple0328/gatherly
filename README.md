@@ -20,7 +20,7 @@ The recommended way to develop Gatherly is using containers, which eliminates th
    ```
 
 2. **Start the development environment**
-   
+
    Using Claude Code or compatible container tooling:
    ```bash
    # Open the project in a containerized environment
@@ -34,11 +34,11 @@ The recommended way to develop Gatherly is using containers, which eliminates th
    ```
 
 3. **Access the application**
-   
+
    The development server will be available at the provided external URL (typically `http://127.0.0.1:<port>`).
 
 4. **View your changes**
-   
+
    To view your work from the host system:
    ```bash
    git checkout <container-branch-name>
@@ -48,9 +48,8 @@ The recommended way to develop Gatherly is using containers, which eliminates th
 
 The project uses the following versions as specified in `.tool-versions`:
 
-- **Elixir**: 1.18.4-otp-27
-- **Erlang/OTP**: 27.0  
-- **Node.js**: 24.2.0
+- **Elixir**: 1.18.4-otp-28
+- **Erlang/OTP**: 28.0.1
 
 ### Native Installation (Alternative)
 
