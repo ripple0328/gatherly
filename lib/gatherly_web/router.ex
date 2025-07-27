@@ -20,6 +20,13 @@ defmodule GatherlyWeb.Router do
     get "/", PageController, :home
   end
 
+  # Health check endpoint for Fly.io
+  scope "/", GatherlyWeb do
+    pipe_through :api
+
+    get "/health", PageController, :health
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", GatherlyWeb do
   #   pipe_through :api

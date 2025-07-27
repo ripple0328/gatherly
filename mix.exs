@@ -10,7 +10,15 @@ defmodule Gatherly.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      listeners: listeners(Mix.env())
+      listeners: listeners(Mix.env()),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test,
+        "coveralls.xml": :test
+      ]
     ]
   end
 
@@ -37,34 +45,34 @@ defmodule Gatherly.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      # Phoenix framework - Upgraded to 1.8.0-rc.3
-      {:phoenix, "~> 1.8.0-rc.3"},
-      {:phoenix_ecto, "~> 4.6"},
+      # Phoenix framework - Updated to latest RC
+      {:phoenix, "~> 1.8.0-rc.4"},
+      {:phoenix_ecto, "~> 4.6.5"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.5", only: :dev},
       {:phoenix_live_view, "~> 1.0.0"},
       {:phoenix_live_dashboard, "~> 0.8.5"},
 
       # Database - Updated versions
-      {:ecto_sql, "~> 3.12"},
-      {:postgrex, "~> 0.19.0"},
+      {:ecto_sql, "~> 3.13.2"},
+      {:postgrex, "~> 0.20.0"},
 
       # HTML parsing and testing - Updated
-      {:floki, "~> 0.36.0", only: :test},
+      {:floki, "~> 0.38.0", only: :test},
 
       # Asset management - Updated
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.3.1", runtime: Mix.env() == :dev},
 
       # HTTP client - Updated
-      {:finch, "~> 0.19"},
+      {:finch, "~> 0.20.0"},
 
       # Email - Updated
-      {:swoosh, "~> 1.17"},
+      {:swoosh, "~> 1.19.4"},
 
       # Telemetry and monitoring - Updated
       {:telemetry_metrics, "~> 1.0"},
-      {:telemetry_poller, "~> 1.1"},
+      {:telemetry_poller, "~> 1.3.0"},
 
       # Internationalization - Updated
       {:gettext, "~> 0.26"},
@@ -73,17 +81,20 @@ defmodule Gatherly.MixProject do
       {:jason, "~> 1.4"},
 
       # Clustering - Updated
-      {:dns_cluster, "~> 0.1"},
+      {:dns_cluster, "~> 0.2.0"},
 
       # Web server - Updated
       {:bandit, "~> 1.6"},
 
       # Development tools - Updated
-      {:tidewave, "~> 0.1", only: :dev},
+      {:tidewave, "~> 0.2.0", only: :dev},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_machina, "~> 2.8", only: :test},
-      {:mox, "~> 1.1", only: :test}
+      {:mox, "~> 1.2", only: :test},
+
+      # Test coverage
+      {:excoveralls, "~> 0.18", only: :test}
     ]
   end
 

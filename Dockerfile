@@ -1,4 +1,4 @@
-# Use the official Elixir image with the required OTP version
+# Use the official Elixir image with the latest OTP version
 FROM elixir:1.18.4-otp-28
 
 # Install required system dependencies
@@ -9,10 +9,6 @@ RUN apt-get update && \
 	postgresql-client \
 	&& rm -rf /var/lib/apt/lists/*
 
-# Install Node.js 24.x
-RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
-	apt-get install -y nodejs
-
 # Create app directory and copy the Mixfile and mix.lock to cache the deps
 WORKDIR /app
 
@@ -20,26 +16,26 @@ WORKDIR /app
 RUN mix local.hex --force && \
 	mix local.rebar --force
 
+# Set production environment
+ENV MIX_ENV=prod
+
 # Copy mix files for dependency caching
 COPY mix.exs mix.lock ./
 
-
 # Install dependencies
-RUN mix deps.get
+RUN mix deps.get --only prod
 
 # Copy the rest of the application
 COPY . .
 
-# Install Node.js dependencies
-RUN cd assets && \
-	npm install && \
-	cd ..
+# Setup and build assets
+RUN mix assets.setup && mix assets.deploy
 
 # Compile the project
-RUN mix do compile
+RUN mix do compile, phx.digest
 
 # Expose the port the app runs on
-EXPOSE 4000
+EXPOSE 8080
 
 # Start the application
 CMD ["mix", "phx.server"]

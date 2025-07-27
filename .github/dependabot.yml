@@ -1,0 +1,72 @@
+version: 2
+updates:
+  # Enable version updates for Elixir/Mix dependencies
+  - package-ecosystem: "mix"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "elixir"
+    reviewers:
+      - "qingbo"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      phoenix:
+        patterns:
+          - "phoenix*"
+        update-types:
+          - "minor"
+          - "patch"
+      testing:
+        patterns:
+          - "ex_machina"
+          - "mox"
+          - "floki"
+          - "excoveralls"
+        update-types:
+          - "minor"
+          - "patch"
+      dev-tools:
+        patterns:
+          - "credo"
+          - "dialyxir"
+          - "tidewave"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
+  # Enable version updates for Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday" 
+      time: "09:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "docker"
+    commit-message:
+      prefix: "docker"
+      include: "scope" 

@@ -14,11 +14,23 @@ Gatherly is a collaborative event planning platform built with Phoenix LiveView.
 ### Tool Versions (Verified Working)
 - **Elixir**: 1.18.4-otp-28
 - **Erlang/OTP**: 28.0.1
-- **PostgreSQL**: 16
+- **PostgreSQL**: 17.5
+- **Phoenix**: 1.8.0-rc.3
 
 ### Services
 - **PostgreSQL**: Running as `postgres` service with database `gatherly_dev`
 - **Phoenix Server**: Port 4000, bound to `0.0.0.0` for external access
+
+### Asset Management
+- **Asset Pipeline**: Uses esbuild and tailwind from Elixir dependencies (no Node.js required)
+- **JavaScript**: Minimal JavaScript with Phoenix LiveView client
+- **CSS**: Tailwind CSS with PostCSS processing
+
+### CI/CD
+- **GitHub Actions**: Automated lint, test, and deploy pipeline
+- **Deployment**: Fly.io with automatic database migrations
+- **Health Check**: `/health` endpoint for monitoring
+- **Documentation**: See `docs/CICD.md` for detailed setup instructions
 
 
 ## General Elixir Style

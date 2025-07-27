@@ -1,7 +1,18 @@
-# AI Coding Agent Guidelines (Elixir/Phoenix)
-## General rules
+# AI Coding Agent Guidelines (Elixir/Phoenix 1.8)
 
-always update document about how to develop and operate this project
+## Project Context
+- **Framework**: Phoenix 1.8.0-rc.4 (Latest RC)
+- **LiveView**: 1.0.17 (Latest stable)
+- **Elixir**: 1.18.4+ (Required for latest features)
+- **Architecture**: Modern Phoenix with LiveView-first approach
+
+## General Rules
+
+- Always update documentation about how to develop and operate this project
+- Follow Phoenix 1.8 conventions and leverage new features
+- Prioritize LiveView over traditional controllers where appropriate
+- Use verified routes (~p) everywhere for compile-time safety
+
 ## General Elixir Style
 - Use **idiomatic Elixir** and follow the community style guide, including `mix format` for automated formatting.
 - Follow **naming conventions**: use `snake_case` for atoms, functions, variables, and file names, and `PascalCase` (CamelCase) for modules. Keep **one module per file**.
@@ -9,36 +20,213 @@ always update document about how to develop and operate this project
 - Use `with` for sequential operations that may fail, and always handle both success and failure cases. Annotate public functions with `@spec`, define types with `@type`/`@typedoc`, and document modules and functions with `@moduledoc` and `@doc` using Markdown.
 - Prefer **immutable data**; use `__MODULE__` for self-references. Avoid unnecessary macros or metaprogramming.
 
+## Phoenix 1.8 Specific Features
+
+### New LiveView Features
+- **Streams**: Use `stream/4` for efficient handling of large collections
+- **Async/Await**: Leverage `assign_async/3` and `start_async/2` for background operations
+- **Form Recovery**: Automatic form state recovery on disconnects
+- **Component Attributes**: Use `attr/3` and `slot/3` for component definitions
+- **JS Commands**: Enhanced `Phoenix.LiveView.JS` for client-side interactions
+
+### Modern Routing
+- Use `live_session/3` for optimized live navigation
+- Implement `on_mount` hooks for cross-cutting concerns
+- Use verified routes (`~p`) exclusively for type safety
+- Prefer `push_navigate/2` over `push_redirect/2`
+
+### Enhanced Components
+- Create function components with `use Phoenix.Component`
+- Use `attr/3` for compile-time attribute validation
+- Define slots with `slot/3` for flexible component composition
+- Leverage `render_slot/2` for slot rendering
+
 ## Phoenix Practices (Routing, Contexts, Components)
 - Use **contexts** for domain logic in `lib/my_app/`, and keep web interface code in `lib/my_app_web/`.
 - Define **routes** using `scope`, `pipe_through`, and `resources` macros. Use `:only` or `:except` to limit routes.
 - Use **verified routes** (`~p`) everywhere to catch invalid paths at compile time.
 - Organize components in `lib/my_app_web/components/` and co-locate LiveView-specific components when needed.
 - Keep **controllers thin** and delegate logic to contexts. Use Phoenix views or function components for rendering.
+- Use UI components whenever possible - create reusable, well-documented components
+- Always try to use or create reusable components
 
 ## LiveView Conventions
+
+### Core Patterns
 - Prefer **LiveView** over JS for interactivity. Use `mount`, `render`, and `handle_event` to manage state and actions.
 - Break UIs into **function components** (`Phoenix.Component`) or **LiveComponents** as needed. Use built-in `<.form>`, `<.link>`, and others.
 - Use `Task.async` and `handle_info` for background work to avoid blocking `render`.
 - When building for **LiveView Native**, follow native UI rules and avoid DOM-specific logic.
 
-## Ash Framework Usage
-- Define **Ash resources** in `lib/my_app`, using `use Ash.Resource` and specifying `attributes`, `actions`, `relationships`, etc.
-- Use `postgres do ... end` with AshPostgres for persistence and automatic schema generation.
-- Organize Ash resources by domain context. Use AshPhoenix or AshJsonApi for exposure via HTTP.
-- Implement domain logic with **Ash actions** or `Ash.Resource.Change` modules.
-- Use **policies** and **validations** for access and integrity control.
+### Async Operations (Phoenix 1.8)
+```elixir
+# Use assign_async for data loading
+def mount(_params, _session, socket) do
+  socket = 
+    socket
+    |> assign_async(:users, fn -> 
+      {:ok, %{users: MyApp.Accounts.list_users()}}
+    end)
+  
+  {:ok, socket}
+end
+
+# Use start_async for background tasks
+def handle_event("process", _params, socket) do
+  socket = start_async(socket, :processing, fn ->
+    MyApp.Worker.process_data()
+  end)
+  
+  {:noreply, socket}
+end
+```
+
+### Streams for Large Collections
+```elixir
+# Initialize stream
+def mount(_params, _session, socket) do
+  socket = stream(socket, :posts, [])
+  {:ok, socket}
+end
+
+# Add to stream
+def handle_info({:new_post, post}, socket) do
+  {:noreply, stream_insert(socket, :posts, post)}
+end
+```
+
+### Modern Component Definitions
+```elixir
+defmodule MyAppWeb.Components.Card do
+  use Phoenix.Component
+  
+  attr :title, :string, required: true
+  attr :class, :string, default: ""
+  slot :inner_block, required: true
+  
+  def card(assigns) do
+    ~H"""
+    <div class={"card #{@class}"}>
+      <h3><%= @title %></h3>
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+end
+```
 
 ## Testing & Documentation
 - Write **ExUnit** tests for context logic, controllers, and LiveViews. Use `Phoenix.ConnTest` and `Phoenix.LiveViewTest`.
 - Use test factories or fixtures (e.g. ExMachina). Follow consistent file naming based on `lib/` structure.
 - Annotate all public functions with `@doc`, `@spec`, and `@moduledoc`. Include `## Examples` with `iex>` in docs.
 - Use **Credo** and **Dialyzer** for linting and static analysis.
+- Test async operations using `Phoenix.LiveViewTest.render_async/1`
+- Test streams with `Phoenix.LiveViewTest.render_hook/3`
 
 ## Error Handling Patterns
-- Follow the **“let it crash”** philosophy; use supervision trees and avoid deep rescue blocks.
+- Follow the **"let it crash"** philosophy; use supervision trees and avoid deep rescue blocks.
 - Handle expected errors with `{:ok, val}` / `{:error, reason}` patterns and `with` chains.
 - Use `action_fallback` in API controllers for unified error handling.
 - Use Ecto changesets to validate input and propagate validation errors to forms.
 - Use structured error logging (`Logger.error`) but show user-friendly error messages only.
 - Handle known external failure cases explicitly (e.g. API timeouts, constraint errors).
+
+## Phoenix 1.8 Migration Notes
+
+### From Previous Versions
+- Replace `live_redirect` with `push_navigate` for better performance
+- Use `attr/3` instead of manual assign validation
+- Leverage streams instead of assign-based lists for large collections
+- Adopt async patterns for better user experience
+
+### Performance Optimizations
+- Use streams for large collections to avoid full re-renders
+- Implement async data loading to prevent blocking
+- Leverage Phoenix 1.8's improved diff algorithm
+- Use `phx-update="stream"` for efficient DOM updates
+
+### New Debugging Features
+- Use `Phoenix.LiveView.Utils.assign_rest/2` for debugging assigns
+- Leverage enhanced error messages in development
+- Use telemetry events for monitoring LiveView performance
+
+## Development Workflow
+
+### Setup Commands
+```bash
+# Get dependencies with latest versions
+mix deps.get
+
+# Setup database
+mix ecto.setup
+
+# Install assets (no Node.js required)
+mix assets.setup
+
+# Start development server
+mix phx.server
+```
+
+### Testing Commands
+```bash
+# Run all tests
+mix test
+
+# Run with coverage
+mix test --cover
+
+# Test specific module
+mix test test/my_app_web/live/page_live_test.exs
+```
+
+### Code Quality
+```bash
+# Format code
+mix format
+
+# Run linter
+mix credo --strict
+
+# Type checking
+mix dialyzer
+```
+
+## Security Best Practices
+- Always validate user input with Ecto changesets
+- Use CSRF protection on all forms
+- Implement proper authentication and authorization
+- Sanitize user-generated content
+- Use secure headers via Plug.Security
+- Follow OWASP guidelines for web applications
+
+## Performance Guidelines
+- Use streams for large datasets
+- Implement pagination for large result sets
+- Use async operations for external API calls
+- Optimize database queries with proper indexing
+- Use Phoenix 1.8's improved change tracking
+- Monitor with telemetry and observability tools
+
+## AI Agent Specific Instructions
+
+### Code Generation
+- Always generate complete, working code examples
+- Include proper error handling and edge cases
+- Use Phoenix 1.8 patterns and conventions
+- Add comprehensive tests for generated code
+- Include documentation with examples
+
+### Debugging Assistance
+- Analyze errors in context of Phoenix 1.8 features
+- Suggest modern alternatives to deprecated patterns
+- Provide step-by-step debugging instructions
+- Recommend appropriate testing strategies
+
+### Feature Implementation
+- Prefer LiveView solutions over traditional MVC
+- Use modern Phoenix components and patterns
+- Implement proper error boundaries
+- Consider performance implications
+- Follow accessibility best practices
+
+This file should be updated as Phoenix evolves and new patterns emerge.

@@ -5,8 +5,6 @@ A collaborative event planning platform designed for group-based activities such
 ## 🚀 Getting Started
 
 ### Prerequisites
-
-- [Claude Code](https://claude.ai/code) or compatible container runtime
 - Git
 
 ### Development with Containers (Recommended)
@@ -17,20 +15,6 @@ The recommended way to develop Gatherly is using containers, which eliminates th
    ```bash
    git clone https://github.com/yourusername/gatherly.git
    cd gatherly
-   ```
-
-2. **Start the development environment**
-
-   Using Claude Code or compatible container tooling:
-   ```bash
-   # Open the project in a containerized environment
-   # The environment will automatically:
-   # - Install Elixir 1.18.4 with Erlang/OTP 27
-   # - Install Node.js 24.2.0
-   # - Set up PostgreSQL 16
-   # - Install all dependencies
-   # - Run database migrations
-   # - Start the Phoenix server
    ```
 
 3. **Access the application**
@@ -46,36 +30,46 @@ The recommended way to develop Gatherly is using containers, which eliminates th
 
 ### Tool Versions
 
-The project uses the following versions as specified in `.tool-versions`:
+The project uses the following versions as specified in `.tool-versions` and managed by mise:
 
 - **Elixir**: 1.18.4-otp-28
 - **Erlang/OTP**: 28.0.1
+- **PostgreSQL**: 17.5
+- **Phoenix**: 1.8.0-rc.3
+
+These versions are automatically installed and managed by mise when using the containerized development environment.
 
 ### Native Installation (Alternative)
 
 If you prefer to run natively, ensure you have:
 
 - Elixir 1.18+ (with Mix)
-- Erlang/OTP 27+
-- PostgreSQL 14+
-- Node.js 24+ (for asset compilation)
+- Erlang/OTP 28+
+- PostgreSQL 17+
 - Git
+
+**Note**: No Node.js required - assets are handled by esbuild and tailwind from Elixir dependencies.
 
 Then follow these steps:
 
 1. **Install dependencies**
    ```bash
    mix deps.get
-   cd assets && npm install && cd ..
    ```
 
-2. **Set up the database**
+2. **Start the database**
+   ```bash
+   # Start PostgreSQL service (if not already running)
+   mise run postgres
+   ```
+
+3. **Set up the database**
    ```bash
    # Create and migrate your database
    mix ecto.setup
    ```
 
-3. **Start the Phoenix server**
+4. **Start the Phoenix server**
    ```bash
    mix phx.server
    ```
@@ -89,30 +83,34 @@ Then follow these steps:
 When using containers, the development workflow is streamlined:
 
 - **Hot reloading**: Code changes are automatically detected and reloaded
-- **Database**: PostgreSQL runs as a service within the container environment
-- **Assets**: Tailwind CSS and ESBuild are automatically configured and watch for changes
-- **Dependencies**: All dependencies are managed within the container
+- **Database**: PostgreSQL 17.5 runs as a service managed by mise within the container environment
+- **Assets**: Tailwind CSS and esbuild are automatically configured and watch for changes
+- **Dependencies**: All dependencies are managed within the container using mise
+- **Version Management**: mise automatically handles Elixir and Erlang versions
 
 ### Development Commands (Container)
 
 Common tasks in the containerized environment:
 
 ```bash
+# Start database service
+mise run postgres
+
 # Install/update dependencies
-bash -c '. /opt/asdf.sh && ELIXIR_ERL_OPTIONS="+fnu" mix deps.get'
+mix deps.get
 
 # Run tests
-bash -c '. /opt/asdf.sh && ELIXIR_ERL_OPTIONS="+fnu" mix test'
+mix test
 
 # Format code
-bash -c '. /opt/asdf.sh && ELIXIR_ERL_OPTIONS="+fnu" mix format'
+mix format
 
 # Run static analysis
-bash -c '. /opt/asdf.sh && ELIXIR_ERL_OPTIONS="+fnu" mix credo'
+mix credo
 
 # Database operations
-bash -c '. /opt/asdf.sh && ELIXIR_ERL_OPTIONS="+fnu" mix ecto.migrate'
-bash -c '. /opt/asdf.sh && ELIXIR_ERL_OPTIONS="+fnu" mix ecto.reset'
+mix ecto.migrate
+mix ecto.reset
 ```
 
 ### Branching Strategy
@@ -161,13 +159,10 @@ mix ecto.rollback
 
 ### Asset Management
 
-- JavaScript and CSS are managed through `esbuild`
+- JavaScript and CSS are managed through `esbuild` and `tailwind` from Elixir dependencies
 - TailwindCSS is included by default
-- Assets are automatically built and watched in the container environment
-- For manual asset operations:
-  ```bash
-  cd assets && npm run watch
-  ```
+- Assets are automatically built and watched during development
+- No Node.js or npm required - everything is handled by Phoenix's asset pipeline
 
 ## 🧪 Testing
 
