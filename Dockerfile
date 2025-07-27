@@ -1,5 +1,5 @@
 # Use the official Elixir image with the latest OTP version
-FROM elixir:1.18.4-otp-28
+FROM elixir:1.18-otp-28
 
 # Install required system dependencies
 RUN apt-get update && \
