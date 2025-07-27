@@ -222,7 +222,7 @@ jobs:
       continue-on-error: true
     
     - name: Upload coverage reports
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       with:
         file: ./cover/excoveralls.json
         flags: unittests
