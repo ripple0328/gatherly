@@ -212,7 +212,7 @@ jobs:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/gatherly_test
     
     - name: Run tests with coverage
-      run: mix coveralls --umbrella
+      run: mix coveralls
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/gatherly_test
 

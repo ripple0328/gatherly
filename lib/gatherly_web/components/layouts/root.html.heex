@@ -4,45 +4,56 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <meta name="description" content="Gatherly - Plan perfect gatherings with ease. Your all-in-one solution for organizing and coordinating group events." />
+    <meta
+      name="description"
+      content="Gatherly - Plan perfect gatherings with ease. Your all-in-one solution for organizing and coordinating group events."
+    />
     
-    <!-- Favicon -->
+<!-- Favicon -->
     <link rel="icon" type="image/png" href="/images/favicon.png" />
     
-    <!-- Open Graph / Social Media -->
+<!-- Open Graph / Social Media -->
     <meta property="og:title" content="Gatherly - Plan Perfect Gatherings" />
-    <meta property="og:description" content="Your all-in-one solution for organizing and coordinating group events." />
+    <meta
+      property="og:description"
+      content="Your all-in-one solution for organizing and coordinating group events."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://gatherly.app" />
     <meta property="og:image" content="/images/og-image.jpg" />
+
+    <title>Gatherly{if assigns[:page_title], do: " · #{assigns[:page_title]}"}</title>
     
-    <title>Gatherly<%= if assigns[:page_title], do: " · #{assigns[:page_title]}" %></title>
+<!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
-    
-    <!-- Styles -->
+<!-- Styles -->
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     
-    <!-- Scripts -->
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}></script>
+<!-- Scripts -->
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
     
-    <!-- Alpine.js for interactivity -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<!-- Alpine.js for interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js">
+    </script>
   </head>
   <body class="min-h-screen bg-gradient-to-br from-base-100 to-base-200 bg-fixed font-sans antialiased text-gray-800 leading-relaxed">
     <!-- Smooth scroll container -->
     <div class="min-h-screen flex flex-col">
-      <%= @inner_content %>
+      {@inner_content}
       
-      <!-- Footer -->
+<!-- Footer -->
       <footer class="bg-base-300 text-base-content py-8 mt-16">
         <div class="container mx-auto px-4">
           <div class="flex flex-col md:flex-row justify-between items-center">
             <div class="mb-4 md:mb-0">
-              <p class="text-sm">© <%= DateTime.utc_now().year %> Gatherly. All rights reserved.</p>
+              <p class="text-sm">© {DateTime.utc_now().year} Gatherly. All rights reserved.</p>
             </div>
             <div class="flex space-x-4">
               <a href="#" class="hover:text-primary transition-colors">Privacy</a>
@@ -54,14 +65,25 @@
       </footer>
     </div>
     
-    <!-- Back to top button -->
-    <button 
-      onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+<!-- Back to top button -->
+    <button
+      onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
       class="fixed bottom-8 right-8 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary-focus transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
       aria-label="Back to top"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 10l7-7m0 0l7 7m-7-7v18"
+        />
       </svg>
     </button>
   </body>

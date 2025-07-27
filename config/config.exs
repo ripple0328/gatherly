@@ -21,7 +21,7 @@ config :gatherly, GatherlyWeb.Endpoint,
   ],
   pubsub_server: Gatherly.PubSub,
   live_view: [signing_salt: "xW6HQYQa"],
-  socket: "/live", 
+  socket: "/live",
   longpoll: false
 
 # Configures the mailer
