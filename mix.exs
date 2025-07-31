@@ -45,6 +45,7 @@ defmodule Gatherly.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:igniter, "~> 0.6", only: [:dev, :test]},
       # Phoenix framework - Updated to latest RC
       {:phoenix, "~> 1.8.0-rc.4"},
       {:phoenix_ecto, "~> 4.6.5"},
@@ -85,9 +86,8 @@ defmodule Gatherly.MixProject do
 
       # Web server - Updated
       {:bandit, "~> 1.6"},
-
       # Development tools - Updated
-      {:tidewave, "~> 0.2.0", only: :dev},
+      {:tidewave, "~> 0.2", only: [:dev]},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_machina, "~> 2.8", only: :test},
