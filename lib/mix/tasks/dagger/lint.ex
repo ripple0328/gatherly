@@ -48,27 +48,27 @@ defmodule Mix.Tasks.Dagger.Lint do
   end
 
   @impl true
-  def run(opts) do
+  def execute(opts \\ []) do
     skip_dialyzer = Keyword.get(opts, :skip_dialyzer, false)
     strict = Keyword.get(opts, :strict, false)
     dialyzer_only = Keyword.get(opts, :dialyzer_only, false)
     extra_args = Keyword.get(opts, :extra_args, [])
-    
+
     Client.with_client(fn client ->
       container = Containers.elixir_dev(client)
-      
+
       # Run Credo (unless dialyzer-only)
       unless dialyzer_only do
         run_credo(container, strict, extra_args)
       end
-      
+
       # Run Dialyzer (unless skipped)
       unless skip_dialyzer do
         run_dialyzer(container, extra_args)
       end
-      
+
       log_step("Linting completed!", :finish)
-      
+
       {:ok, :lint_completed}
     end)
   end
