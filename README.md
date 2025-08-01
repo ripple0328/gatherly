@@ -36,6 +36,7 @@ mix dagger.test             # Run tests
 
 # CI verification (run exact same pipeline as CI)
 mix dagger.ci               # Complete CI pipeline locally
+mix dagger.deploy          # Build and push image to Fly.io (tagged with commit SHA)
 ```
 
 **📖 For detailed development workflows, see [Dagger Integration Guide](lib/gatherly/dagger/README.md)**

@@ -100,22 +100,38 @@ jobs:
     needs: [lint, test, security]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment: production
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    
+
+    - name: Set up Elixir
+      uses: erlef/setup-beam@v1
+      with:
+        elixir-version: ${{ env.ELIXIR_VERSION }}
+        otp-version: ${{ env.OTP_VERSION }}
+
+    - name: Install dependencies
+      run: mix deps.get
+
+    - name: Set build tag
+      id: vars
+      run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+    - name: Build and push image
+      run: mix dagger.deploy
+      env:
+        DAGGER_LOG_FORMAT: plain
+        GIT_SHA: ${{ steps.vars.outputs.sha }}
+
     - name: Setup Fly CLI
       uses: superfly/flyctl-actions/setup-flyctl@master
-    
-    - name: Verify Fly.io configuration
-      run: flyctl config validate
-      env:
-        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-    
+
     - name: Deploy to Fly.io
-      run: flyctl deploy --remote-only --wait-timeout 300
+      run: |
+        APP_NAME=$(grep -Po '^app\s*=\s*"\K[^"]+' fly.toml)
+        flyctl deploy --image registry.fly.io/${APP_NAME}:${{ steps.vars.outputs.sha }} --wait-timeout 300
       env:
         FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
