@@ -7,7 +7,7 @@ A collaborative event planning platform designed for group-based activities such
 ### Prerequisites
 - Docker (for containerized development)
 - Git
-
+- [mise](https://github.com/jdxcode/mise)
 ### Containerized Development (Recommended)
 
 **One-command setup:**
@@ -26,7 +26,7 @@ Visit [`localhost:4000`](http://localhost:4000) to see your app running.
 mix dagger.dev.start        # Start services
 mix dagger.dev.shell --iex  # Interactive development
 
-# Database operations  
+# Database operations
 mix dagger.db.reset         # Fresh database
 mix dagger.db.shell         # Database debugging
 
@@ -42,7 +42,7 @@ mix dagger.ci               # Complete CI pipeline locally
 
 ### Tool Versions
 
-- **Elixir**: 1.18.4-otp-28  
+- **Elixir**: 1.18.4-otp-28
 - **Erlang/OTP**: 28.0.2
 - **PostgreSQL**: 17.5
 - **Phoenix**: 1.8.0-rc.4
@@ -53,14 +53,14 @@ All managed automatically in containers - no local installation needed.
 
 ### Key Features
 - **🐳 Containerized**: Consistent environments, no local dependencies
-- **🔄 Hot Reloading**: Code changes automatically detected and reloaded  
+- **🔄 Hot Reloading**: Code changes automatically detected and reloaded
 - **🗄️ Managed Database**: PostgreSQL runs as containerized service
 - **⚡ Fast CI**: Run complete CI pipeline locally before pushing
 - **🔧 Asset Pipeline**: TailwindCSS + esbuild handled by Phoenix (no Node.js required)
 
 ### Branching Strategy
 - `main` - Production-ready code
-- `develop` - Integration branch for features  
+- `develop` - Integration branch for features
 - `feature/*` - Feature branches
 - `bugfix/*` - Bug fixes
 - `hotfix/*` - Critical production fixes

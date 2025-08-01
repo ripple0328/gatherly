@@ -1,4 +1,2 @@
 [tools]
 elixir = "1.18.4-otp-28"
-erlang = "28.0.2"
-postgres = "17.5"
