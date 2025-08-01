@@ -53,7 +53,7 @@ defmodule Gatherly.MixProject do
       {:phoenix_ecto, "~> 4.6.5"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.5", only: :dev},
-      {:phoenix_live_view, "~> 1.1.1"},
+      {:phoenix_live_view, "~> 1.1.2"},
       {:phoenix_live_dashboard, "~> 0.8.5"},
 
       # Database - Updated versions
