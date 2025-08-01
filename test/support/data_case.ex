@@ -24,6 +24,7 @@ defmodule Gatherly.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Gatherly.DataCase
+      alias Ecto.Adapters.SQL.Sandbox
     end
   end
 
@@ -36,8 +37,8 @@ defmodule Gatherly.DataCase do
   Sets up the sandbox based on the test tags.
   """
   def setup_sandbox(tags) do
-    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Gatherly.Repo, shared: not tags[:async])
-    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
+    pid = Sandbox.start_owner!(Gatherly.Repo, shared: not tags[:async])
+    on_exit(fn -> Sandbox.stop_owner(pid) end)
   end
 
   @doc """

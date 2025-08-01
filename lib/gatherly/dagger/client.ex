@@ -1,7 +1,7 @@
 defmodule Gatherly.Dagger.Client do
   @moduledoc """
   Dagger client wrapper providing a consistent interface for Dagger operations.
-  
+
   This module handles connection management and provides convenience functions
   for common Dagger operations.
   """
@@ -13,13 +13,11 @@ defmodule Gatherly.Dagger.Client do
   """
   @spec connect() :: {:ok, t()} | {:error, term()}
   def connect do
-    try do
-      client = Dagger.connect!()
-      {:ok, client}
-    rescue
-      error ->
-        {:error, error}
-    end
+    client = Dagger.connect!()
+    {:ok, client}
+  rescue
+    error ->
+      {:error, error}
   end
 
   @doc """
@@ -27,12 +25,10 @@ defmodule Gatherly.Dagger.Client do
   """
   @spec close(t()) :: :ok
   def close(client) do
-    try do
-      Dagger.close(client)
-      :ok
-    rescue
-      _ -> :ok
-    end
+    Dagger.close(client)
+    :ok
+  rescue
+    _ -> :ok
   end
 
   @doc """

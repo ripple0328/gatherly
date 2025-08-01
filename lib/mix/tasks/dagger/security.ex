@@ -15,7 +15,8 @@ defmodule Mix.Tasks.Dagger.Security do
   """
 
   use Mix.Task
-  use Gatherly.Dagger.Workflow
+  import Gatherly.Dagger.Workflow
+  alias Gatherly.Dagger.{Client, Containers}
 
   @impl true
   def run(_args) do
@@ -23,22 +24,32 @@ defmodule Mix.Tasks.Dagger.Security do
     execute()
   end
 
-  @impl true
-  def run(opts) do
+  def execute(_opts \\ []) do
     Client.with_client(fn client ->
       container = Containers.elixir_dev(client)
 
       log_step("Checking for retired packages")
-      {:ok, _} = exec_and_get_output(container, "mix", ["hex.audit"])
+      exec(container, ["hex.audit"])
 
       log_step("Checking for outdated packages")
-      {:ok, _} = exec_and_get_output(container, "mix", ["hex.outdated"])
+      exec(container, ["hex.outdated"])
 
       log_step("Verifying dependencies")
-      {:ok, _} = exec_and_get_output(container, "mix", ["deps.get", "--check-locked"])
+      exec(container, ["deps.get", "--check-locked"])
 
       log_step("Security checks completed!", :finish)
       {:ok, :security_completed}
     end)
+  end
+
+  defp exec(container, args) do
+    case exec_and_get_output(container, "mix", args) do
+      {:ok, output} ->
+        IO.puts(output)
+
+      {:error, error} ->
+        IO.puts(error.stdout)
+        raise error
+    end
   end
 end

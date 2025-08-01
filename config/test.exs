@@ -6,10 +6,7 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :gatherly, Gatherly.Repo,
-  # Using system username as the database user
-  username: "qingbo",
-  hostname: "localhost",
-  database: "gatherly_test#{System.get_env("MIX_TEST_PARTITION")}",
+  url: System.get_env("DATABASE_URL") || "ecto://postgres:postgres@localhost/gatherly_test",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
 

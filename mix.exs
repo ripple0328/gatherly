@@ -7,11 +7,13 @@ defmodule Gatherly.MixProject do
       version: "0.1.0",
       elixir: "~> 1.18.4",
       elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix_live_view] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
       listeners: listeners(Mix.env()),
       test_coverage: [tool: ExCoveralls],
+      dialyzer: [ignore_warnings: ".dialyzer_ignore.exs"],
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,

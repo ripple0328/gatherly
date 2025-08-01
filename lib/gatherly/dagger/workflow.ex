@@ -1,7 +1,7 @@
 defmodule Gatherly.Dagger.Workflow do
   @moduledoc """
   Base behavior for Dagger workflows.
-  
+
   Provides common functionality and conventions for building 
   containerized workflows.
   """
@@ -35,15 +35,16 @@ defmodule Gatherly.Dagger.Workflow do
   Logs a step in the workflow.
   """
   def log_step(message, type \\ :info) do
-    emoji = case type do
-      :info -> "ℹ️"
-      :success -> "✅"
-      :warning -> "⚠️"
-      :error -> "❌"
-      :start -> "🚀"
-      :finish -> "✨"
-    end
-    
+    emoji =
+      case type do
+        :info -> "ℹ️"
+        :success -> "✅"
+        :warning -> "⚠️"
+        :error -> "❌"
+        :start -> "🚀"
+        :finish -> "✨"
+      end
+
     IO.puts("#{emoji} #{message}")
   end
 
@@ -61,7 +62,7 @@ defmodule Gatherly.Dagger.Workflow do
   """
   def with_source(container, client, path \\ "/app") do
     source_dir = Client.host_directory(client, ".")
-    
+
     container
     |> Dagger.Container.with_directory(path, source_dir)
     |> Dagger.Container.with_workdir(path)
