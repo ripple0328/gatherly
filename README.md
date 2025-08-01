@@ -5,211 +5,70 @@ A collaborative event planning platform designed for group-based activities such
 ## 🚀 Getting Started
 
 ### Prerequisites
+- Docker (for containerized development)
 - Git
 
-### Development with Containers (Recommended)
+### Containerized Development (Recommended)
 
-The recommended way to develop Gatherly is using containers, which eliminates the need to install Elixir, Erlang, PostgreSQL, and Node.js locally.
+**One-command setup:**
+```bash
+git clone https://github.com/yourusername/gatherly.git
+cd gatherly
+mix dagger.dev  # Complete environment setup + start server
+```
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/gatherly.git
-   cd gatherly
-   ```
+Visit [`localhost:4000`](http://localhost:4000) to see your app running.
 
-3. **Access the application**
+### Development Workflows
 
-   The development server will be available at the provided external URL (typically `http://127.0.0.1:<port>`).
+```bash
+# Daily development
+mix dagger.dev.start        # Start services
+mix dagger.dev.shell --iex  # Interactive development
 
-4. **View your changes**
+# Database operations  
+mix dagger.db.reset         # Fresh database
+mix dagger.db.shell         # Database debugging
 
-   To view your work from the host system:
-   ```bash
-   git checkout <container-branch-name>
-   ```
+# Code quality
+mix dagger.quality --fix    # Format + lint + security
+mix dagger.test             # Run tests
+
+# CI verification (run exact same pipeline as CI)
+mix dagger.ci               # Complete CI pipeline locally
+```
+
+**📖 For detailed development workflows, see [Dagger Integration Guide](lib/gatherly/dagger/README.md)**
 
 ### Tool Versions
 
-The project uses the following versions as specified in `.tool-versions` and managed by mise:
-
-- **Elixir**: 1.18.4-otp-28
-- **Erlang/OTP**: 28.0.1
+- **Elixir**: 1.18.4-otp-28  
+- **Erlang/OTP**: 28.0.2
 - **PostgreSQL**: 17.5
-- **Phoenix**: 1.8.0-rc.3
+- **Phoenix**: 1.8.0-rc.4
 
-These versions are automatically installed and managed by mise when using the containerized development environment.
+All managed automatically in containers - no local installation needed.
 
-### Native Installation (Alternative)
+## 🛠 Development
 
-If you prefer to run natively, ensure you have:
-
-- Elixir 1.18+ (with Mix)
-- Erlang/OTP 28+
-- PostgreSQL 17+
-- Git
-
-**Note**: No Node.js required - assets are handled by esbuild and tailwind from Elixir dependencies.
-
-Then follow these steps:
-
-1. **Install dependencies**
-   ```bash
-   mix deps.get
-   ```
-
-2. **Start the database**
-   ```bash
-   # Start PostgreSQL service (if not already running)
-   mise run postgres
-   ```
-
-3. **Set up the database**
-   ```bash
-   # Create and migrate your database
-   mix ecto.setup
-   ```
-
-4. **Start the Phoenix server**
-   ```bash
-   mix phx.server
-   ```
-
-   Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-## 🛠 Development Workflow
-
-### Container-Based Development
-
-When using containers, the development workflow is streamlined:
-
-- **Hot reloading**: Code changes are automatically detected and reloaded
-- **Database**: PostgreSQL 17.5 runs as a service managed by mise within the container environment
-- **Assets**: Tailwind CSS and esbuild are automatically configured and watch for changes
-- **Dependencies**: All dependencies are managed within the container using mise
-- **Version Management**: mise automatically handles Elixir and Erlang versions
-
-### Development Commands (Container)
-
-Common tasks in the containerized environment:
-
-```bash
-# Start database service
-mise run postgres
-
-# Install/update dependencies
-mix deps.get
-
-# Run tests
-mix test
-
-# Format code
-mix format
-
-# Run static analysis
-mix credo
-
-# Database operations
-mix ecto.migrate
-mix ecto.reset
-```
+### Key Features
+- **🐳 Containerized**: Consistent environments, no local dependencies
+- **🔄 Hot Reloading**: Code changes automatically detected and reloaded  
+- **🗄️ Managed Database**: PostgreSQL runs as containerized service
+- **⚡ Fast CI**: Run complete CI pipeline locally before pushing
+- **🔧 Asset Pipeline**: TailwindCSS + esbuild handled by Phoenix (no Node.js required)
 
 ### Branching Strategy
-
 - `main` - Production-ready code
-- `develop` - Integration branch for features
-- `feature/*` - Feature branches (e.g., `feature/user-authentication`)
+- `develop` - Integration branch for features  
+- `feature/*` - Feature branches
 - `bugfix/*` - Bug fixes
 - `hotfix/*` - Critical production fixes
-- `container-use/*` - Container environment branches (auto-managed)
 
-### Code Style
-
-- Follow the [Elixir Style Guide](https://github.com/christopheradams/elixir_style_guide)
-- Run the formatter before committing:
-  ```bash
-  mix format
-  ```
-- Use `mix credo` for static code analysis
-
-### Running Tests
-
-```bash
-# Run all tests
-mix test
-
-# Run tests for a specific file
-mix test test/path/to/test_file_test.exs
-
-# Run a specific test
-mix test test/path/to/test_file_test.exs:123
-```
-
-### Database Migrations
-
-```bash
-# Create a new migration
-mix ecto.gen.migration migration_name
-
-# Run migrations
-mix ecto.migrate
-
-# Rollback the last migration
-mix ecto.rollback
-```
-
-### Asset Management
-
-- JavaScript and CSS are managed through `esbuild` and `tailwind` from Elixir dependencies
-- TailwindCSS is included by default
-- Assets are automatically built and watched during development
-- No Node.js or npm required - everything is handled by Phoenix's asset pipeline
-
-## 🧪 Testing
-
-### Test Coverage
-
-```bash
-# Generate test coverage report
-MIX_ENV=test mix coveralls.html
-```
-
-### Linting
-
-```bash
-# Run Credo for code analysis
-mix credo
-
-# Run Credo with strict checks
-mix credo --strict
-```
-
-## 🚀 Deployment
-
-### Production Build
-
-```bash
-# Get dependencies with production config
-MIX_ENV=prod mix deps.get --only prod
-
-# Compile and build assets
-MIX_ENV=prod mix assets.deploy
-
-# Run database migrations
-MIX_ENV=prod mix ecto.migrate
-
-# Start the Phoenix server
-MIX_ENV=prod mix phx.server
-```
-
-### Docker
-
-```bash
-# Build the Docker image
-docker build -t gatherly .
-
-# Run the container
-docker run -p 4000:4000 gatherly
-```
+### Code Standards
+- Follow [Elixir Style Guide](https://github.com/christopheradams/elixir_style_guide)
+- Use `mix dagger.quality --fix` for automated formatting and linting
+- Verify changes with `mix dagger.ci` before pushing
 
 ## 🤝 Contributing
 

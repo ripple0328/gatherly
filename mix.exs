@@ -5,7 +5,7 @@ defmodule Gatherly.MixProject do
     [
       app: :gatherly,
       version: "0.1.0",
-      elixir: ">= 1.18.0 and < 2.0.0",
+      elixir: "~> 1.18.4",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -51,7 +51,7 @@ defmodule Gatherly.MixProject do
       {:phoenix_ecto, "~> 4.6.5"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.5", only: :dev},
-      {:phoenix_live_view, "~> 1.0.0"},
+      {:phoenix_live_view, "~> 1.1.1"},
       {:phoenix_live_dashboard, "~> 0.8.5"},
 
       # Database - Updated versions
@@ -60,6 +60,7 @@ defmodule Gatherly.MixProject do
 
       # HTML parsing and testing - Updated
       {:floki, "~> 0.38.0", only: :test},
+      {:lazy_html, ">= 0.0.0", only: :test},
 
       # Asset management - Updated
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
@@ -94,7 +95,10 @@ defmodule Gatherly.MixProject do
       {:mox, "~> 1.2", only: :test},
 
       # Test coverage
-      {:excoveralls, "~> 0.18", only: :test}
+      {:excoveralls, "~> 0.18", only: :test},
+
+      # Dagger SDK for CI/CD workflows
+      {:dagger, github: "dagger/dagger", sparse: "sdk/elixir", only: [:dev, :test]}
     ]
   end
 

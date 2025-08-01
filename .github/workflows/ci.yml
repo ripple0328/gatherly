@@ -9,7 +9,7 @@ on:
 env:
   MIX_ENV: test
   ELIXIR_VERSION: 1.18.4
-  OTP_VERSION: 28.0.1
+  OTP_VERSION: 28.0.2
   POSTGRES_VERSION: 17.5
 
 jobs:
