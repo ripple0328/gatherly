@@ -1,20 +1,25 @@
-# CI/CD Setup for Gatherly
+# CI/CD Setup
 
-This document describes the Continuous Integration and Continuous Deployment setup for the Gatherly project.
+Gatherly uses GitHub Actions to lint, test and deploy the application. All jobs rely on the Dagger mix tasks so the local and CI environments behave the same.
 
-## Overview
+## Pipeline Overview
 
-The CI/CD pipeline is implemented using GitHub Actions and deploys to Fly.io. The pipeline consists of three main jobs:
-
-1. **Lint** - Code quality checks (formatting, Credo, Dialyzer)
-2. **Test** - Run the test suite with PostgreSQL
-3. **Deploy** - Deploy to Fly.io (only on main branch)
-
-## Workflow File
+1. **Lint** – `mix dagger.lint`
+2. **Test** – `mix dagger.test`
+3. **Security** – `mix dagger.security`
+4. **Deploy** – Fly.io deployment on pushes to `main`
 
 The workflow is defined in `.github/workflows/ci.yml` and runs on:
 - Every push to the `main` branch
 - Every pull request to the `main` branch
+
+## Running CI Locally
+
+Use the composite workflow to mirror CI on your machine:
+
+```bash
+mix dagger.ci
+```
 
 ## Jobs
 
@@ -90,7 +95,7 @@ Fly.io automatically provides database connection via the `DATABASE_URL` environ
 To set up a PostgreSQL database on Fly.io:
 
 ```bash
-# Create a PostgreSQL database
+# Create PostgreSQL database
 fly postgres create gatherly-db
 
 # Attach it to your app
