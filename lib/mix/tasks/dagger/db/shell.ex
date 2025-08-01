@@ -53,7 +53,7 @@ defmodule Mix.Tasks.Dagger.Db.Shell do
       # Start PostgreSQL container
       log_step("Starting PostgreSQL container")
 
-      _postgres_service =
+      postgres_service =
         client
         |> Containers.postgres(database: database_name)
         |> Dagger.Container.as_service()
@@ -61,7 +61,7 @@ defmodule Mix.Tasks.Dagger.Db.Shell do
       log_step("PostgreSQL service ready", :success)
 
       # Prepare psql command
-      database_url = "postgres://postgres:postgres@postgres:5432/#{database_name}"
+      database_url = "postgres://postgres:postgres@db:5432/#{database_name}"
 
       psql_args =
         if sql_command do
@@ -77,6 +77,7 @@ defmodule Mix.Tasks.Dagger.Db.Shell do
       {:ok, output} =
         client
         |> Containers.elixir_dev(env: %{"MIX_ENV" => env})
+        |> Dagger.Container.with_service_binding("db", postgres_service)
         |> exec_and_get_output(List.first(psql_args), List.delete_at(psql_args, 0))
 
       IO.puts(output)

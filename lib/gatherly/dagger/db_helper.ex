@@ -40,17 +40,21 @@ defmodule Gatherly.Dagger.DbHelper do
       log_step("Running Phoenix task: mix #{task_description}")
 
       # Run Phoenix task in Elixir container with proper DATABASE_URL and service binding
-      database_url = "postgres://postgres:postgres@postgres:5432/#{database_name}"
+      database_url = "postgres://postgres:postgres@db:5432/#{database_name}"
 
       {:ok, output} =
         client
         |> Containers.elixir_dev(
           env: %{
             "MIX_ENV" => env,
-            "DATABASE_URL" => database_url
+            "DATABASE_URL" => database_url,
+            "POSTGRES_HOST" => "db",
+            "POSTGRES_USER" => "postgres",
+            "POSTGRES_PASSWORD" => "postgres",
+            "POSTGRES_DB" => database_name
           }
         )
-        |> Container.with_service_binding("postgres", postgres_service)
+        |> Container.with_service_binding("db", postgres_service)
         |> Workflow.exec_and_get_output("mix", [task | args])
 
       IO.puts(output)
@@ -74,7 +78,7 @@ defmodule Gatherly.Dagger.DbHelper do
       # Start PostgreSQL container as a service (shared across all tasks)
       log_step("Starting PostgreSQL container")
 
-      _postgres_service =
+      postgres_service =
         client
         |> Containers.postgres(database: database_name)
         |> Container.as_service()
@@ -82,16 +86,21 @@ defmodule Gatherly.Dagger.DbHelper do
       log_step("PostgreSQL service ready", :success)
 
       # Get a persistent Elixir container for all tasks
-      database_url = "postgres://postgres:postgres@postgres:5432/#{database_name}"
+      database_url = "postgres://postgres:postgres@db:5432/#{database_name}"
 
       container =
         client
         |> Containers.elixir_dev(
           env: %{
             "MIX_ENV" => env,
-            "DATABASE_URL" => database_url
+            "DATABASE_URL" => database_url,
+            "POSTGRES_HOST" => "db",
+            "POSTGRES_USER" => "postgres",
+            "POSTGRES_PASSWORD" => "postgres",
+            "POSTGRES_DB" => database_name
           }
         )
+        |> Container.with_service_binding("db", postgres_service)
 
       # Run each task in sequence
       outputs =
@@ -109,7 +118,7 @@ defmodule Gatherly.Dagger.DbHelper do
     task_description = if args == [], do: task, else: "#{task} #{Enum.join(args, " ")}"
     log_step("Running: mix #{task_description}")
 
-    {:ok, output} = exec_and_get_output(container, "mix", [task | args])
+    {:ok, output} = Workflow.exec_and_get_output(container, "mix", [task | args])
 
     if String.trim(output) != "" do
       IO.puts(output)

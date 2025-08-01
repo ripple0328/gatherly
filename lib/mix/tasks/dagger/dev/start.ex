@@ -73,13 +73,13 @@ defmodule Mix.Tasks.Dagger.Dev.Start do
       phoenix_env = %{
         "MIX_ENV" => "dev",
         "PORT" => to_string(port),
-        "DATABASE_URL" => "postgres://postgres:postgres@postgres:5432/gatherly_dev"
+        "DATABASE_URL" => "postgres://postgres:postgres@db:5432/gatherly_dev"
       }
 
       phoenix_container =
         client
         |> Containers.elixir_dev(env: phoenix_env)
-        |> Dagger.Container.with_service_binding("postgres", postgres_service)
+        |> Dagger.Container.with_service_binding("db", postgres_service)
         |> Dagger.Container.with_exposed_port(port)
 
       if detached do
