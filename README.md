@@ -17,7 +17,12 @@ cd gatherly
 mix dagger.dev  # Complete environment setup + start server
 ```
 
-Visit [`localhost:4000`](http://localhost:4000) to see your app running.
+The Phoenix server runs on port `4000` inside the container and Dagger
+forwards this same port to your host. When the command completes you can
+visit [`http://localhost:4000`](http://localhost:4000) in your browser.
+If another service is already using port `4000` you'll receive an error.
+The forwarding uses Dagger's `"<port>:<port>"` mapping so the external port
+always matches the Phoenix port.
 
 ### Development Workflows
 

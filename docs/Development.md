@@ -48,12 +48,19 @@ Using Claude Code or compatible container tooling:
 
 ### 2. Accessing the Application
 
-The Phoenix server runs on port 4000 and is exposed externally. You'll receive a URL like:
+The Phoenix server listens on port `4000` inside the container. When you start
+the dev environment with `mix dagger.dev` (or `mix dagger.dev.start --detached`),
+Dagger forwards this same port to your host. You can always access the
+application at:
 
 ```
-External URL: http://127.0.0.1:50091
-Internal URL: http://container-name:4000
+http://localhost:4000
 ```
+
+If the port is unavailable you'll receive an error message instructing you to
+stop the conflicting service or pass a different `--port` value.
+Port forwarding uses Dagger's `"<port>:<port>"` syntax so the host port matches
+Phoenix's internal port.
 
 ### 3. Working with Code
 
@@ -231,7 +238,9 @@ git push origin main
 
 ### Common Issues
 
-1. **Port Already in Use**: If port 4000 is busy, the container will assign a different external port
+1. **Port Already in Use**: The dev task binds port `4000` to your host. If that port is
+   taken the command fails. Restart the conflicting service or run
+   `mix dagger.dev.start --port=<other>` to choose a different port
 2. **Database Connection**: Ensure PostgreSQL service is running within the container
 3. **Asset Issues**: Run `mix assets.setup` to reinstall asset tools
 4. **Dependency Issues**: Clear deps with `mix deps.clean --all` then `mix deps.get`

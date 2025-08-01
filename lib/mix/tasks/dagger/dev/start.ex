@@ -126,16 +126,11 @@ defmodule Mix.Tasks.Dagger.Dev.Start do
   defp start_tunnel_service(_client, phoenix_service, port) do
     # Use the up() method to expose the service to host with port forwarding
     # This is the recommended way per Dagger docs for interactive development
-    case Dagger.Service.up(phoenix_service, ports: [%{frontend: port, backend: port}]) do
-      {:ok, tunnel} ->
-        case Dagger.Service.endpoint(tunnel) do
-          {:ok, endpoint} ->
-            log_step("Phoenix server started in background mode", :success)
-            log_step("Access your app at #{endpoint}", :info)
-          {:error, _} ->
-            log_step("Phoenix server started in background mode", :success)
-            log_step("Access your app at http://localhost:#{port}", :info)
-        end
+    # Forward Phoenix port directly to the same port on the host
+    case Dagger.Service.up(phoenix_service, ports: ["#{port}:#{port}"]) do
+      {:ok, _tunnel} ->
+        log_step("Phoenix server started in background mode", :success)
+        log_step("Access your app at http://localhost:#{port}", :info)
 
       {:error, reason} ->
         log_step("Failed to expose service to host: #{inspect(reason)}", :error)
