@@ -25,37 +25,46 @@ erlang 28.0.2
 
 ## Starting the Environment
 
-Use the provided Dagger workflow to launch the development containers and services:
+Use the optimized Dagger workflow to launch the development environment:
 
 ```bash
-mix dagger.dev         # setup + start services
+mix dagger.up          # smart setup + start server
 ```
 
-The first run downloads the containers and installs dependencies. Once complete,
-Phoenix is available at [http://localhost:4000](http://localhost:4000).
+The first run downloads containers and installs dependencies. The command uses smart detection to skip unnecessary steps on subsequent runs. Phoenix runs in the foreground at [http://localhost:4000](http://localhost:4000).
 
-To attach an interactive shell inside the container use:
-
-```bash
-mix dagger.dev.shell --iex
-```
+**Stop the server:** Press `Ctrl+C`
 
 ## Day-to-Day Workflow
 
-1. **Start services** – `mix dagger.dev.start` if containers are already built
-2. **Edit code** – changes reload automatically
-3. **Database reset** (if needed) – `mix dagger.db.reset`
-4. **Quality checks** – `mix dagger.quality --fix`
+1. **Start development** – `mix dagger.up` (smart setup + server)
+2. **Edit code** – changes reload automatically in the foreground server
+3. **Stop server** – `Ctrl+C`
+4. **Quality checks** – `mix dagger.workflows.quality --fix`
 5. **Run tests** – `mix dagger.test`
 6. **Commit & push** – `git commit -am "msg"` then `git push`
-
-CI on GitHub Actions runs the same Dagger tasks for lint, test, and security.
 
 ## Additional Commands
 
 ```bash
-mix dagger.dev.stop     # stop all services
-mix dagger.ci           # run the full CI pipeline locally
+# Development
+mix dagger.up --port 3000   # custom port
+mix dagger.up --force-setup # force full setup
+mix dagger.dev.shell --iex  # interactive shell in container
+
+# Database
+mix dagger.db.reset         # reset database
+mix dagger.db.create        # create database
+mix dagger.db.migrate       # run migrations
+
+# Quality & Testing
+mix dagger.workflows.quality # format + lint + security
+mix dagger.test             # run tests
+mix dagger.workflows.ci     # full CI pipeline locally
+
+# Utilities
+mix dagger.clean            # clean build artifacts
+mix dagger.setup            # setup dependencies only
 ```
 
 ## Project Structure

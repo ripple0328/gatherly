@@ -55,4 +55,12 @@ defmodule Gatherly.Dagger.Client do
     |> Dagger.Client.host()
     |> Dagger.Host.directory(path)
   end
+
+  @doc """
+  Creates a new container with optional configuration.
+  """
+  @spec container(t(), keyword()) :: Dagger.Container.t()
+  def container(client, _opts \\ []) do
+    Dagger.Client.container(client)
+  end
 end

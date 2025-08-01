@@ -1,13 +1,11 @@
 defmodule Gatherly.Dagger.Deploy do
   @moduledoc """
-  Build and push a production image to Fly.io using Dagger.
+  Build a local production image and deploy to Fly.io using Dagger.
 
   This module exposes a single `deploy/1` function which automatically
   reads the Fly.io `app` name from `fly.toml`. The current source is built
-  into a release image and pushed to the Fly.io registry under two tags:
-  `registry.fly.io/<app_name>:<git_sha>` and `registry.fly.io/<app_name>:latest`.
-  Authentication must be handled beforehand
-  via `fly auth docker`.
+  into a release image and exported to the local Docker daemon, then
+  deployed using `fly deploy`.
 
   ## Examples
 
@@ -48,8 +46,7 @@ defmodule Gatherly.Dagger.Deploy do
 
   defp do_deploy(client, app_name) do
     sha = git_sha()
-    tagged = "registry.fly.io/#{app_name}:#{sha}"
-    latest = "registry.fly.io/#{app_name}:latest"
+    local_tag = "#{app_name}:#{sha}"
 
     log_step("Building release image", :start)
 
@@ -82,11 +79,23 @@ defmodule Gatherly.Dagger.Deploy do
       |> Container.with_exposed_port(8080)
       |> Container.with_entrypoint(["./bin/gatherly", "start"])
 
-    log_step("Tagging image as #{tagged} and #{latest}")
-    {:ok, _digest} = Container.publish(runtime, tagged)
-    {:ok, _} = Container.publish(runtime, latest)
-    log_step("Image pushed to Fly.io registry", :finish)
+    log_step("Exporting image to local Docker daemon as #{local_tag}")
+    {:ok, _} = Container.export(runtime, local_tag)
+    log_step("Image exported to local Docker", :success)
 
-    {:ok, tagged}
+    # Now deploy using fly deploy with the local image
+    log_step("Deploying to Fly.io using local image")
+    case System.cmd("fly", ["deploy", "--local-only", "--image", local_tag],
+                    stderr_to_stdout: true) do
+      {output, 0} ->
+        IO.puts(output)
+        log_step("Deployment successful", :finish)
+        {:ok, local_tag}
+
+      {output, exit_code} ->
+        IO.puts(output)
+        log_step("Deployment failed with exit code #{exit_code}", :error)
+        {:error, {:deploy_failed, exit_code, output}}
+    end
   end
 end

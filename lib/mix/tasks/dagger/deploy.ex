@@ -1,11 +1,10 @@
 defmodule Mix.Tasks.Dagger.Deploy do
-  @shortdoc "Build and push image to Fly.io"
+  @shortdoc "Build local image and deploy to Fly.io"
 
   @moduledoc """
-  Builds the production release image using Dagger and pushes it to the Fly.io
-  registry. The image is tagged with the current Git commit hash and also as
-  `latest`. Ensure you have run `fly auth docker` so registry credentials are
-  available.
+  Builds the production release image using Dagger and exports it to the local
+  Docker daemon. Then deploys to Fly.io using the local image. The image is
+  tagged with the current Git commit hash.
 
   ## Examples
 
