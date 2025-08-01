@@ -19,10 +19,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup Dagger
-        uses: dagger/setup-dagger@v5
-        with:
-          version: ${{ env.DAGGER_VERSION }}
       - name: Set up Elixir
         uses: erlef/setup-beam@v1
         with:
@@ -50,10 +46,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup Dagger
-        uses: dagger/setup-dagger@v5
-        with:
-          version: ${{ env.DAGGER_VERSION }}
       - name: Set up Elixir
         uses: erlef/setup-beam@v1
         with:
@@ -81,10 +73,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup Dagger
-        uses: dagger/setup-dagger@v5
-        with:
-          version: ${{ env.DAGGER_VERSION }}
       - name: Set up Elixir
         uses: erlef/setup-beam@v1
         with:
