@@ -1,14 +1,28 @@
 import Config
 
 # Configure your database
+# Use DATABASE_URL if available (for containerized environments), 
+# otherwise use individual config values for local development
+database_config =
+  if System.get_env("DATABASE_URL") do
+    # In container environment (dagger.dev)
+    [url: System.get_env("DATABASE_URL")]
+  else
+    # Local development
+    [
+      username: System.get_env("POSTGRES_USER", "postgres"),
+      password: System.get_env("POSTGRES_PASSWORD", "postgres"),
+      hostname: System.get_env("POSTGRES_HOST", "localhost"),
+      database: System.get_env("POSTGRES_DB", "gatherly_dev")
+    ]
+  end
+
 config :gatherly, Gatherly.Repo,
-  username: System.get_env("POSTGRES_USER", "postgres"),
-  password: System.get_env("POSTGRES_PASSWORD", "postgres"),
-  hostname: System.get_env("POSTGRES_HOST", "localhost"),
-  database: System.get_env("POSTGRES_DB", "gatherly_dev"),
-  stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  Keyword.merge(database_config, [
+    stacktrace: true,
+    show_sensitive_data_on_connection_error: true,
+    pool_size: 10
+  ])
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

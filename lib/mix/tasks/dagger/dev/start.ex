@@ -81,12 +81,14 @@ defmodule Mix.Tasks.Dagger.Dev.Start do
         |> Containers.elixir_dev(env: phoenix_env)
         |> Dagger.Container.with_service_binding("db", postgres_service)
         |> Dagger.Container.with_exposed_port(port)
+        |> Dagger.Container.with_exec(["mix", "phx.server"])
 
       if detached do
-        # Run in background
-        _phoenix_service = Dagger.Container.as_service(phoenix_container)
-        log_step("Phoenix server started in background mode", :success)
-        log_step("Access your app at http://localhost:#{port}", :info)
+        # Run in background with proper host tunneling
+        phoenix_service = Dagger.Container.as_service(phoenix_container)
+
+        # Create host tunnel to forward traffic
+        start_tunnel_service(client, phoenix_service, port)
       else
         # Run in foreground (this would block)
         log_step("Starting Phoenix server in foreground mode", :info)
@@ -117,5 +119,31 @@ defmodule Mix.Tasks.Dagger.Dev.Start do
 
       {:ok, :dev_started}
     end)
+  end
+
+  defp start_tunnel_service(client, phoenix_service, port) do
+    # Try using the simpler up() approach instead of manual tunneling
+    case Dagger.Service.up(phoenix_service, ports: ["#{port}:#{port}"]) do
+      {:ok, _service} ->
+        log_step("Phoenix server started in background mode", :success)
+        log_step("Access your app at http://localhost:#{port}", :info)
+
+      {:error, reason} ->
+        log_step("Failed to start service: #{inspect(reason)}", :error)
+        log_step("Phoenix server started without port forwarding", :success)
+        log_step("Service is running but may not be accessible from host", :warning)
+    end
+  end
+
+  defp handle_tunnel_endpoint(tunnel_service, port) do
+    case Dagger.Service.endpoint(tunnel_service, port: port) do
+      {:ok, endpoint} ->
+        log_step("Phoenix server started in background mode", :success)
+        log_step("Access your app at #{endpoint}", :info)
+
+      {:error, reason} ->
+        log_step("Failed to get tunnel endpoint: #{inspect(reason)}", :error)
+        log_step("Fallback: Access your app at http://localhost:#{port}", :info)
+    end
   end
 end

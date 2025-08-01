@@ -81,7 +81,7 @@ defmodule Mix.Tasks.Dagger.Workflows.Ci do
            Security.execute([])
          end
        end},
-      {"Tests", fn -> Test.execute(["--cover"]) end}
+      {"Tests", fn -> Test.execute(phoenix_args: ["--cover"]) end}
     ]
 
     # Execute pipeline

@@ -38,9 +38,10 @@ config :esbuild,
   version: "0.21.5",
   gatherly: [
     args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --alias:@=.),
-    cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+      ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*) ++
+      ["--alias:phoenix-live-view=#{Path.expand("../deps/phoenix_live_view/priv/static/phoenix_live_view.esm.js", __DIR__)}"] ++
+      ["--alias:phoenix=#{Path.expand("../deps/phoenix/priv/static/phoenix.mjs", __DIR__)}"],
+    cd: Path.expand("../assets", __DIR__)
   ]
 
 # Configure Tailwind (the version is required)
