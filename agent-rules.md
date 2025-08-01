@@ -154,41 +154,29 @@ end
 
 ### Setup Commands
 ```bash
-# Get dependencies with latest versions
-mix deps.get
+# One-command container setup and start
+mix dagger.dev
 
-# Setup database
-mix ecto.setup
-
-# Install assets (no Node.js required)
-mix assets.setup
-
-# Start development server
-mix phx.server
+# Start/stop services only
+mix dagger.dev.start
+mix dagger.dev.stop
 ```
 
 ### Testing Commands
 ```bash
-# Run all tests
-mix test
+# Full CI pipeline inside containers
+mix dagger.ci
 
-# Run with coverage
-mix test --cover
-
-# Test specific module
-mix test test/my_app_web/live/page_live_test.exs
+# Run tests only
+mix dagger.test
 ```
 
 ### Code Quality
 ```bash
-# Format code
-mix format
-
-# Run linter
-mix credo --strict
-
-# Type checking
-mix dialyzer
+mix dagger.format          # Format code
+mix dagger.lint --strict   # Lint with Credo & Dialyzer
+mix dagger.security        # Security audit
+mix dagger.deploy          # Build & push Fly.io image
 ```
 
 ## Security Best Practices

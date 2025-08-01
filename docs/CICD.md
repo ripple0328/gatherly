@@ -38,7 +38,8 @@ Runs the test suite:
 
 Deploys to Fly.io:
 - Only runs on pushes to the `main` branch after lint and test jobs pass
-- Uses Fly.io CLI to deploy the application
+- Builds and pushes the release image with `mix dagger.deploy`
+- Deploys the commit-tagged image using the Fly CLI
 - Runs database migrations automatically
 
 ## Required Secrets
@@ -100,10 +101,12 @@ fly postgres attach gatherly-db --app gatherly
 
 ### Manual Deployment
 
-To deploy manually:
+To deploy manually, first build and push the image using Dagger and then deploy the published image:
 
 ```bash
-fly deploy
+mix dagger.deploy
+GIT_SHA=$(git rev-parse --short HEAD)
+fly deploy --image registry.fly.io/<app-name>:$GIT_SHA
 ```
 
 ### Automatic Deployment

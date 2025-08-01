@@ -70,6 +70,10 @@ mix dagger.ci                    # Full CI: setup → quality → test
 # Environment-specific
 mix dagger.ci --env=test
 mix dagger.ci --skip-dialyzer    # Faster CI
+
+### Deploying to Fly.io
+```bash
+mix dagger.deploy  # pushes registry.fly.io/<app-name>:<git_sha>
 ```
 
 ## Key Features
