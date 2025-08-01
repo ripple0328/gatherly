@@ -10,7 +10,7 @@ env:
   MIX_ENV: test
   ELIXIR_VERSION: 1.18.4
   OTP_VERSION: 28.0.2
-  DAGGER_VERSION: 0.11.9
+  DAGGER_VERSION: 0.18.14
 
 jobs:
   lint:
@@ -116,22 +116,13 @@ jobs:
     - name: Install dependencies
       run: mix deps.get
 
-    - name: Set build tag
-      id: vars
-      run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
-
-    - name: Build and push image
+    - name: Setup Fly CLI
+      uses: superfly/flyctl-actions/setup-flyctl@master
+      
+    - name: Deploy with local image build
+      # Uses the updated dagger.deploy task that builds locally and deploys
+      # the same image to Fly.io without pushing to remote registries
       run: mix dagger.deploy
       env:
         DAGGER_LOG_FORMAT: plain
-        GIT_SHA: ${{ steps.vars.outputs.sha }}
-
-    - name: Setup Fly CLI
-      uses: superfly/flyctl-actions/setup-flyctl@master
-
-    - name: Deploy to Fly.io
-      run: |
-        APP_NAME=$(grep -Po '^app\s*=\s*"\K[^"]+' fly.toml)
-        flyctl deploy --image registry.fly.io/${APP_NAME}:${{ steps.vars.outputs.sha }} --wait-timeout 300
-      env:
         FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

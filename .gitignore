@@ -37,3 +37,12 @@ npm-debug.log
 # Ignore macOS specific files
 .DS_Store
 .idea/
+
+# Dagger cache and session files
+.dagger/
+*.dagger.json
+
+# Local Docker images and containers
+docker-compose.override.yml
+.docker/
+gatherly:*

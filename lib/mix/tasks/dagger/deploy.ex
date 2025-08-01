@@ -3,8 +3,14 @@ defmodule Mix.Tasks.Dagger.Deploy do
 
   @moduledoc """
   Builds the production release image using Dagger and exports it to the local
-  Docker daemon. Then deploys to Fly.io using the local image. The image is
-  tagged with the current Git commit hash.
+  Docker daemon. Then deploys to Fly.io using the local image without pushing
+  to remote registries. The image is tagged with the current Git commit hash.
+
+  This command:
+  1. Builds a Phoenix release using Dagger containers
+  2. Creates a minimal runtime image
+  3. Exports the image to local Docker daemon
+  4. Deploys to Fly.io using `--local-only` flag
 
   ## Examples
 
