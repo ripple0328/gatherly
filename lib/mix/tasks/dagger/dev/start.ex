@@ -81,11 +81,13 @@ defmodule Mix.Tasks.Dagger.Dev.Start do
         |> Containers.elixir_dev(env: phoenix_env)
         |> Dagger.Container.with_service_binding("db", postgres_service)
         |> Dagger.Container.with_exposed_port(port)
-        |> Dagger.Container.with_exec(["mix", "phx.server"])
 
       if detached do
         # Run in background with proper host tunneling
-        phoenix_service = Dagger.Container.as_service(phoenix_container)
+        phoenix_service = 
+          phoenix_container
+          |> Dagger.Container.with_exec(["mix", "phx.server"])
+          |> Dagger.Container.as_service()
 
         # Create host tunnel to forward traffic
         start_tunnel_service(client, phoenix_service, port)
@@ -121,29 +123,30 @@ defmodule Mix.Tasks.Dagger.Dev.Start do
     end)
   end
 
-  defp start_tunnel_service(client, phoenix_service, port) do
-    # Try using the simpler up() approach instead of manual tunneling
-    case Dagger.Service.up(phoenix_service, ports: ["#{port}:#{port}"]) do
-      {:ok, _service} ->
-        log_step("Phoenix server started in background mode", :success)
-        log_step("Access your app at http://localhost:#{port}", :info)
+  defp start_tunnel_service(_client, phoenix_service, port) do
+    # Use the up() method to expose the service to host with port forwarding
+    # This is the recommended way per Dagger docs for interactive development
+    case Dagger.Service.up(phoenix_service, ports: [%{frontend: port, backend: port}]) do
+      {:ok, tunnel} ->
+        case Dagger.Service.endpoint(tunnel) do
+          {:ok, endpoint} ->
+            log_step("Phoenix server started in background mode", :success)
+            log_step("Access your app at #{endpoint}", :info)
+          {:error, _} ->
+            log_step("Phoenix server started in background mode", :success)
+            log_step("Access your app at http://localhost:#{port}", :info)
+        end
 
       {:error, reason} ->
-        log_step("Failed to start service: #{inspect(reason)}", :error)
-        log_step("Phoenix server started without port forwarding", :success)
-        log_step("Service is running but may not be accessible from host", :warning)
-    end
-  end
-
-  defp handle_tunnel_endpoint(tunnel_service, port) do
-    case Dagger.Service.endpoint(tunnel_service, port: port) do
-      {:ok, endpoint} ->
-        log_step("Phoenix server started in background mode", :success)
-        log_step("Access your app at #{endpoint}", :info)
-
-      {:error, reason} ->
-        log_step("Failed to get tunnel endpoint: #{inspect(reason)}", :error)
-        log_step("Fallback: Access your app at http://localhost:#{port}", :info)
+        log_step("Failed to expose service to host: #{inspect(reason)}", :error)
+        # Fallback to simple service start
+        case Dagger.Service.start(phoenix_service) do
+          {:ok, _} ->
+            log_step("Phoenix server started (container only)", :success)
+            log_step("Service running but may not be accessible from host", :warning)
+          {:error, start_reason} ->
+            log_step("Failed to start service: #{inspect(start_reason)}", :error)
+        end
     end
   end
 end
