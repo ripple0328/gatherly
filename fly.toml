@@ -2,11 +2,13 @@ app = "gatherly"
 primary_region = "sjc"
 
 [build]
-  image = "."
 
 [env]
   PHX_HOST = "gatherly.fly.dev"
   PORT = "8080"
+  MIX_ENV = "prod"
+  PHX_SERVER = "true"
+  RELEASE_COOKIE = "gatherly-secret-cookie-change-in-production"
 
 [http_service]
   internal_port = 8080
@@ -26,7 +28,7 @@ primary_region = "sjc"
   url_prefix = "/assets"
 
 [deploy]
-  release_command = "mix ecto.migrate"
+  release_command = "./bin/gatherly eval \"Gatherly.Release.migrate\""
 
 [checks]
   [checks.health]
