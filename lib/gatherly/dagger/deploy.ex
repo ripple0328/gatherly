@@ -18,8 +18,8 @@ defmodule Gatherly.Dagger.Deploy do
   """
 
   import Gatherly.Dagger.Workflow
-  alias Gatherly.Dagger.{Client, Containers}
   alias Dagger.Container
+  alias Gatherly.Dagger.{Client, Containers}
 
   @runtime_image "elixir:1.18.4-otp-28-slim"
 

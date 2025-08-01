@@ -84,7 +84,7 @@ defmodule Mix.Tasks.Dagger.Dev.Start do
 
       if detached do
         # Run in background with proper host tunneling
-        phoenix_service = 
+        phoenix_service =
           phoenix_container
           |> Dagger.Container.with_exec(["mix", "phx.server"])
           |> Dagger.Container.as_service()
