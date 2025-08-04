@@ -29,10 +29,10 @@ defmodule Mix.Tasks.Dagger.Security do
       container = Containers.elixir_dev(client)
 
       log_step("Checking for retired packages")
-      exec(container, ["hex.audit"])
+      exec(container, ["hex.audit", "--no-auth"])
 
       log_step("Checking for outdated packages")
-      exec(container, ["hex.outdated"])
+      exec(container, ["hex.outdated", "--all"])
 
       log_step("Verifying dependencies")
       exec(container, ["deps.get", "--check-locked"])
