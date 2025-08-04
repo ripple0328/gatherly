@@ -58,7 +58,7 @@ defmodule Gatherly.MixProject do
 
       # Database - Updated versions
       {:ecto_sql, "~> 3.13.2"},
-      {:postgrex, "~> 0.21.0"},
+      {:postgrex, "~> 0.21.1"},
 
       # HTML parsing and testing - Updated
       {:floki, "~> 0.38.0", only: :test},
