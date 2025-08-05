@@ -259,104 +259,34 @@ defmodule Mix.Tasks.Dagger.Up do
       "DATABASE_URL" => "postgres://postgres:postgres@db:5432/gatherly_dev"
     }
 
-    # Create Phoenix server container that runs as a service
+    # Create Phoenix server container with port forwarding
     phoenix_container =
       client
       |> Containers.elixir_dev(env: phoenix_env)
       |> Dagger.Container.with_service_binding("db", postgres_service)
       |> Dagger.Container.with_exposed_port(port)
-      |> Dagger.Container.with_exec(["mix", "phx.server"])
 
-    # Convert to service to get network endpoint
-    phoenix_service = Dagger.Container.as_service(phoenix_container)
+    log_step("🌐 Starting Phoenix server with port forwarding: localhost:#{port} -> container:#{port}")
 
-    # Get the service endpoint
-    case Dagger.Service.endpoint(phoenix_service, port: port) do
-      {:ok, service_endpoint} ->
-        log_step("🔗 Phoenix service endpoint: #{service_endpoint}", :info)
+    log_step("✅ Phoenix server accessible at http://localhost:#{port}", :success)
+    log_step("🗄️  Database available internally at db:5432", :info)
+    log_step("", :info)
+    log_step("Press Ctrl+C to stop all services", :info)
 
-        # Start a host-side proxy using socat to forward traffic from localhost to the service
-        host_port = port
+    # Convert container to service and use up() method for proper port forwarding
+    phoenix_service =
+      phoenix_container
+      |> Dagger.Container.as_service(args: ["mix", "phx.server"])
 
-        log_step("🌐 Starting port forwarding: localhost:#{host_port} -> #{service_endpoint}")
-
-        # Start the proxy in background and keep services running
-        proxy_task = Task.async(fn ->
-          start_port_proxy(service_endpoint, host_port)
-        end)
-
-        log_step("✅ Phoenix server accessible at http://localhost:#{host_port}", :success)
-        log_step("🗄️  Database available internally at db:5432", :info)
-        log_step("", :info)
-        log_step("Press Ctrl+C to stop all services", :info)
-
-        # Keep services alive and monitor
-        monitor_container =
-          client
-          |> Containers.elixir_dev(env: phoenix_env)
-          |> Dagger.Container.with_service_binding("db", postgres_service)
-          |> Dagger.Container.with_service_binding("phoenix", phoenix_service)
-          |> Dagger.Container.with_exec([
-            "sh", "-c",
-            "echo 'All services running' && " <>
-            "while true; do sleep 30; echo '$(date): Services healthy'; done"
-          ])
-
-        # This will block until Ctrl+C
-        try do
-          case Dagger.Container.stdout(monitor_container) do
-            {:ok, output} ->
-              IO.puts(output)
-              {:ok, :server_stopped}
-            {:error, reason} ->
-              {:error, reason}
-          end
-        after
-          # Clean up proxy when stopping
-          Task.shutdown(proxy_task, :brutal_kill)
-          log_step("Development server stopped", :info)
-        end
-
+    # Use up() method to start service with port forwarding - this will block and show live logs
+    case Dagger.Service.up(phoenix_service, ports: [%{frontend: port, backend: port}]) do
+      {:ok, _} ->
+        log_step("Development server stopped", :info)
+        {:ok, :server_stopped}
       {:error, reason} ->
-        log_step("Failed to get service endpoint: #{inspect(reason)}", :error)
-        {:error, {:service_endpoint_failed, reason}}
+        log_step("Phoenix server failed: #{inspect(reason)}", :error)
+        {:error, {:phoenix_server_failed, reason}}
     end
   end
 
-  # Helper function to start port forwarding proxy
-  defp start_port_proxy(service_endpoint, host_port) do
-    with {:ok, {service_host, service_port}} <- parse_service_endpoint(service_endpoint) do
-      run_socat_proxy(service_host, service_port, host_port)
-    end
-  end
-
-  defp parse_service_endpoint(service_endpoint) do
-    case URI.parse(service_endpoint) do
-      %URI{host: service_host, port: service_port} when not is_nil(service_host) and not is_nil(service_port) ->
-        {:ok, {service_host, service_port}}
-
-      _ ->
-        # Fallback: assume host:port format
-        case String.split(service_endpoint, ":") do
-          [service_host, service_port] ->
-            {:ok, {service_host, service_port}}
-          _ ->
-            {:error, {:invalid_endpoint, service_endpoint}}
-        end
-    end
-  end
-
-  defp run_socat_proxy(service_host, service_port, host_port) do
-    case System.cmd("socat", [
-      "TCP-LISTEN:#{host_port},fork,reuseaddr",
-      "TCP:#{service_host}:#{service_port}"
-    ], stderr_to_stdout: true) do
-      {output, 0} ->
-        log_step("Port proxy started successfully")
-        {:ok, output}
-      {error, exit_code} ->
-        log_step("Port proxy failed: #{error} (exit: #{exit_code})", :error)
-        {:error, {:proxy_failed, exit_code, error}}
-    end
-  end
 end

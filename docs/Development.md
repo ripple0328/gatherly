@@ -40,7 +40,7 @@ The first run downloads containers and installs dependencies. The command uses s
 1. **Start development** – `mix dagger.up` (smart setup + server)
 2. **Edit code** – changes reload automatically in the foreground server
 3. **Stop server** – `Ctrl+C`
-4. **Quality checks** – `mix dagger.workflows.quality --fix`
+4. **Quality checks** – `mix dagger.quality --fix`
 5. **Run tests** – `mix dagger.test`
 6. **Commit & push** – `git commit -am "msg"` then `git push`
 
@@ -58,9 +58,9 @@ mix dagger.db.create        # create database
 mix dagger.db.migrate       # run migrations
 
 # Quality & Testing
-mix dagger.workflows.quality # format + lint + security
+mix dagger.quality          # format + lint + security
 mix dagger.test             # run tests
-mix dagger.workflows.ci     # full CI pipeline locally
+mix dagger.ci               # full CI pipeline locally
 
 # Utilities
 mix dagger.clean            # clean build artifacts
@@ -92,6 +92,6 @@ mix dagger.setup            # setup dependencies only
 
 - **Port in use** – stop any previous Phoenix instance or change the port with `PHX_SERVER_PORT`
 - **Database connection** – ensure Docker is running and containers are started
-- **Outdated dependencies** – run `mix dagger.reset` to rebuild from scratch
+- **Outdated dependencies** – run `mix dagger.clean` then `mix dagger.up --force-setup` to rebuild from scratch
 
 For more details about the project, see [Project Overview](Project.md) and [Project Landscape](Landscape.md).

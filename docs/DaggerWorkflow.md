@@ -57,8 +57,8 @@ mix dagger.dev.shell             # Interactive shell in container
 
 **Quality Workflows:**
 ```bash
-mix dagger.workflows.quality     # Format + lint + security
-mix dagger.workflows.ci          # Full CI pipeline
+mix dagger.quality              # Format + lint + security
+mix dagger.ci                   # Full CI pipeline
 ```
 
 **Deployment:**
@@ -131,13 +131,13 @@ mix dagger.db.migrate
 ### Before Committing
 ```bash
 # Run quality checks
-mix dagger.workflows.quality
+mix dagger.quality
 
 # Run tests
 mix dagger.test
 
 # Or run full CI locally
-mix dagger.workflows.ci
+mix dagger.ci
 ```
 
 ## Troubleshooting
@@ -182,15 +182,6 @@ mix dagger.clean --all
 2. **Avoid `--force-setup`** unless needed - smart detection is faster
 3. **Keep Docker running** - container startup is the slowest part
 4. **Use specific commands** for targeted tasks (e.g., `mix dagger.test` vs full CI)
-
-## Migration from Old Commands
-
-| Old Command | New Command | Notes |
-|-------------|-------------|-------|
-| `mix dagger.dev` | `mix dagger.up` | Smarter, faster |
-| `mix dagger.dev.start` | `mix dagger.up` | Includes smart setup |
-| `mix dagger.dev.stop` | `Ctrl+C` | Foreground server |
-| `mix dagger.reset` | `mix dagger.clean` + `mix dagger.up --force-setup` | More explicit |
 
 ## Architecture
 

@@ -14,7 +14,7 @@ A collaborative event planning platform designed for group-based activities such
 ```bash
 git clone https://github.com/yourusername/gatherly.git
 cd gatherly
-mix dagger.dev  # Complete environment setup + start server
+mix dagger.up  # Complete environment setup + start server
 ```
 
 Visit [`localhost:4000`](http://localhost:4000) to see your app running.
@@ -23,7 +23,7 @@ Visit [`localhost:4000`](http://localhost:4000) to see your app running.
 
 ```bash
 # Daily development
-mix dagger.dev.start        # Start services
+mix dagger.up               # Smart startup (setup + server)
 mix dagger.dev.shell --iex  # Interactive development
 
 # Database operations

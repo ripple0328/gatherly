@@ -13,12 +13,15 @@ lib/gatherly/dagger/
 
 lib/mix/tasks/dagger/
 ├── setup.ex           ✅ Environment setup
-├── clean.ex           ✅ Cleanup artifacts
-├── reset.ex           ✅ Complete reset
+├── clean.ex           ✅ Cleanup artifacts  
+├── up.ex              ✅ Smart development startup
 ├── format.ex          ✅ Code formatting
 ├── lint.ex            ✅ Linting (Credo + Dialyzer)
 ├── security.ex        ✅ Security audits
 ├── test.ex            ✅ Test execution
+├── quality.ex         ✅ Quality checks (alias)
+├── ci.ex              ✅ CI pipeline (alias)
+├── deploy.ex          ✅ Deploy to Fly.io
 ├── db/
 │   ├── create.ex      ✅ Database creation
 │   ├── migrate.ex     ✅ Run migrations
@@ -27,13 +30,10 @@ lib/mix/tasks/dagger/
 │   ├── reset.ex       ✅ Complete DB reset
 │   └── shell.ex       ✅ Database shell
 ├── dev/
-│   ├── start.ex       ✅ Start dev environment
-│   ├── stop.ex        ✅ Stop dev environment
 │   └── shell.ex       ✅ Interactive shell
 └── workflows/
     ├── ci.ex          ✅ CI pipeline
-    ├── quality.ex     ✅ Quality checks
-    └── dev.ex         ✅ Dev environment setup
+    └── quality.ex     ✅ Quality checks
 ```
 
 ## Quick Start
@@ -41,11 +41,11 @@ lib/mix/tasks/dagger/
 ### Development Workflow
 ```bash
 # Complete dev setup
-mix dagger.dev                    # Clean + setup + start
+mix dagger.up                     # Smart setup + start server
 
 # Individual operations
 mix dagger.setup                  # Install deps, compile
-mix dagger.dev.start             # Start dev services
+mix dagger.up                     # Start development environment
 mix dagger.dev.shell --iex       # Interactive shell
 mix dagger.db.reset              # Fresh database
 ```
@@ -143,7 +143,7 @@ mix dagger.deploy  # pushes registry.fly.io/<app-name>:<git_sha>
 ```bash
 git clone <repo>
 cd gatherly
-mix dagger.dev    # One command - everything ready!
+mix dagger.up     # One command - everything ready!
 ```
 
 ### Pre-commit Workflow
