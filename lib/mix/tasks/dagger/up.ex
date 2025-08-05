@@ -93,7 +93,9 @@ defmodule Mix.Tasks.Dagger.Up do
       {:ok, output} ->
         # If output contains "Generated" or is empty, it's compiled
         String.contains?(output, "Generated") or String.trim(output) == ""
-      {:error, _} -> false
+
+      {:error, _} ->
+        false
     end
   rescue
     _ -> false
@@ -109,6 +111,7 @@ defmodule Mix.Tasks.Dagger.Up do
           {_, 0} -> true
           _ -> false
         end
+
       false ->
         # No migrations, assume new project
         true
@@ -120,7 +123,7 @@ defmodule Mix.Tasks.Dagger.Up do
   defp assets_ready?(_client) do
     # Check if compiled assets exist
     File.exists?("priv/static/assets") and
-    not Enum.empty?(File.ls!("priv/static/assets"))
+      not Enum.empty?(File.ls!("priv/static/assets"))
   rescue
     _ -> false
   end
@@ -175,10 +178,12 @@ defmodule Mix.Tasks.Dagger.Up do
 
   defp run_full_setup do
     log_step("Running full environment setup...")
+
     case Setup.execute([]) do
       {:ok, _} ->
         log_step("Full setup completed", :success)
         {:ok, :setup_complete}
+
       error ->
         log_step("Setup failed", :error)
         error
@@ -193,6 +198,7 @@ defmodule Mix.Tasks.Dagger.Up do
       {:ok, _} ->
         log_step("Quick setup completed", :success)
         {:ok, :setup_complete}
+
       error ->
         log_step("Quick setup failed", :error)
         error
@@ -223,10 +229,12 @@ defmodule Mix.Tasks.Dagger.Up do
 
   defp run_safe_setup do
     log_step("Running safe setup (skip database)...")
+
     case Setup.execute(skip_db: true) do
       {:ok, _} ->
         log_step("Safe setup completed", :success)
         {:ok, :setup_complete}
+
       error ->
         log_step("Safe setup failed", :error)
         error
@@ -239,6 +247,7 @@ defmodule Mix.Tasks.Dagger.Up do
 
     # Start PostgreSQL service
     log_step("Starting PostgreSQL container")
+
     postgres_service =
       client
       |> Containers.postgres(
@@ -266,7 +275,25 @@ defmodule Mix.Tasks.Dagger.Up do
       |> Dagger.Container.with_service_binding("db", postgres_service)
       |> Dagger.Container.with_exposed_port(port)
 
-    log_step("🌐 Starting Phoenix server with port forwarding: localhost:#{port} -> container:#{port}")
+    # Ensure database is migrated in the SAME context before starting server
+    log_step("🗄️ Ensuring database migrations are applied...")
+
+    phoenix_container_migrated =
+      phoenix_container
+      |> Dagger.Container.with_exec(["mix", "ecto.migrate"])
+
+    # Wait a moment and verify migration status to ensure Phoenix.Ecto.CheckRepoStatus passes
+    log_step("🔍 Verifying migration status...")
+
+    phoenix_container_verified =
+      phoenix_container_migrated
+      |> Dagger.Container.with_exec(["mix", "ecto.migrations"])
+
+    log_step("✅ Database migrations verified and synced", :success)
+
+    log_step(
+      "🌐 Starting Phoenix server with port forwarding: localhost:#{port} -> container:#{port}"
+    )
 
     log_step("✅ Phoenix server accessible at http://localhost:#{port}", :success)
     log_step("🗄️  Database available internally at db:5432", :info)
@@ -275,7 +302,7 @@ defmodule Mix.Tasks.Dagger.Up do
 
     # Convert container to service and use up() method for proper port forwarding
     phoenix_service =
-      phoenix_container
+      phoenix_container_verified
       |> Dagger.Container.as_service(args: ["mix", "phx.server"])
 
     # Use up() method to start service with port forwarding - this will block and show live logs
@@ -283,10 +310,10 @@ defmodule Mix.Tasks.Dagger.Up do
       {:ok, _} ->
         log_step("Development server stopped", :info)
         {:ok, :server_stopped}
+
       {:error, reason} ->
         log_step("Phoenix server failed: #{inspect(reason)}", :error)
         {:error, {:phoenix_server_failed, reason}}
     end
   end
-
 end

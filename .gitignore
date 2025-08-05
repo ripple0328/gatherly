@@ -46,3 +46,10 @@ npm-debug.log
 docker-compose.override.yml
 .docker/
 gatherly:*
+
+# Development and production secrets
+config/dev.secret.exs
+config/prod.secret.exs
+.env
+.env.local
+.env.*.local

@@ -14,6 +14,8 @@ defmodule Gatherly.Application do
       {Phoenix.PubSub, name: Gatherly.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: Gatherly.Finch},
+      # Start AshAuthentication supervisor
+      {AshAuthentication.Supervisor, otp_app: :gatherly},
       # Start a worker by calling: Gatherly.Worker.start_link(arg)
       # {Gatherly.Worker, arg},
       # Start to serve requests, typically the last entry

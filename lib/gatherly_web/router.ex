@@ -1,5 +1,9 @@
 defmodule GatherlyWeb.Router do
   use GatherlyWeb, :router
+  use AshAuthentication.Phoenix.Router
+
+  # Import for custom authentication helpers if needed
+  # import AshAuthentication.Plug.Helpers
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -8,6 +12,7 @@ defmodule GatherlyWeb.Router do
     plug :put_root_layout, html: {GatherlyWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :load_from_session
   end
 
   pipeline :api do
@@ -18,6 +23,12 @@ defmodule GatherlyWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    # Authentication routes
+    auth_routes(AuthController, Gatherly.Accounts.User, path: "/auth")
+    sign_out_route(AuthController)
+    sign_in_route()
+    reset_route([])
   end
 
   # Health check endpoint for Fly.io

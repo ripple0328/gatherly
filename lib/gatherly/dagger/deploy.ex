@@ -101,8 +101,11 @@ defmodule Gatherly.Dagger.Deploy do
         log_step("Image exported to local Docker", :success)
 
         # Verify image exists locally
-        case System.cmd("docker", ["images", local_tag, "--format", "table {{.Repository}}:{{.Tag}}\t{{.Size}}"],
-                        stderr_to_stdout: true) do
+        case System.cmd(
+               "docker",
+               ["images", local_tag, "--format", "table {{.Repository}}:{{.Tag}}\t{{.Size}}"],
+               stderr_to_stdout: true
+             ) do
           {output, 0} ->
             log_step("Local image verified: #{String.trim(output)}")
 
@@ -112,8 +115,20 @@ defmodule Gatherly.Dagger.Deploy do
 
         # Now deploy using fly deploy with the local image
         log_step("Deploying to Fly.io using local image")
-        case System.cmd("fly", ["deploy", "--local-only", "--image", local_tag, "--now", "--release-command-timeout", "10m"],
-                        stderr_to_stdout: true) do
+
+        case System.cmd(
+               "fly",
+               [
+                 "deploy",
+                 "--local-only",
+                 "--image",
+                 local_tag,
+                 "--now",
+                 "--release-command-timeout",
+                 "10m"
+               ],
+               stderr_to_stdout: true
+             ) do
           {output, 0} ->
             IO.puts(output)
             log_step("Deployment successful", :finish)
@@ -174,8 +189,11 @@ defmodule Gatherly.Dagger.Deploy do
         log_step("Image exported to local Docker", :success)
 
         # Verify image exists locally
-        case System.cmd("docker", ["images", local_tag, "--format", "table {{.Repository}}:{{.Tag}}\t{{.Size}}"],
-                        stderr_to_stdout: true) do
+        case System.cmd(
+               "docker",
+               ["images", local_tag, "--format", "table {{.Repository}}:{{.Tag}}\t{{.Size}}"],
+               stderr_to_stdout: true
+             ) do
           {output, 0} ->
             log_step("Local image verified: #{String.trim(output)}")
             log_step("Build completed successfully - ready for deployment", :success)

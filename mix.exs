@@ -100,7 +100,18 @@ defmodule Gatherly.MixProject do
       {:excoveralls, "~> 0.18", only: :test},
 
       # Dagger SDK for CI/CD workflows
-      {:dagger, github: "dagger/dagger", sparse: "sdk/elixir", only: [:dev, :test]}
+      {:dagger, github: "dagger/dagger", sparse: "sdk/elixir", only: [:dev, :test]},
+
+      # Ash Framework for domain modeling and authentication
+      {:ash, "~> 3.4"},
+      {:ash_postgres, "~> 2.4"},
+      {:ash_phoenix, "~> 2.1"},
+      {:ash_authentication, "~> 4.3"},
+      {:ash_authentication_phoenix, "~> 2.1"},
+
+      # OAuth dependencies for authentication
+      {:ueberauth, "~> 0.10"},
+      {:ueberauth_google, "~> 0.12"}
     ]
   end
 

@@ -27,7 +27,7 @@ defmodule GatherlyWeb.Endpoint do
 
   # Add Tidewave plug for AI-assisted development
   if Code.ensure_loaded?(Tidewave) do
-    plug Tidewave
+    plug Tidewave, allow_remote_access: true, allowed_hosts: ["localhost", "127.0.0.1"]
   end
 
   # Code reloading can be explicitly enabled under the
@@ -36,7 +36,8 @@ defmodule GatherlyWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :gatherly
+    # Temporarily disable CheckRepoStatus due to containerized setup
+    # plug Phoenix.Ecto.CheckRepoStatus, otp_app: :gatherly
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,

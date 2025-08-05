@@ -39,8 +39,10 @@ config :esbuild,
   gatherly: [
     args:
       ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*) ++
-      ["--alias:phoenix-live-view=#{Path.expand("../deps/phoenix_live_view/priv/static/phoenix_live_view.esm.js", __DIR__)}"] ++
-      ["--alias:phoenix=#{Path.expand("../deps/phoenix/priv/static/phoenix.mjs", __DIR__)}"],
+        [
+          "--alias:phoenix-live-view=#{Path.expand("../deps/phoenix_live_view/priv/static/phoenix_live_view.esm.js", __DIR__)}"
+        ] ++
+        ["--alias:phoenix=#{Path.expand("../deps/phoenix/priv/static/phoenix.mjs", __DIR__)}"],
     cd: Path.expand("../assets", __DIR__)
   ]
 
@@ -62,6 +64,31 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Configure Ash
+config :gatherly, ash_domains: [Gatherly.Api]
+
+config :ash,
+  custom_types: [
+    module: Ash.Type.Module,
+    file: Ash.Type.File
+  ]
+
+# Configure AshAuthentication
+config :ash_authentication,
+  token_signing_secret: "your-secret-key-here-replace-in-runtime"
+
+# Configure Ueberauth for OAuth
+config :ueberauth, Ueberauth,
+  providers: [
+    google:
+      {Ueberauth.Strategy.Google,
+       [
+         default_scope: "email profile",
+         prompt: "consent",
+         access_type: "online"
+       ]}
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

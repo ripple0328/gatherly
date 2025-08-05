@@ -36,11 +36,8 @@
           </a>
         </div>
         
-<!-- Desktop Auth Buttons -->
-        <div class="hidden md:flex items-center space-x-4">
-          <a href="/login" class="btn btn-secondary">Log In</a>
-          <a href="/sign_up" class="btn">Sign Up</a>
-        </div>
+<!-- Desktop Auth -->
+        <GatherlyWeb.AuthComponents.auth_nav current_user={Map.get(assigns, :current_user)} />
         
 <!-- Mobile menu button -->
         <div class="md:hidden">
@@ -82,17 +79,8 @@
         >
           How It Works
         </a>
-        <div class="border-t border-gray-200 pt-3 mt-3">
-          <a
-            href="/login"
-            class="block px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md text-base font-medium"
-          >
-            Log In
-          </a>
-          <a href="/sign_up" class="block mx-3 mt-2 btn">
-            Sign Up
-          </a>
-        </div>
+        <!-- Mobile Auth -->
+        <GatherlyWeb.AuthComponents.mobile_auth_nav current_user={Map.get(assigns, :current_user)} />
       </div>
     </div>
   </nav>

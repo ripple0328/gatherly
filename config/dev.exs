@@ -1,7 +1,7 @@
 import Config
 
 # Configure your database
-# Use DATABASE_URL if available (for containerized environments), 
+# Use DATABASE_URL if available (for containerized environments),
 # otherwise use individual config values for local development
 database_config =
   if System.get_env("DATABASE_URL") do
@@ -17,12 +17,13 @@ database_config =
     ]
   end
 
-config :gatherly, Gatherly.Repo,
-  Keyword.merge(database_config, [
-    stacktrace: true,
-    show_sensitive_data_on_connection_error: true,
-    pool_size: 10
-  ])
+config :gatherly,
+       Gatherly.Repo,
+       Keyword.merge(database_config,
+         stacktrace: true,
+         show_sensitive_data_on_connection_error: true,
+         pool_size: 10
+       )
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -37,7 +38,6 @@ config :gatherly, GatherlyWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "F4/ZRYH3udsQ9N+bnURZ76Fh3VkuxxHRe9d5EbH7HbIaHVh8uTF9NFo4IcBDXtjw",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:gatherly, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:gatherly, ~w(--watch)]}
@@ -99,3 +99,12 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+config :tidewave,
+  allow_remote_access: true,
+  allowed_hosts: ["localhost", "127.0.0.1"]
+
+# Import secret config if it exists (not tracked in version control)
+if File.exists?("config/dev.secret.exs") do
+  import_config "dev.secret.exs"
+end

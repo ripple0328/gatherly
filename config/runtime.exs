@@ -114,4 +114,50 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+
+  # Configure OAuth providers for production
+  config :gatherly, :google,
+    client_id: System.get_env("GOOGLE_CLIENT_ID"),
+    client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
+
+  config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+    client_id: System.get_env("GOOGLE_CLIENT_ID"),
+    client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
+
+  # Authentication token signing secret
+  token_signing_secret =
+    System.get_env("TOKEN_SIGNING_SECRET") ||
+      raise """
+      environment variable TOKEN_SIGNING_SECRET is missing.
+      You can generate one by calling: mix phx.gen.secret
+      """
+
+  config :ash_authentication,
+    token_signing_secret: token_signing_secret
+end
+
+# Development environment runtime configuration
+if config_env() == :dev do
+  # Allow runtime override of development secrets via environment variables
+  if database_url = System.get_env("DATABASE_URL") do
+    config :gatherly, Gatherly.Repo, url: database_url
+  end
+
+  if secret_key_base = System.get_env("SECRET_KEY_BASE") do
+    config :gatherly, GatherlyWeb.Endpoint, secret_key_base: secret_key_base
+  end
+
+  if google_client_id = System.get_env("GOOGLE_CLIENT_ID") do
+    config :gatherly, :google, client_id: google_client_id
+    config :ueberauth, Ueberauth.Strategy.Google.OAuth, client_id: google_client_id
+  end
+
+  if google_client_secret = System.get_env("GOOGLE_CLIENT_SECRET") do
+    config :gatherly, :google, client_secret: google_client_secret
+    config :ueberauth, Ueberauth.Strategy.Google.OAuth, client_secret: google_client_secret
+  end
+
+  if token_secret = System.get_env("TOKEN_SIGNING_SECRET") do
+    config :ash_authentication, token_signing_secret: token_secret
+  end
 end
