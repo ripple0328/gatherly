@@ -124,6 +124,14 @@ if config_env() == :prod do
     client_id: System.get_env("GOOGLE_CLIENT_ID"),
     client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
 
+  config :gatherly, :x,
+    client_id: System.get_env("X_CLIENT_ID"),
+    client_secret: System.get_env("X_CLIENT_SECRET")
+
+  config :ueberauth, Ueberauth.Strategy.Twitter.OAuth,
+    client_id: System.get_env("X_CLIENT_ID"),
+    client_secret: System.get_env("X_CLIENT_SECRET")
+
   # Authentication token signing secret
   token_signing_secret =
     System.get_env("TOKEN_SIGNING_SECRET") ||
@@ -155,6 +163,16 @@ if config_env() == :dev do
   if google_client_secret = System.get_env("GOOGLE_CLIENT_SECRET") do
     config :gatherly, :google, client_secret: google_client_secret
     config :ueberauth, Ueberauth.Strategy.Google.OAuth, client_secret: google_client_secret
+  end
+
+  if x_client_id = System.get_env("X_CLIENT_ID") do
+    config :gatherly, :x, client_id: x_client_id
+    config :ueberauth, Ueberauth.Strategy.Twitter.OAuth, client_id: x_client_id
+  end
+
+  if x_client_secret = System.get_env("X_CLIENT_SECRET") do
+    config :gatherly, :x, client_secret: x_client_secret
+    config :ueberauth, Ueberauth.Strategy.Twitter.OAuth, client_secret: x_client_secret
   end
 
   if token_secret = System.get_env("TOKEN_SIGNING_SECRET") do

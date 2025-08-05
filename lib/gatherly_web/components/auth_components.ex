@@ -45,6 +45,15 @@ defmodule GatherlyWeb.AuthComponents do
           </svg>
           Sign in with Google
         </.link>
+        <.link href={~p"/auth/user/x"} class="btn btn-primary">
+          <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24">
+            <path
+              fill="currentColor"
+              d="M18.9 2h3.1l-7.2 8.2L24 22h-7l-5.2-6.9L6 22H2l7.5-8.5L0 2h7l4.7 6.4L18.9 2Z"
+            />
+          </svg>
+          Sign in with X
+        </.link>
       </div>
     <% end %>
     """
@@ -98,6 +107,15 @@ defmodule GatherlyWeb.AuthComponents do
             />
           </svg>
           Sign in with Google
+        </.link>
+        <.link href={~p"/auth/user/x"} class="block mx-3 btn btn-primary">
+          <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24">
+            <path
+              fill="currentColor"
+              d="M18.9 2h3.1l-7.2 8.2L24 22h-7l-5.2-6.9L6 22H2l7.5-8.5L0 2h7l4.7 6.4L18.9 2Z"
+            />
+          </svg>
+          Sign in with X
         </.link>
       </div>
     <% end %>

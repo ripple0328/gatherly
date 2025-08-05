@@ -87,7 +87,8 @@ config :ueberauth, Ueberauth,
          default_scope: "email profile",
          prompt: "consent",
          access_type: "online"
-       ]}
+       ]},
+    x: {Ueberauth.Strategy.Twitter, []}
   ]
 
 # Import environment specific config. This must remain at the bottom

@@ -79,7 +79,11 @@ Gatherly empowers every participant—not just the host—to contribute meaningf
 - [x] TailwindCSS setup
 - [x] Container-based development environment
 - [ ] Dev/test deployment (Fly.io or Render)
-- [ ] OAuth login (Google, Apple, Facebook, X)
+- [ ] OAuth login
+  - [x] Google
+  - [x] X
+  - [ ] Apple
+  - [ ] Facebook
 - [ ] Anonymous join via magic link
 
 ### Phase 1: MVP – Potluck Planning

@@ -111,7 +111,8 @@ defmodule Gatherly.MixProject do
 
       # OAuth dependencies for authentication
       {:ueberauth, "~> 0.10"},
-      {:ueberauth_google, "~> 0.12"}
+      {:ueberauth_google, "~> 0.12"},
+      {:ueberauth_twitter, "~> 0.10"}
     ]
   end
 

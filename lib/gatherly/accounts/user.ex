@@ -46,6 +46,32 @@ defmodule Gatherly.Accounts.User do
         identity_resource(Gatherly.Accounts.UserIdentity)
         register_action_name(:register_with_google)
       end
+
+      # X (Twitter) OAuth strategy
+      x do
+        client_id(fn _, _ ->
+          Application.fetch_env(:gatherly, :x)
+          |> case do
+            {:ok, config} -> {:ok, config[:client_id]}
+            :error -> :error
+          end
+        end)
+
+        redirect_uri(fn _, _ ->
+          {:ok, "#{GatherlyWeb.Endpoint.url()}/auth/user/x/callback"}
+        end)
+
+        client_secret(fn _, _ ->
+          Application.fetch_env(:gatherly, :x)
+          |> case do
+            {:ok, config} -> {:ok, config[:client_secret]}
+            :error -> :error
+          end
+        end)
+
+        identity_resource(Gatherly.Accounts.UserIdentity)
+        register_action_name(:register_with_x)
+      end
     end
 
     tokens do
@@ -108,6 +134,36 @@ defmodule Gatherly.Accounts.User do
 
     create :register_with_google do
       description("Register or sign in with Google OAuth")
+      accept([:email, :name, :avatar_url])
+
+      argument :user_info, :map do
+        description("OAuth user information from provider")
+        allow_nil?(false)
+      end
+
+      argument :oauth_tokens, :map do
+        description("OAuth tokens from provider")
+        allow_nil?(false)
+      end
+
+      change(AshAuthentication.GenerateTokenChange)
+      change(AshAuthentication.Strategy.OAuth2.IdentityChange)
+
+      change(fn changeset, _ ->
+        user_info = Ash.Changeset.get_argument(changeset, :user_info)
+
+        changeset
+        |> Ash.Changeset.change_attribute(:email, user_info["email"])
+        |> Ash.Changeset.change_attribute(:name, user_info["name"])
+        |> Ash.Changeset.change_attribute(:avatar_url, user_info["picture"])
+      end)
+
+      upsert?(true)
+      upsert_identity(:unique_email)
+    end
+
+    create :register_with_x do
+      description("Register or sign in with X OAuth")
       accept([:email, :name, :avatar_url])
 
       argument :user_info, :map do
