@@ -48,8 +48,8 @@ defmodule Gatherly.MixProject do
   defp deps do
     [
       {:igniter, "~> 0.6", only: [:dev, :test]},
-      # Phoenix framework - Updated to latest RC
-      {:phoenix, "~> 1.8.0-rc.4"},
+      # Phoenix framework - Updated to stable release
+      {:phoenix, "~> 1.8.0"},
       {:phoenix_ecto, "~> 4.6.5"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.5", only: :dev},

@@ -16,8 +16,8 @@ mix dev.shell
 ```
 
 ### Framework Versions
-- **Framework**: Phoenix 1.8.0-rc.4 (Latest RC)
-- **LiveView**: 1.0.17 (Latest stable)
+- **Framework**: Phoenix 1.8.0 (Latest stable)
+- **LiveView**: 1.1.2 (Latest stable)
 - **Elixir**: 1.18.4-otp-28
 - **Erlang/OTP**: 28.0.1
 - **PostgreSQL**: 17.5
