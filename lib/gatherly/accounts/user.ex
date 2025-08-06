@@ -71,7 +71,7 @@ defmodule Gatherly.Accounts.User do
     uuid_primary_key(:id)
 
     attribute :email, :ci_string do
-      allow_nil?(false)
+      allow_nil?(true)  # Allow nil for anonymous users
       public?(true)
     end
 
@@ -84,6 +84,18 @@ defmodule Gatherly.Accounts.User do
       public?(true)
     end
 
+    attribute :user_type, :atom do
+      allow_nil?(false)
+      default(:oauth)
+      constraints(one_of: [:oauth, :anonymous, :mixed])
+      public?(true)
+    end
+
+    attribute :anonymous_token, :string do
+      allow_nil?(true)
+      public?(false)  # Keep tokens private
+    end
+
     attribute :confirmed_at, :utc_datetime do
       public?(true)
     end
@@ -92,7 +104,7 @@ defmodule Gatherly.Accounts.User do
   end
 
   identities do
-    identity(:unique_email, [:email])
+    identity(:unique_email, [:email], pre_check_with: Gatherly.Accounts.User)
   end
 
   actions do
@@ -100,10 +112,29 @@ defmodule Gatherly.Accounts.User do
     defaults([:read])
 
     create :create do
-      accept([:email, :name, :avatar_url])
+      accept([:email, :name, :avatar_url, :user_type])
       primary?(true)
 
       change(AshAuthentication.GenerateTokenChange)
+    end
+
+    create :create_anonymous do
+      description("Create an anonymous user via magic link")
+      accept([:name, :email, :user_type, :anonymous_token])
+
+      argument :magic_token, :string do
+        description("Magic link token for verification")
+        allow_nil?(false)
+      end
+
+      change(AshAuthentication.GenerateTokenChange)
+
+      change(fn changeset, _ ->
+        changeset
+        |> Ash.Changeset.change_attribute(:user_type, :anonymous)
+        |> Ash.Changeset.change_attribute(:anonymous_token, 
+             Ash.Changeset.get_argument(changeset, :magic_token))
+      end)
     end
 
     create :register_with_google do
@@ -155,8 +186,20 @@ defmodule Gatherly.Accounts.User do
 
   code_interface do
     define(:create)
+    define(:create_anonymous)
     define(:read)
     define(:update)
+  end
+
+  # Helper functions for anonymous users
+  def is_anonymous?(user) do
+    user.user_type == :anonymous
+  end
+
+  def can_access_event?(user, _event_id) do
+    # For now, all users can access events
+    # Later we'll add proper permission checks
+    not is_nil(user)
   end
 
   preparations do

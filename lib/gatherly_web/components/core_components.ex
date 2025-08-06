@@ -393,11 +393,12 @@ defmodule GatherlyWeb.CoreComponents do
   Renders a label.
   """
   attr :for, :string, default: nil
+  attr :class, :string, default: "block text-sm font-semibold leading-6 text-zinc-800"
   slot :inner_block, required: true
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class={@class}>
       {render_slot(@inner_block)}
     </label>
     """

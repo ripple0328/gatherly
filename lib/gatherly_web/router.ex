@@ -29,6 +29,16 @@ defmodule GatherlyWeb.Router do
     sign_out_route(AuthController)
     sign_in_route()
     reset_route([])
+
+    # Magic link routes
+    get "/join/:token", MagicLinkController, :join
+    post "/join/:token/register", MagicLinkController, :register
+    
+    # Event routes (testing)
+    live "/events/:id", EventLive
+    
+    # Magic link generation (dev/admin)
+    post "/api/events/:event_id/magic-link", MagicLinkController, :generate
   end
 
   # Health check endpoint for Fly.io

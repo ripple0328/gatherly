@@ -27,7 +27,7 @@ defmodule Mix.Tasks.Dagger.Workflows.Ci do
 
   use Mix.Task
   import Gatherly.Dagger.Workflow
-  alias Mix.Tasks.Dagger.{Format, Lint, Security, Setup, Test}
+  alias Mix.Tasks.Dagger.{Format, Lint, Security, Test}
 
   @impl true
   def run(args) do
@@ -58,14 +58,13 @@ defmodule Mix.Tasks.Dagger.Workflows.Ci do
   end
 
   def execute(opts) do
-    env = Keyword.get(opts, :env, "dev")
+    _env = Keyword.get(opts, :env, "dev")
     skip_dialyzer = Keyword.get(opts, :skip_dialyzer, false)
     skip_security = Keyword.get(opts, :skip_security, false)
     fail_fast = Keyword.get(opts, :fail_fast, true)
 
     # Define CI pipeline steps
     steps = [
-      {"Setup", fn -> Setup.execute(env: env) end},
       {"Format Check", fn -> Format.execute(["--check-formatted"]) end},
       {"Linting",
        fn ->

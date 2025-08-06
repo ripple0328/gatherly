@@ -1,0 +1,70 @@
+
+services:
+  db:
+    image: postgres:17.5
+    environment:
+      POSTGRES_DB: gatherly_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: elixir:1.18.4-otp-28
+    working_dir: /app
+    volumes:
+      - .:/app
+      - deps_cache:/app/deps
+      - build_cache:/app/_build
+      - mix_cache:/root/.mix
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/gatherly_dev
+      MIX_ENV: dev
+      PHX_HOST: 0.0.0.0
+      PHX_PORT: 4000
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "4000:4000"
+    tty: true
+    stdin_open: true
+    command: >
+      bash -c "
+        apt-get update -qq &&
+        apt-get install -y postgresql-client inotify-tools &&
+        mix local.hex --force &&
+        mix local.rebar --force &&
+        tail -f /dev/null
+      "
+
+  test_db:
+    image: postgres:17.5
+    environment:
+      POSTGRES_DB: gatherly_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5433:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  deps_cache:
+  build_cache:
+  mix_cache:

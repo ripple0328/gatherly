@@ -25,14 +25,14 @@ defmodule Mix.Tasks.Dagger.Quality do
   """
 
   use Mix.Task
-  alias Mix.Tasks.Dagger.Workflows.Quality
+  alias Mix.Tasks.Dagger.Workflows.Quality, as: QualityWorkflow
 
   @impl true
   def run(args) do
-    Quality.run(args)
+    QualityWorkflow.run(args)
   end
 
   def execute(opts) do
-    Quality.execute(opts)
+    QualityWorkflow.execute(opts)
   end
 end

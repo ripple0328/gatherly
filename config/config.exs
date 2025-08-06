@@ -66,7 +66,7 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 # Configure Ash
-config :gatherly, ash_domains: [Gatherly.Api]
+config :gatherly, ash_domains: [Gatherly.Api, Gatherly.Events]
 
 config :ash,
   custom_types: [

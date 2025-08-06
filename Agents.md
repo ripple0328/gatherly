@@ -1,7 +1,19 @@
 # AI Coding Agent Guidelines (Elixir/Phoenix)
 
 ## Project Overview
-Gatherly is a collaborative event planning platform built with Phoenix LiveView. The project uses container-based development for consistency and ease of setup.
+Gatherly is a collaborative event planning platform built with Phoenix LiveView. The project uses Docker Compose for development and Dagger for CI/CD workflows.
+
+### Quick Start
+```bash
+# Install dependencies and setup database
+mix dev.setup
+
+# Start Phoenix development server (auto-starts services)
+mix dev.server
+
+# Or start interactive IEx shell (auto-starts services)
+mix dev.shell
+```
 
 ### Framework Versions
 - **Framework**: Phoenix 1.8.0-rc.4 (Latest RC)
@@ -10,18 +22,20 @@ Gatherly is a collaborative event planning platform built with Phoenix LiveView.
 - **Erlang/OTP**: 28.0.1
 - **PostgreSQL**: 17.5
 
-### Container Development Environment
+### Development Environment
 
-#### Services
-- **PostgreSQL**: Running as `postgres` service with database `gatherly_dev`
-- **Phoenix Server**: Port 4000, bound to `0.0.0.0` for external access
+#### Development Setup (Docker Compose)
+- **PostgreSQL**: Running in `db` container with database `gatherly_dev` on port 5432
+- **Elixir App**: Running in `app` container with development tools
+- **Test Database**: Separate PostgreSQL instance for testing on port 5433
+- **Phoenix Server**: Available at http://localhost:4000 when started
 
 #### Asset Management
 - **Asset Pipeline**: Uses esbuild and tailwind from Elixir dependencies (no Node.js required)
 - **JavaScript**: Minimal JavaScript with Phoenix LiveView client
 - **CSS**: Tailwind CSS with PostCSS processing
 
-#### CI/CD
+#### CI/CD (Dagger)
 - **GitHub Actions**: Automated lint, test, and deploy pipeline
 - **Deployment**: Fly.io with automatic database migrations
 - **Health Check**: `/health` endpoint for monitoring
@@ -173,31 +187,42 @@ end
 
 ## Development Workflow
 
-### Setup Commands
+### Development Commands
 ```bash
-# One-command container setup and start
-mix dagger.dev
-
-# Start/stop services only
-mix dagger.dev.start
-mix dagger.dev.stop
+# Core development (auto-starts services)
+mix dev.server             # Start Phoenix server at http://localhost:4000
+mix dev.shell              # Start IEx shell with database connection
+mix dev.setup              # Full setup (install deps + setup database)
 ```
 
-### Testing Commands
+### Database Operations
 ```bash
-# Full CI pipeline inside containers
-mix dagger.ci
-
-# Run tests only
-mix dagger.test
+# Database management
+mix dev.db.create          # Create development database
+mix dev.db.migrate         # Run database migrations
+mix dev.db.rollback        # Rollback migrations (supports --step, --to)
+mix dev.db.reset           # Reset database (drop, create, migrate, seed)
+mix dev.db.seed            # Run database seeds
+mix dev.db.shell           # Connect to PostgreSQL shell
 ```
 
-### Code Quality
+### Testing
 ```bash
+# Test commands
+mix dev.test               # Run all tests with test database
+mix dev.test --failed      # Run only failed tests
+mix dev.test test/specific_test.exs  # Run specific test file
+```
+
+### CI/CD & Quality (Dagger)
+```bash
+# Production workflows (containerized)
+mix dagger.ci              # Full CI pipeline
+mix dagger.test            # Run tests in CI environment
+mix dagger.lint            # Lint with Credo & Dialyzer
 mix dagger.format          # Format code
-mix dagger.lint --strict   # Lint with Credo & Dialyzer
 mix dagger.security        # Security audit
-mix dagger.deploy          # Build & push Fly.io image
+mix dagger.deploy          # Build & deploy to Fly.io
 ```
 
 ## Security Best Practices
