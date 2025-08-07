@@ -19,6 +19,11 @@ No local Elixir/Erlang/PostgreSQL required. Everything runs in containers.
 git clone https://github.com/yourusername/gatherly.git
 cd gatherly
 
+# Copy and fill env
+cp .env.example .env
+# Generate secrets and paste into .env
+# mix phx.gen.secret
+
 # One-time setup (installs deps, prepares DB)
 just dev-setup
 
@@ -53,6 +58,11 @@ just quality              # format + lint + dialyzer
 ```
 
 Advanced, CI-ready workflows are available via Dagger. See [Dagger Integration Guide](lib/gatherly/dagger/README.md).
+
+### Secrets management
+- Copy `.env.example` to `.env` and set required secrets
+- Dev containers load env from `.env` automatically (`env_file`)
+- Production: use platform secret store (e.g., Fly.io `fly secrets`) and set envs like `SECRET_KEY_BASE`, `TOKEN_SIGNING_SECRET`, `DATABASE_URL`
 
 ### Tool Versions
 

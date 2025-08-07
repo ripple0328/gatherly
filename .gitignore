@@ -53,3 +53,4 @@ config/prod.secret.exs
 .env
 .env.local
 .env.*.local
+.env.*

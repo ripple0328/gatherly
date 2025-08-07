@@ -6,6 +6,7 @@ Gatherly is a collaborative event planning platform built with Phoenix LiveView.
 ### Quick Start
 ```bash
 # One-time setup (installs deps + sets up DB in containers)
+cp .env.example .env
 just dev-setup
 
 # Start Phoenix development server (auto-starts services)
@@ -29,6 +30,7 @@ just dev-shell
 - **Elixir App**: Running in `app` container with development tools
 - **Test Database**: Separate PostgreSQL instance for testing on port 5433
 - **Phoenix Server**: Available at http://localhost:4000 when started
+- **Secrets**: `.env` file is used in dev via compose `env_file`
 
 #### Asset Management
 - **Asset Pipeline**: Uses esbuild and tailwind from Elixir dependencies (no Node.js required)
@@ -85,6 +87,7 @@ just dev-shell
 - Keep **controllers thin** and delegate logic to contexts. Use Phoenix views or function components for rendering
 - Use ui component whenever possible
 - Always try to use or create reusable components
+- alway use liveview over traditional controller
 
 ## LiveView Conventions
 

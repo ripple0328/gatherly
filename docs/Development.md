@@ -11,6 +11,7 @@ This guide explains how to run Gatherly locally using Docker Compose for develop
 
 ```bash
 # One-time setup (installs deps + database in containers)
+cp .env.example .env   # fill in secrets
 just dev-setup
 
 # Start development (services auto-start)
@@ -116,5 +117,6 @@ just doctor  # Validates Docker daemon and compose availability
 - **Task Runner**: `just` provides a Docker-first command layer
 - **CI/CD**: Uses Dagger for reliable, containerized testing and deployment
 - **Auto-Start**: `just dev-server` and `just dev-shell` automatically start required services
+- **Secrets**: Use `.env` for dev (not committed). Production uses platform secret stores injected via env at runtime.
 
 For more details about the project, see [Project Overview](Project.md) and [Project Landscape](Landscape.md).
