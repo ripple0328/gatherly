@@ -175,8 +175,33 @@ format-check:
     @echo "Checking formatting..."
     @docker compose -f docker-compose.dev.yml run -T --rm app mix format --check-formatted
 
-# CI pipeline: formatting, linting, type checks, tests
-ci: format-check lint dialyzer test
+# CI-specific tasks using optimized CI compose
+format-check-ci:
+    @echo "Checking formatting (CI)..."
+    @docker compose -f docker-compose.ci.yml up -d
+    @docker compose -f docker-compose.ci.yml exec -T app mix format --check-formatted
+    @docker compose -f docker-compose.ci.yml down
+
+lint-ci:
+    @echo "Running linter (CI)..."
+    @docker compose -f docker-compose.ci.yml up -d
+    @docker compose -f docker-compose.ci.yml exec -T app mix credo --strict
+    @docker compose -f docker-compose.ci.yml down
+
+dialyzer-ci:
+    @echo "Running Dialyzer (CI)..."
+    @docker compose -f docker-compose.ci.yml up -d
+    @docker compose -f docker-compose.ci.yml exec -T app mix dialyzer
+    @docker compose -f docker-compose.ci.yml down
+
+test-ci:
+    @echo "Running tests (CI)..."
+    @docker compose -f docker-compose.ci.yml up -d
+    @docker compose -f docker-compose.ci.yml exec -T app mix test
+    @docker compose -f docker-compose.ci.yml down
+
+# CI pipeline: formatting, linting, type checks, tests (uses CI compose)
+ci: format-check-ci lint-ci dialyzer-ci test-ci
     @echo "CI pipeline completed!"
 
 # Build with Fly.io build system only (no deploy)

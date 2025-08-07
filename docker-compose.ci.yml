@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:17.5
+    environment:
+      POSTGRES_DB: gatherly_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    # No port mapping - CI doesn't need external access
+    tmpfs:
+      # Use tmpfs for faster CI runs
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+  app:
+    image: elixir:1.18.4-otp-28
+    working_dir: /app
+    volumes:
+      - .:/app
+      # Use tmpfs for cache directories in CI for speed
+      - type: tmpfs
+        target: /app/deps
+      - type: tmpfs
+        target: /app/_build
+      - type: tmpfs
+        target: /root/.mix
+    env_file:
+      - .env
+    environment:
+      MIX_ENV: test
+      # CI-specific optimizations
+      ERL_AFLAGS: "-kernel shell_history enabled"
+    depends_on:
+      db:
+        condition: service_healthy
+    # No port mapping needed for CI
+    command: >
+      bash -c "
+        apt-get update -qq &&
+        apt-get install -y postgresql-client &&
+        mix local.hex --force &&
+        mix local.rebar --force &&
+        mix deps.get &&
+        tail -f /dev/null
+      "
