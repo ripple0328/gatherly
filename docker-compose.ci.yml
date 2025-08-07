@@ -38,6 +38,11 @@ services:
       db:
         condition: service_healthy
     # No port mapping needed for CI
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /app/mix.exs && mix help > /dev/null"]
+      interval: 2s
+      timeout: 10s
+      retries: 15
     command: >
       bash -c "
         apt-get update -qq &&

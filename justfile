@@ -178,25 +178,25 @@ format-check:
 # CI-specific tasks using optimized CI compose
 format-check-ci:
     @echo "Checking formatting (CI)..."
-    @docker compose -f docker-compose.ci.yml up -d
+    @docker compose -f docker-compose.ci.yml up -d --wait
     @docker compose -f docker-compose.ci.yml exec -T app mix format --check-formatted
     @docker compose -f docker-compose.ci.yml down
 
 lint-ci:
     @echo "Running linter (CI)..."
-    @docker compose -f docker-compose.ci.yml up -d
+    @docker compose -f docker-compose.ci.yml up -d --wait
     @docker compose -f docker-compose.ci.yml exec -T app mix credo --strict
     @docker compose -f docker-compose.ci.yml down
 
 dialyzer-ci:
     @echo "Running Dialyzer (CI)..."
-    @docker compose -f docker-compose.ci.yml up -d
+    @docker compose -f docker-compose.ci.yml up -d --wait
     @docker compose -f docker-compose.ci.yml exec -T app mix dialyzer
     @docker compose -f docker-compose.ci.yml down
 
 test-ci:
     @echo "Running tests (CI)..."
-    @docker compose -f docker-compose.ci.yml up -d
+    @docker compose -f docker-compose.ci.yml up -d --wait
     @docker compose -f docker-compose.ci.yml exec -T app mix test
     @docker compose -f docker-compose.ci.yml down
 
