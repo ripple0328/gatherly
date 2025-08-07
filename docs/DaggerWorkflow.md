@@ -4,12 +4,15 @@ This guide explains the optimized Dagger task workflow for Gatherly development.
 
 ## Quick Start
 
-```bash
-# Start development (smart setup + server)
-mix dagger.up
+Prefer the Docker-first workflow with `just` for local development. Use Dagger commands for CI parity or advanced workflows.
 
-# Stop development
-Ctrl+C
+```bash
+# Local development (recommended)
+just dev-setup
+just dev-server
+
+# Dagger workflows (optional)
+mix dagger.up
 ```
 
 ## Command Organization
@@ -91,11 +94,9 @@ mix dagger.deploy               # Deploy to production
 git clone <repo>
 cd gatherly
 
-# Install tools
-mise install
-
-# Start development (full setup)
-mix dagger.up
+# Start development (containers only)
+just dev-setup
+just dev-server
 ```
 
 ### Daily Development

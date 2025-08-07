@@ -71,7 +71,8 @@ defmodule Gatherly.Accounts.User do
     uuid_primary_key(:id)
 
     attribute :email, :ci_string do
-      allow_nil?(true)  # Allow nil for anonymous users
+      # Allow nil for anonymous users
+      allow_nil?(true)
       public?(true)
     end
 
@@ -93,7 +94,8 @@ defmodule Gatherly.Accounts.User do
 
     attribute :anonymous_token, :string do
       allow_nil?(true)
-      public?(false)  # Keep tokens private
+      # Keep tokens private
+      public?(false)
     end
 
     attribute :confirmed_at, :utc_datetime do
@@ -132,8 +134,10 @@ defmodule Gatherly.Accounts.User do
       change(fn changeset, _ ->
         changeset
         |> Ash.Changeset.change_attribute(:user_type, :anonymous)
-        |> Ash.Changeset.change_attribute(:anonymous_token, 
-             Ash.Changeset.get_argument(changeset, :magic_token))
+        |> Ash.Changeset.change_attribute(
+          :anonymous_token,
+          Ash.Changeset.get_argument(changeset, :magic_token)
+        )
       end)
     end
 
@@ -192,7 +196,7 @@ defmodule Gatherly.Accounts.User do
   end
 
   # Helper functions for anonymous users
-  def is_anonymous?(user) do
+  def anonymous?(user) do
     user.user_type == :anonymous
   end
 

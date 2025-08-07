@@ -33,10 +33,10 @@ defmodule GatherlyWeb.Router do
     # Magic link routes
     get "/join/:token", MagicLinkController, :join
     post "/join/:token/register", MagicLinkController, :register
-    
+
     # Event routes (testing)
     live "/events/:id", EventLive
-    
+
     # Magic link generation (dev/admin)
     post "/api/events/:event_id/magic-link", MagicLinkController, :generate
   end

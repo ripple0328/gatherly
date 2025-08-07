@@ -4,39 +4,39 @@ This guide explains how to run Gatherly locally using Docker Compose for develop
 
 ## Prerequisites
 
-- [Docker](https://www.docker.com/) and Docker Compose
-- [Elixir](https://elixir-lang.org/) (for running Mix tasks)
+- Docker (Docker Desktop, OrbStack, or Colima)
+- Optional: `just` task runner (`brew install just` on macOS)
 
 ## Quick Start
 
 ```bash
-# Setup project (install deps + database)
-mix dev.setup
+# One-time setup (installs deps + database in containers)
+just dev-setup
 
 # Start development (services auto-start)
-mix dev.server   # Phoenix server at http://localhost:4000
-# OR
-mix dev.shell    # IEx shell with database
+just dev-server   # Phoenix server at http://localhost:4000
+
+# OR interactive IEx shell
+just dev-shell
 ```
 
 ## Development Workflow
 
-### Core Development Commands
+### Core Development Commands (via `just`)
 ```bash
-# Primary development commands (auto-start services)
-mix dev.server   # Phoenix server with live reloading
-mix dev.shell    # IEx shell with database connection
+# App
+just dev-server               # Phoenix server with live reloading
+just dev-shell                # IEx shell with database connection
 
 # Database operations
-mix dev.db.migrate          # Run migrations
-mix dev.db.rollback         # Rollback migrations
-mix dev.db.reset           # Reset database completely
-mix dev.db.seed            # Run seeds
-mix dev.db.shell           # PostgreSQL shell
+just db-migrate               # Run migrations
+just db-rollback -- --step=1  # Rollback migrations (pass args after --)
+just db-reset                 # Reset database completely
+just db-seed                  # Run seeds
+just db-shell                 # PostgreSQL shell
 
 # Testing
-mix dev.test               # Run all tests
-mix dev.test --failed      # Run only failed tests
+just test                     # Run all tests against isolated test DB
 ```
 
 ### CI/CD Commands (Dagger)
@@ -74,23 +74,32 @@ mix dagger.deploy          # Deploy to production
 ## Troubleshooting
 
 ### Services Won't Start
-Services are automatically started by `mix dev.server` or `mix dev.shell`. If they fail to start:
+Services are automatically started by `just dev-server` or `just dev-shell`. If they fail to start:
 ```bash
 # Stop any running containers and restart
-docker-compose -f docker-compose.dev.yml down
-mix dev.server  # Will start fresh
+docker compose -f docker-compose.dev.yml down
+just dev-server  # Will start fresh
 ```
 
 ### Database Connection Issues
 ```bash
-mix dev.db.reset  # Reset database
+just db-reset  # Reset database
 ```
 
 ### Container Issues
 ```bash
 # Nuclear option - remove everything and start fresh
-docker-compose -f docker-compose.dev.yml down --volumes --remove-orphans
-mix dev.server  # Will rebuild and start fresh
+docker compose -f docker-compose.dev.yml down --volumes --remove-orphans
+just dev-server  # Will rebuild and start fresh
+```
+
+### Live Reload Warning (file_system / inotify)
+- When running non-server Mix tasks in one-off containers, you may see a warning about `inotify-tools`.
+- This is harmless. When you start the server via `just dev-server`, the app container installs `inotify-tools` and live-reload works.
+
+### Quick Environment Check
+```bash
+just doctor  # Validates Docker daemon and compose availability
 ```
 
 ### Port Already in Use
@@ -104,8 +113,8 @@ mix dev.server  # Will rebuild and start fresh
 ## Architecture Notes
 
 - **Development**: Uses Docker Compose for fast, local development with TTY support
+- **Task Runner**: `just` provides a Docker-first command layer
 - **CI/CD**: Uses Dagger for reliable, containerized testing and deployment
-- **Separation**: Development commands (`mix dev.*`) vs production workflows (`mix dagger.*`)
-- **Auto-Start**: `mix dev.server` and `mix dev.shell` automatically start required services
+- **Auto-Start**: `just dev-server` and `just dev-shell` automatically start required services
 
 For more details about the project, see [Project Overview](Project.md) and [Project Landscape](Landscape.md).

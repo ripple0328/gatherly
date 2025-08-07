@@ -80,7 +80,7 @@ mix dagger.deploy  # pushes registry.fly.io/<app-name>:<git_sha>
 
 ### 🐳 **Containerized Everything**
 - Consistent environments across team
-- Minimal local dependencies: Docker and Elixir/Erlang via `mise`
+- Minimal local dependencies: Docker only
 - Production parity in development
 
 ### 🔧 **Wraps Phoenix Tasks**

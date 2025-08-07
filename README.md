@@ -5,50 +5,63 @@ A collaborative event planning platform designed for group-based activities such
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Docker (for containerized development)
+- Docker (or OrbStack/Colima) running
 - Git
-- [mise](https://github.com/jdxcode/mise)
+- Optional: `just` task runner (recommended)
+  - macOS: `brew install just`
+  - Linux: your distro package manager
+
 ### Containerized Development (Recommended)
 
-**One-command setup:**
+No local Elixir/Erlang/PostgreSQL required. Everything runs in containers.
+
 ```bash
 git clone https://github.com/yourusername/gatherly.git
 cd gatherly
-mix dagger.up  # Complete environment setup + start server
+
+# One-time setup (installs deps, prepares DB)
+just dev-setup
+
+# Start the Phoenix server (with live reload)
+just dev-server
 ```
 
-Visit [`localhost:4000`](http://localhost:4000) to see your app running.
+Visit [`http://localhost:4000`](http://localhost:4000).
 
-### Development Workflows
+If you see Docker errors, ensure your Docker backend is running (Docker Desktop, OrbStack, Colima).
+
+### Common tasks
 
 ```bash
-# Daily development
-mix dagger.up               # Smart startup (setup + server)
-mix dagger.dev.shell --iex  # Interactive development
+# Shell and services
+just dev-shell            # IEx inside the container
+just services-up          # Start all dev services
+just services-status      # Show service status
+just services-down        # Stop all services
 
-# Database operations
-mix dagger.db.reset         # Fresh database
-mix dagger.db.shell         # Database debugging
+# Database
+just db-migrate           # Run migrations
+just db-rollback          # Rollback last migration
+just db-reset             # Drop/create/migrate/seed
+just db-shell             # psql into dev DB
 
-# Code quality
-mix dagger.quality --fix    # Format + lint + security
-mix dagger.test             # Run tests
-
-# CI verification (run exact same pipeline as CI)
-mix dagger.ci               # Complete CI pipeline locally
-mix dagger.deploy          # Build and push image to Fly.io (tagged with commit SHA)
+# Quality & tests
+just format               # mix format (in container)
+just lint                 # Credo (and Dialyzer if configured)
+just test                 # Run test suite
+just quality              # format + lint + dialyzer
 ```
 
-**📖 For detailed development workflows, see [Dagger Integration Guide](lib/gatherly/dagger/README.md)**
+Advanced, CI-ready workflows are available via Dagger. See [Dagger Integration Guide](lib/gatherly/dagger/README.md).
 
 ### Tool Versions
 
 - **Elixir**: 1.18.4-otp-28
 - **Erlang/OTP**: 28.0.2
 - **PostgreSQL**: 17.5
-- **Phoenix**: 1.8.0-rc.4
+- **Phoenix**: 1.8.x
 
-All managed automatically in containers - no local installation needed.
+All managed in containers — no host installs required.
 
 ## 🛠 Development
 

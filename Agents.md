@@ -5,21 +5,21 @@ Gatherly is a collaborative event planning platform built with Phoenix LiveView.
 
 ### Quick Start
 ```bash
-# Install dependencies and setup database
-mix dev.setup
+# One-time setup (installs deps + sets up DB in containers)
+just dev-setup
 
 # Start Phoenix development server (auto-starts services)
-mix dev.server
+just dev-server
 
 # Or start interactive IEx shell (auto-starts services)
-mix dev.shell
+just dev-shell
 ```
 
 ### Framework Versions
-- **Framework**: Phoenix 1.8.0 (Latest stable)
-- **LiveView**: 1.1.2 (Latest stable)
+- **Framework**: Phoenix 1.8.x
+- **LiveView**: 1.1.2
 - **Elixir**: 1.18.4-otp-28
-- **Erlang/OTP**: 28.0.1
+- **Erlang/OTP**: 28.0.2
 - **PostgreSQL**: 17.5
 
 ### Development Environment
@@ -36,10 +36,11 @@ mix dev.shell
 - **CSS**: Tailwind CSS with PostCSS processing
 
 #### CI/CD (Dagger)
-- **GitHub Actions**: Automated lint, test, and deploy pipeline
+- **Local dev**: Use `just` tasks (container-first) for day-to-day work
+- **Workflows**: Dagger tasks are available for CI parity and deployment
 - **Deployment**: Fly.io with automatic database migrations
 - **Health Check**: `/health` endpoint for monitoring
-- **Documentation**: See `docs/CICD.md` for detailed setup instructions
+- **Documentation**: See `docs/CICD.md` and `docs/DaggerWorkflow.md`
 
 ## General Rules
 
@@ -185,44 +186,50 @@ end
 - Leverage enhanced error messages in development
 - Use telemetry events for monitoring LiveView performance
 
-## Development Workflow
+## Development Workflow (Container-first)
 
-### Development Commands
+### Core Development via `just`
 ```bash
-# Core development (auto-starts services)
-mix dev.server             # Start Phoenix server at http://localhost:4000
-mix dev.shell              # Start IEx shell with database connection
-mix dev.setup              # Full setup (install deps + setup database)
+just dev-setup        # Install deps + setup DB (containers)
+just dev-server       # Start Phoenix server at http://localhost:4000
+just dev-shell        # IEx shell in app container
 ```
 
 ### Database Operations
 ```bash
-# Database management
-mix dev.db.create          # Create development database
-mix dev.db.migrate         # Run database migrations
-mix dev.db.rollback        # Rollback migrations (supports --step, --to)
-mix dev.db.reset           # Reset database (drop, create, migrate, seed)
-mix dev.db.seed            # Run database seeds
-mix dev.db.shell           # Connect to PostgreSQL shell
+just db-create
+just db-migrate
+just db-rollback -- --step=1
+just db-reset
+just db-seed
+just db-shell        # interactive psql
 ```
 
-### Testing
+### Testing & Quality
 ```bash
-# Test commands
-mix dev.test               # Run all tests with test database
-mix dev.test --failed      # Run only failed tests
-mix dev.test test/specific_test.exs  # Run specific test file
+just test            # Run test suite in containers
+just format          # mix format
+just lint            # Credo (strict)
+just quality         # format + lint + dialyzer
 ```
 
-### CI/CD & Quality (Dagger)
+### Services & Logs
 ```bash
-# Production workflows (containerized)
-mix dagger.ci              # Full CI pipeline
-mix dagger.test            # Run tests in CI environment
-mix dagger.lint            # Lint with Credo & Dialyzer
-mix dagger.format          # Format code
-mix dagger.security        # Security audit
-mix dagger.deploy          # Build & deploy to Fly.io
+just services-up
+just services-status
+just services-logs            # all services (Ctrl+C to stop)
+just services-logs service=app  # app-only logs
+just services-down
+```
+
+### CI/CD (optional, via Dagger)
+```bash
+mix dagger.ci
+mix dagger.test
+mix dagger.lint
+mix dagger.format
+mix dagger.security
+mix dagger.deploy
 ```
 
 ## Security Best Practices
