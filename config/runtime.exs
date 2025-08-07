@@ -143,9 +143,9 @@ if config_env() == :dev do
     config :gatherly, Gatherly.Repo, url: database_url
   end
 
-  if secret_key_base = System.get_env("SECRET_KEY_BASE") do
-    config :gatherly, GatherlyWeb.Endpoint, secret_key_base: secret_key_base
-  end
+  # Provide a sensible default for dev if env not set
+  config :gatherly, GatherlyWeb.Endpoint,
+    secret_key_base: System.get_env("SECRET_KEY_BASE", "dev_secret_key_base_change_me")
 
   if google_client_id = System.get_env("GOOGLE_CLIENT_ID") do
     config :gatherly, :google, client_id: google_client_id
@@ -157,7 +157,8 @@ if config_env() == :dev do
     config :ueberauth, Ueberauth.Strategy.Google.OAuth, client_secret: google_client_secret
   end
 
-  if token_secret = System.get_env("TOKEN_SIGNING_SECRET") do
-    config :ash_authentication, token_signing_secret: token_secret
-  end
+  # Provide a sensible default for dev if env not set
+  config :ash_authentication,
+    token_signing_secret:
+      System.get_env("TOKEN_SIGNING_SECRET", "dev_token_signing_secret_change_me")
 end

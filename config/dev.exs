@@ -87,8 +87,3 @@ config :swoosh, :api_client, false
 config :tidewave,
   allow_remote_access: true,
   allowed_hosts: ["localhost", "127.0.0.1"]
-
-# Import secret config if it exists (not tracked in version control)
-if File.exists?("config/dev.secret.exs") do
-  import_config "dev.secret.exs"
-end
