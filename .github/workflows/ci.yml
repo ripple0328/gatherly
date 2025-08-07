@@ -13,20 +13,6 @@ jobs:
   ci:
     name: CI Pipeline
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:17.5
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_DB: gatherly_test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
 
     steps:
       - name: Checkout code
@@ -46,7 +32,7 @@ jobs:
       - name: Create .env file for CI
         run: |
           cat > .env << EOF
-          DATABASE_URL=postgres://postgres:postgres@localhost:5432/gatherly_test
+          DATABASE_URL=postgres://postgres:postgres@db:5432/gatherly_test
           SECRET_KEY_BASE=test_secret_key_base_for_ci_only_do_not_use_in_production
           TOKEN_SIGNING_SECRET=test_token_signing_secret_for_ci_only
           PHX_HOST=localhost
