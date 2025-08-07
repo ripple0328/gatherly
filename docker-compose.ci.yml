@@ -49,6 +49,6 @@ services:
         apt-get install -y postgresql-client &&
         mix local.hex --force &&
         mix local.rebar --force &&
-        mix deps.get &&
+        MIX_ENV=test mix deps.get &&
         tail -f /dev/null
       "
