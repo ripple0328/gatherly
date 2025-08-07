@@ -37,12 +37,12 @@ just dev-shell
 - **JavaScript**: Minimal JavaScript with Phoenix LiveView client
 - **CSS**: Tailwind CSS with PostCSS processing
 
-#### CI/CD (Dagger)
+#### CI/CD
 - **Local dev**: Use `just` tasks (container-first) for day-to-day work
-- **Workflows**: Dagger tasks are available for CI parity and deployment
-- **Deployment**: Fly.io with automatic database migrations
+- **CI**: Run `just ci` locally or in GitHub Actions
+- **Deployment**: Fly.io via `just fly-deploy`
 - **Health Check**: `/health` endpoint for monitoring
-- **Documentation**: See `docs/CICD.md` and `docs/DaggerWorkflow.md`
+- **Documentation**: See `docs/CICD.md`
 
 ## General Rules
 

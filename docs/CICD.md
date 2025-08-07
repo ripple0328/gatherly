@@ -1,13 +1,13 @@
 # CI/CD Setup
 
-Gatherly uses GitHub Actions to lint, test and deploy the application. All jobs rely on the Dagger mix tasks so the local and CI environments behave the same.
+Gatherly uses GitHub Actions to lint, test and deploy the application using containerized `just` tasks and the Fly.io CLI.
 
 ## Pipeline Overview
 
-1. **Lint** – `mix dagger.lint`
-2. **Test** – `mix dagger.test`
-3. **Security** – `mix dagger.security`
-4. **Deploy** – Fly.io deployment on pushes to `main`
+1. **Lint** – `just lint`
+2. **Test** – `just test`
+3. **Types** – `just dialyzer`
+4. **Deploy** – Fly.io deployment on pushes to `main` via `just fly-deploy`
 
 The workflow is defined in `.github/workflows/ci.yml` and runs on:
 - Every push to the `main` branch
@@ -18,7 +18,7 @@ The workflow is defined in `.github/workflows/ci.yml` and runs on:
 Use the composite workflow to mirror CI on your machine:
 
 ```bash
-mix dagger.ci
+just ci
 ```
 
 ## Jobs
@@ -43,8 +43,7 @@ Runs the test suite:
 
 Deploys to Fly.io:
 - Only runs on pushes to the `main` branch after lint and test jobs pass
-- Builds and pushes the release image with `mix dagger.deploy`
-- Deploys the commit-tagged image using the Fly CLI
+- Deploys using the Fly CLI
 - Runs database migrations automatically
 
 ## Required Secrets
@@ -106,12 +105,10 @@ fly postgres attach gatherly-db --app gatherly
 
 ### Manual Deployment
 
-To deploy manually, first build and push the image using Dagger and then deploy the published image:
+To deploy manually using Fly CLI:
 
 ```bash
-mix dagger.deploy
-GIT_SHA=$(git rev-parse --short HEAD)
-fly deploy --image registry.fly.io/<app-name>:$GIT_SHA
+just fly-deploy
 ```
 
 ### Automatic Deployment

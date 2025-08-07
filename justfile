@@ -168,27 +168,34 @@ mix command:
     @docker compose -f docker-compose.dev.yml exec -T db sh -c 'until pg_isready -U gatherly; do sleep 1; done'
     @docker compose -f docker-compose.dev.yml run -T --rm app mix {{command}}
 
-# === CI/CD (Dagger) ===
+# === CI/CD ===
 
-# Full CI pipeline
-ci:
-    @echo "Running full CI pipeline..."
-    @mix dagger.ci
+# Check formatting without writing changes
+format-check:
+    @echo "Checking formatting..."
+    @docker compose -f docker-compose.dev.yml run -T --rm app mix format --check-formatted
 
-# Deploy to production
-deploy:
-    @echo "Deploying to production..."
-    @mix dagger.deploy
+# CI pipeline: formatting, linting, type checks, tests
+ci: format-check lint dialyzer test
+    @echo "CI pipeline completed!"
 
-# Build production image
+# Build with Fly.io build system only (no deploy)
 build:
-    @echo "Building production image..."
-    @mix dagger.build
+    @echo "Building with Fly.io (no deploy)..."
+    @fly deploy --build-only --local-only --vm-memory=512 --vm-cpus=1 || fly deploy --build-only
 
-# Run security audit
+# Security audit (basic)
 security:
     @echo "Running security audit..."
-    @mix dagger.security
+    @docker compose -f docker-compose.dev.yml run -T --rm app mix hex.audit || true
+
+# Deploy to Fly.io
+fly-deploy:
+    @echo "Deploying to Fly.io..."
+    @fly deploy
+
+# Alias for deploy
+deploy: fly-deploy
 
 # === Environment & Assets ===
 

@@ -57,7 +57,10 @@ just test                 # Run test suite
 just quality              # format + lint + dialyzer
 ```
 
-Advanced, CI-ready workflows are available via Dagger. See [Dagger Integration Guide](lib/gatherly/dagger/README.md).
+### CI and deployment
+
+- CI locally: `just ci`
+- Deploy to Fly.io: `just fly-deploy` (requires `fly` CLI and login)
 
 ### Secrets management
 - Copy `.env.example` to `.env` and set required secrets

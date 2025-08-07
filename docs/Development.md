@@ -40,15 +40,13 @@ just db-shell                 # PostgreSQL shell
 just test                     # Run all tests against isolated test DB
 ```
 
-### CI/CD Commands (Dagger)
+### CI and Deployment
 ```bash
-# Production workflows (containerized)
-mix dagger.ci              # Full CI pipeline
-mix dagger.test            # Run tests in CI environment
-mix dagger.lint            # Code linting with Credo & Dialyzer
-mix dagger.format          # Format code
-mix dagger.security        # Security audit
-mix dagger.deploy          # Deploy to production
+# CI locally
+just ci
+
+# Deploy to Fly.io (requires 'fly' CLI and login)
+just fly-deploy
 ```
 
 ## Project Structure
