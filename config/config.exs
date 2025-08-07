@@ -75,8 +75,8 @@ config :ash,
   ]
 
 # Configure AshAuthentication
-config :ash_authentication,
-  token_signing_secret: "your-secret-key-here-replace-in-runtime"
+# Token signing secret is provided via environment at runtime for
+# production and from .env (with defaults) in dev/test.
 
 # Configure Ueberauth for OAuth
 config :ueberauth, Ueberauth,
