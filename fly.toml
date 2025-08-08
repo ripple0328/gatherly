@@ -4,7 +4,7 @@ primary_region = "sjc"
 [build]
 
 [env]
-  PHX_HOST = "gatherly.fly.dev"
+  PHX_HOST = "gatherly.qingbo.us"
   PORT = "8080"
   MIX_ENV = "prod"
   PHX_SERVER = "true"

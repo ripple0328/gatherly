@@ -182,15 +182,20 @@ ci:
     @echo "Running CI pipeline with optimized settings..."
     @docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d app --wait
     @echo "Checking formatting..."
-    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app mix format --check-formatted
+    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=dev mix format --check-formatted
     @echo "Running linter..."
-    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app mix credo --strict  
+    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=dev mix credo --strict  
     @echo "Running type checker..."
-    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app mix dialyzer
+    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=dev mix dialyzer
     @echo "Running tests..."
     @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app mix test
     @docker compose -f docker-compose.yml -f docker-compose.ci.yml down
     @echo "✅ CI pipeline completed successfully!"
+
+# Build and deploy to Fly.io in one step
+deploy:
+    @echo "Building and deploying to Fly.io..."
+    @fly deploy
 
 # Build with Fly.io build system only (no deploy)
 build:
@@ -201,14 +206,6 @@ build:
 security:
     @echo "Running security audit..."
     @docker compose run -T --rm app mix hex.audit || true
-
-# Deploy to Fly.io
-fly-deploy:
-    @echo "Deploying to Fly.io..."
-    @fly deploy
-
-# Alias for deploy
-deploy: fly-deploy
 
 # === Environment & Assets ===
 

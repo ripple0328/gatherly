@@ -17,7 +17,7 @@ services:
     environment:
       MIX_ENV: test
       DATABASE_URL: postgres://postgres:postgres@test_db:5432/gatherly_test
-      SECRET_KEY_BASE: test_secret_key_base_for_ci_only_do_not_use_in_production
+      SECRET_KEY_BASE: VcplVBtlc4FRIRnto8WvuQK5IehyUj0LBJ1N86+WH5r2PxHbjaJZkW97Tgj13IL6
       TOKEN_SIGNING_SECRET: test_token_signing_secret_for_ci_only
       PHX_HOST: localhost
       PHX_PORT: 4000
@@ -50,6 +50,8 @@ services:
         apt-get install -y postgresql-client &&
         mix local.hex --force &&
         mix local.rebar --force &&
+        mix deps.get &&
+        MIX_ENV=dev mix deps.compile &&
         MIX_ENV=test mix deps.get &&
         MIX_ENV=test mix deps.compile &&
         tail -f /dev/null

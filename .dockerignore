@@ -25,7 +25,6 @@ erl_crash.dump
 *.ez
 
 # Mix and Elixir
-mix.lock
 .elixir_ls/
 
 # Assets and static files (built separately)

@@ -99,9 +99,6 @@ defmodule Gatherly.MixProject do
       # Test coverage
       {:excoveralls, "~> 0.18", only: :test},
 
-      # Dagger SDK for CI/CD workflows
-      {:dagger, github: "dagger/dagger", sparse: "sdk/elixir", only: [:dev, :test]},
-
       # Ash Framework for domain modeling and authentication
       {:ash, "~> 3.4"},
       {:ash_postgres, "~> 2.4"},
