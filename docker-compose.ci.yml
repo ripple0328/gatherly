@@ -1,43 +1,44 @@
+# CI-specific overrides for optimized testing
 services:
-  db:
-    image: postgres:17.5
-    environment:
-      POSTGRES_DB: gatherly_test
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_HOST_AUTH_METHOD: trust
-    # No port mapping - CI doesn't need external access
+  # Use test_db for CI tests with optimizations
+  test_db:
+    # Use tmpfs for speed in CI
     tmpfs:
-      # Use tmpfs for faster CI runs
       - /var/lib/postgresql/data
+    # Faster healthcheck for CI
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 2s
       timeout: 5s
       retries: 10
+    # No port mapping - CI doesn't need external access
+    ports: []
 
   app:
-    image: elixir:1.18.4-otp-28
-    working_dir: /app
-    volumes:
-      - .:/app
-      # Use tmpfs for cache directories in CI for speed
-      - type: tmpfs
-        target: /app/deps
-      - type: tmpfs
-        target: /app/_build
-      - type: tmpfs
-        target: /root/.mix
-    env_file:
-      - .env
     environment:
       MIX_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@test_db:5432/gatherly_test
+      SECRET_KEY_BASE: test_secret_key_base_for_ci_only_do_not_use_in_production
+      TOKEN_SIGNING_SECRET: test_token_signing_secret_for_ci_only
+      PHX_HOST: localhost
+      PHX_PORT: 4000
+      GOOGLE_CLIENT_ID: test_client_id
+      GOOGLE_CLIENT_SECRET: test_client_secret
       # CI-specific optimizations
       ERL_AFLAGS: "-kernel shell_history enabled"
+    volumes:
+      - .:/app
+      # Ephemeral volumes for CI (not defined in volumes section)
+      - /app/deps
+      - /app/_build
+      - /root/.mix
     depends_on:
-      db:
+      test_db:
         condition: service_healthy
     # No port mapping needed for CI
+    ports: []
+    # No tty/stdin for CI
+    tty: false
+    stdin_open: false
     healthcheck:
       test: ["CMD-SHELL", "test -f /app/mix.exs && mix help > /dev/null"]
       interval: 2s
@@ -50,5 +51,6 @@ services:
         mix local.hex --force &&
         mix local.rebar --force &&
         MIX_ENV=test mix deps.get &&
+        MIX_ENV=test mix deps.compile &&
         tail -f /dev/null
       "
