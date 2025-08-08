@@ -177,17 +177,19 @@ format-check:
 
 # Removed redundant CI tasks - reuse standard format-check, lint, dialyzer tasks
 
-# CI pipeline: uses compose inheritance for CI optimizations
+# CI pipeline: uses compose inheritance with persistent service for CI optimizations
 ci:
     @echo "Running CI pipeline with optimized settings..."
+    @docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d app --wait
     @echo "Checking formatting..."
-    @docker compose -f docker-compose.yml -f docker-compose.ci.yml run -T --rm app mix format --check-formatted
+    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app mix format --check-formatted
     @echo "Running linter..."
-    @docker compose -f docker-compose.yml -f docker-compose.ci.yml run -T --rm app mix credo --strict  
+    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app mix credo --strict  
     @echo "Running type checker..."
-    @docker compose -f docker-compose.yml -f docker-compose.ci.yml run -T --rm app mix dialyzer
+    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app mix dialyzer
     @echo "Running tests..."
-    @docker compose -f docker-compose.yml -f docker-compose.ci.yml run -T --rm app mix test
+    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app mix test
+    @docker compose -f docker-compose.yml -f docker-compose.ci.yml down
     @echo "✅ CI pipeline completed successfully!"
 
 # Build with Fly.io build system only (no deploy)
