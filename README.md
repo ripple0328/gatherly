@@ -60,7 +60,11 @@ just quality              # format + lint + dialyzer
 ### CI and deployment
 
 - CI locally: `just ci`
-- Deploy to Fly.io: `just fly-deploy` (requires `fly` CLI and login)
+- Deploy to Fly.io: `just deploy` (requires `fly` CLI and login)
+- Rollback deployment: `just rollback`
+- Check deployment status: `just status`
+- View logs: `just logs`
+- Build only (no deploy): `just build`
 
 ### Secrets management
 - Copy `.env.example` to `.env` and set required secrets

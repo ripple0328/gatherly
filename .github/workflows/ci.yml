@@ -58,6 +58,16 @@ jobs:
       - name: Setup Fly CLI
         uses: superfly/flyctl-actions/setup-flyctl@master
 
+      - name: Validate secrets
+        run: |
+          if [ -z "$FLY_API_TOKEN" ]; then
+            echo "❌ FLY_API_TOKEN is not set"
+            exit 1
+          fi
+          echo "✅ Required secrets are present"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
       - name: Deploy to Fly.io
         run: |
           # Install just if not available
@@ -67,7 +77,20 @@ jobs:
           fi
           
           # Deploy using just task
-          just fly-deploy
+          just deploy
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
           DOCKER_BUILDKIT: 1
+
+      - name: Verify deployment
+        run: |
+          echo "Waiting for deployment to be ready..."
+          sleep 30
+          
+          # Check health endpoint
+          if curl -f -s https://gatherly.qingbo.us/health > /dev/null; then
+            echo "✅ Deployment health check passed"
+          else
+            echo "❌ Deployment health check failed"
+            exit 1
+          fi

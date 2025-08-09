@@ -7,7 +7,7 @@ Gatherly uses GitHub Actions to lint, test and deploy the application using cont
 1. **Lint** – `just lint`
 2. **Test** – `just test`
 3. **Types** – `just dialyzer`
-4. **Deploy** – Fly.io deployment on pushes to `main` via `just fly-deploy`
+4. **Deploy** – Fly.io deployment on pushes to `main` via `just deploy`
 
 The workflow is defined in `.github/workflows/ci.yml` and runs on:
 - Every push to the `main` branch
@@ -43,8 +43,11 @@ Runs the test suite:
 
 Deploys to Fly.io:
 - Only runs on pushes to the `main` branch after lint and test jobs pass
+- Validates required secrets before deployment
 - Deploys using the Fly CLI
-- Runs database migrations automatically
+- Runs database migrations automatically 
+- Performs health check verification after deployment
+- Fails deployment if health check doesn't pass
 
 ## Required Secrets
 
@@ -108,7 +111,20 @@ fly postgres attach gatherly-db --app gatherly
 To deploy manually using Fly CLI:
 
 ```bash
-just fly-deploy
+# Deploy to production
+just deploy
+
+# Check deployment status  
+just status
+
+# View application logs
+just logs
+
+# Rollback to previous version
+just rollback
+
+# Build without deploying
+just build
 ```
 
 ### Automatic Deployment

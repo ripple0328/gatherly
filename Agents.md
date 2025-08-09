@@ -40,7 +40,7 @@ just dev-shell
 #### CI/CD
 - **Local dev**: Use `just` tasks (container-first) for day-to-day work
 - **CI**: Run `just ci` locally or in GitHub Actions
-- **Deployment**: Fly.io via `just fly-deploy`
+- **Deployment**: Fly.io via `just deploy`
 - **Health Check**: `/health` endpoint for monitoring
 - **Documentation**: See `docs/CICD.md`
 

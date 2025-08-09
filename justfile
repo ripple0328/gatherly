@@ -202,6 +202,23 @@ build:
     @echo "Building with Fly.io (no deploy)..."
     @fly deploy --build-only --local-only --vm-memory=512 --vm-cpus=1 || fly deploy --build-only
 
+# Rollback to previous deployment
+rollback:
+    @echo "Rolling back to previous deployment..."
+    @fly releases list --limit 2 --json | jq -r '.[1].id' | xargs fly releases rollback
+
+# Show deployment status and recent releases
+status:
+    @echo "Current deployment status:"
+    @fly status
+    @echo -e "\nRecent releases:"
+    @fly releases list --limit 5
+
+# Open application logs
+logs:
+    @echo "Opening application logs..."
+    @fly logs
+
 # Security audit (basic)
 security:
     @echo "Running security audit..."
@@ -217,7 +234,7 @@ doctor:
     @echo "Checking Docker daemon connectivity..."
     @docker info >/dev/null 2>&1 && echo "Docker daemon: OK" || (echo "Docker daemon: NOT RUNNING or inaccessible" && exit 1)
     @echo "Checking compose file..."
-    @test -f docker-compose.dev.yml && echo "Compose file: found" || (echo "Compose file: missing" && exit 1)
+    @test -f docker-compose.yml && echo "Compose file: found" || (echo "Compose file: missing" && exit 1)
 
 
 # Build assets via mix aliases inside the container
