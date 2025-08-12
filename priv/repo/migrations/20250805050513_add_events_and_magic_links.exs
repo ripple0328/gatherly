@@ -75,9 +75,55 @@ defmodule Gatherly.Repo.Migrations.AddEventsAndMagicLinks do
         null: false,
         default: fragment("(now() AT TIME ZONE 'utc')")
     end
+
+    # Event participants
+    create table(:event_participants, primary_key: false) do
+      add :id, :uuid, null: false, default: fragment("gen_random_uuid()"), primary_key: true
+      add :event_id, :uuid, null: false
+      add :user_id, :uuid, null: false
+      add :rsvp_status, :text
+
+      add :inserted_at, :utc_datetime_usec,
+        null: false,
+        default: fragment("(now() AT TIME ZONE 'utc')")
+
+      add :updated_at, :utc_datetime_usec,
+        null: false,
+        default: fragment("(now() AT TIME ZONE 'utc')")
+    end
+
+    create unique_index(:event_participants, [:event_id, :user_id],
+             name: "event_participants_event_user_index"
+           )
+
+    alter table(:event_participants) do
+      modify :event_id,
+             references(:events,
+               column: :id,
+               name: "event_participants_event_id_fkey",
+               type: :uuid,
+               prefix: "public"
+             )
+
+      modify :user_id,
+             references(:users,
+               column: :id,
+               name: "event_participants_user_id_fkey",
+               type: :uuid,
+               prefix: "public"
+             )
+    end
   end
 
   def down do
+    drop constraint(:event_participants, "event_participants_event_id_fkey")
+    drop constraint(:event_participants, "event_participants_user_id_fkey")
+
+    drop index(:event_participants, ["event_id", "user_id"],
+           name: "event_participants_event_user_index"
+         )
+
+    drop table(:event_participants)
     drop constraint(:events, "events_creator_id_fkey")
 
     alter table(:events) do

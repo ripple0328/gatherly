@@ -30,9 +30,9 @@ defmodule GatherlyWeb.Router do
     sign_in_route()
     reset_route([])
 
-    # Magic link routes
-    get "/join/:token", MagicLinkController, :join
-    post "/join/:token/register", MagicLinkController, :register
+    # Magic link routes (LiveView join + session completion)
+    live "/join/:token", MagicJoinLive
+    get "/join/:token/complete", MagicLinkController, :complete
 
     # Event routes (testing)
     live "/events/:id", EventLive

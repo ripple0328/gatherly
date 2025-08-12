@@ -1,6 +1,6 @@
 # Development Workflow Guide
 
-This guide covers the enhanced development workflow for Gatherly, including new tools and commands for improved developer experience.
+This guide covers the simplified and efficient development workflow for Gatherly, focusing on essential commands that developers use daily.
 
 ## 🚀 Quick Start
 
@@ -11,91 +11,91 @@ This guide covers the enhanced development workflow for Gatherly, including new 
 git clone https://github.com/ripple0328/gatherly.git
 cd gatherly
 
-# Check environment health first
+# Check environment health
 just doctor
 
-# Run the automated setup script (recommended)
-./scripts/dev-setup.sh
-
-# Or manual setup
+# One-time setup
 cp .env.example .env
-just dev-setup
-
-# Install pre-commit hooks for quality gates
-./scripts/install-hooks.sh
+just setup
 ```
 
 ### Daily Development
 
 ```bash
 # Start development server
-just dev-server
+just dev
 
-# Quick development cycle
-just quick-check        # Format + lint (fast)
-just dev-check          # Format + lint + test (full)
-
-# Interactive development menu
-just dev-menu
+# Essential development commands
+just menu               # Show essential commands
+just test              # Run tests
+just check             # Format + lint + test (full validation)
+just iex               # Interactive Elixir shell
 ```
 
-## 🔧 Development Commands
+## 🔧 Essential Development Commands
 
-### Core Development
+### Core Workflow
 | Command | Description |
 |---------|-------------|
-| `just dev-server` | Start Phoenix development server |
-| `just dev-shell` | Start interactive IEx shell |
-| `just dev-setup` | Initial project setup |
-| `just doctor` | Check environment health |
+| `just setup` | Initial project setup (run once) |
+| `just dev` | Start development server |
+| `just iex` | Interactive Elixir shell with Phoenix |
+| `just test` | Run tests (supports args: `just test --max-failures=1`) |
+| `just test-watch` | Watch tests continuously |
 
 ### Code Quality
 | Command | Description |
 |---------|-------------|
-| `just quick-check` | Fast format + lint |
-| `just dev-check` | Format + lint + test |
-| `just review-prep` | Prepare code for review |
-| `just pr-check` | Full PR validation |
+| `just format` | Format code only (fast) |
+| `just check` | Format + lint + test (full check) |
 | `just coverage` | Generate test coverage report |
-| `just security-audit` | Run security audit |
-
-### Testing
-| Command | Description |
-|---------|-------------|
-| `just test` | Run test suite |
-| `just test-watch` | Watch tests continuously |
-| `just test-trace` | Run tests with trace output |
-| `just profile-tests` | Profile test performance |
 
 ### Database
 | Command | Description |
 |---------|-------------|
+| `just db-reset` | Reset database to clean state |
 | `just db-console` | Open database console |
-| `just db-info` | Show database connection info |
-| `just db-backup` | Backup development database |
-| `just reset-demo` | Reset with demo data |
 
-### Performance & Debugging
+### Utilities
 | Command | Description |
 |---------|-------------|
-| `just perf-monitor` | Start performance monitoring |
-| `just memory-usage` | Check container memory usage |
-| `just docs` | Generate project documentation |
+| `just doctor` | Environment health check |
+| `just menu` | Show essential commands |
+| `just clean` | Clean everything and start fresh |
 
-## 🎯 Git Workflow
+### Deployment
+| Command | Description |
+|---------|-------------|
+| `just deploy` | Deploy to production (runs checks first) |
 
-### Pre-commit Hooks
+## 🎯 Simplified Git Workflow
 
-Automatic quality checks run on every commit:
+### Development Cycle
 
-```bash
-# Install hooks (done automatically by dev-setup.sh)
-pre-commit install
-pre-commit install --hook-type commit-msg
+1. **Start working on a feature**:
+   ```bash
+   git checkout -b feature/amazing-feature
+   just check  # Ensure clean start
+   ```
 
-# Manual pre-commit check
-just pre-commit
-```
+2. **During development**:
+   ```bash
+   just format      # Fast code formatting
+   just test-watch  # Continuous testing
+   ```
+
+3. **Before committing**:
+   ```bash
+   just check       # Full validation
+   git add .
+   git commit -m "feat(feature): add amazing feature"
+   ```
+
+4. **Before pushing**:
+   ```bash
+   just check       # Final validation
+   git push origin feature/amazing-feature
+   ```
 
 ### Commit Message Format
 
@@ -109,33 +109,6 @@ fix(db): resolve connection pool timeout
 docs(readme): update installation instructions
 ```
 
-### Development Cycle
-
-1. **Start working on a feature**:
-   ```bash
-   git checkout -b feature/amazing-feature
-   just dev-check  # Ensure clean start
-   ```
-
-2. **During development**:
-   ```bash
-   just quick-check  # Fast feedback loop
-   just test-watch   # Continuous testing
-   ```
-
-3. **Before committing**:
-   ```bash
-   just review-prep  # Full validation
-   git add .
-   git commit -m "feat(feature): add amazing feature"
-   ```
-
-4. **Before pushing**:
-   ```bash
-   just pr-check  # Full CI validation
-   git push origin feature/amazing-feature
-   ```
-
 ## 🧪 Testing Strategy
 
 ### Test Coverage
@@ -148,9 +121,6 @@ just coverage
 
 # View report
 open cover/excoveralls.html
-
-# CI coverage
-just coverage-ci
 ```
 
 ### Test Types

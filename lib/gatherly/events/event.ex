@@ -55,6 +55,10 @@ defmodule Gatherly.Events.Event do
     has_many :magic_links, Gatherly.Events.MagicLink do
       destination_attribute(:event_id)
     end
+
+    has_many :participants, Gatherly.Events.EventParticipant do
+      destination_attribute(:event_id)
+    end
   end
 
   code_interface do

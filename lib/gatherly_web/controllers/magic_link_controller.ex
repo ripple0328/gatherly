@@ -1,69 +1,25 @@
 defmodule GatherlyWeb.MagicLinkController do
   @moduledoc """
-  Controller for handling magic link access and anonymous user registration.
+  Controller for handling magic link helpers.
   """
 
   use GatherlyWeb, :controller
   alias Gatherly.Accounts.User
   alias Gatherly.Events.MagicLink
 
-  def join(conn, %{"token" => token}) do
-    case MagicLink.valid_token(token) do
-      {:ok, magic_link} ->
-        # Load the associated event
-        magic_link = Ash.load!(magic_link, [:event])
-
-        # Check if user is already authenticated
-        case get_session(conn, :current_user_id) do
-          nil ->
-            # Show anonymous registration form
-            render(conn, :join, %{
-              magic_link: magic_link,
-              event: magic_link.event,
-              changeset: %{}
-            })
-
-          _user_id ->
-            # User already authenticated, redirect to event
-            redirect(conn, to: ~p"/events/#{magic_link.event_id}")
-        end
-
-      {:error, _} ->
+  # LiveView will redirect here after creating the user so we can set the session cookie
+  def complete(conn, %{"user_id" => user_id, "token" => token}) do
+    case {Ash.get(User, user_id), MagicLink.get_by_token(token)} do
+      {{:ok, user}, {:ok, magic_link}} ->
         conn
-        |> put_flash(:error, "Invalid or expired invitation link.")
-        |> redirect(to: ~p"/")
-    end
-  end
+        |> put_session(:current_user_id, user.id)
+        |> put_session(:user_type, :anonymous)
+        |> put_flash(:info, "Welcome #{user.name}!")
+        |> redirect(to: ~p"/events/#{magic_link.event_id}")
 
-  def register(conn, %{"token" => token, "user" => user_params}) do
-    case MagicLink.valid_token(token) do
-      {:ok, magic_link} ->
-        magic_link = Ash.load!(magic_link, [:event])
-
-        # Create anonymous user
-        case User.create_anonymous(Map.merge(user_params, %{"magic_token" => token})) do
-          {:ok, user} ->
-            # Increment magic link usage
-            MagicLink.increment_uses(magic_link)
-
-            # Set user session
-            conn
-            |> put_session(:current_user_id, user.id)
-            |> put_session(:user_type, :anonymous)
-            |> put_flash(:info, "Welcome #{user.name}! You've joined #{magic_link.event.title}.")
-            |> redirect(to: ~p"/events/#{magic_link.event_id}")
-
-          {:error, changeset} ->
-            render(conn, :join, %{
-              magic_link: magic_link,
-              event: magic_link.event,
-              changeset: changeset
-            })
-        end
-
-      {:error, _} ->
+      _ ->
         conn
-        |> put_flash(:error, "Invalid or expired invitation link.")
+        |> put_flash(:error, "Invalid session completion request.")
         |> redirect(to: ~p"/")
     end
   end

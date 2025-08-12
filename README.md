@@ -48,56 +48,53 @@ No local Elixir/Erlang/PostgreSQL required. Everything runs in containers.
 git clone https://github.com/yourusername/gatherly.git
 cd gatherly
 
-# Automated setup (recommended)
-./scripts/dev-setup.sh
-
-# Or manual setup
+# One-time setup
 cp .env.example .env
-just dev-setup
+just setup
 
-# Start the Phoenix server (with live reload)
-just dev-server
+# Start development
+just dev
 
-# Quick development commands
-just dev-menu          # Show all available commands
-just quick-check        # Fast format + lint
-just dev-check          # Full validation
+# Essential commands
+just menu               # Show essential commands
+just test              # Run tests  
+just check             # Format + lint + test
+just iex               # Interactive Elixir shell
 ```
 
 Visit [`http://localhost:4000`](http://localhost:4000).
 
 If you see Docker errors, ensure your Docker backend is running (Docker Desktop, OrbStack, Colima).
 
-### Common tasks
+### Essential Development Commands
 
 ```bash
-# Shell and services
-just dev-shell            # IEx inside the container
-just services-up          # Start all dev services
-just services-status      # Show service status
-just services-down        # Stop all services
+# Core workflow
+just setup              # Initial project setup
+just dev                # Start development server
+just iex                # Interactive Elixir shell
+just test               # Run tests
+just test-watch         # Watch tests continuously
 
 # Database
-just db-migrate           # Run migrations
-just db-rollback          # Rollback last migration
-just db-reset             # Drop/create/migrate/seed
-just db-shell             # psql into dev DB
+just db-reset           # Reset database to clean state
+just db-console         # Open database console
 
-# Quality & tests
-just format               # mix format (in container)
-just lint                 # Credo (and Dialyzer if configured)
-just test                 # Run test suite
-just quality              # format + lint + dialyzer
+# Code quality
+just format             # Format code only (fast)
+just check              # Format + lint + test (full check)
+just coverage           # Generate test coverage report
+
+# Utilities
+just doctor             # Environment health check
+just menu               # Show all essential commands
 ```
 
-### CI and deployment
+### Deployment
 
-- CI locally: `just ci`
-- Deploy to Fly.io: `just deploy` (requires `fly` CLI and login)
-- Rollback deployment: `just rollback`
-- Check deployment status: `just status`
-- View logs: `just logs`
-- Build only (no deploy): `just build`
+```bash
+just deploy             # Deploy to production (runs checks first)
+```
 
 ### Secrets management
 - Copy `.env.example` to `.env` and set required secrets
@@ -144,8 +141,8 @@ We welcome contributions! Please check out:
 ### Quick Contributing Steps
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Work in the containerized development environment (`just dev-setup`)
-4. Run quality checks (`just quality`) and tests (`just test`)
+3. Work in the containerized development environment (`just setup`)
+4. Run quality checks (`just check`) and tests (`just test`)
 5. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 6. Push to the branch (`git push origin feature/AmazingFeature`)
 7. Open a Pull Request

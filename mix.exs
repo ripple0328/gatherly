@@ -31,7 +31,7 @@ defmodule Gatherly.MixProject do
   def application do
     [
       mod: {Gatherly.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -94,6 +94,7 @@ defmodule Gatherly.MixProject do
       {:tidewave, "~> 0.2", only: [:dev]},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:ecto_psql_extras, "~> 0.6"},
       {:ex_machina, "~> 2.8", only: :test},
       {:mox, "~> 1.2", only: :test},
 

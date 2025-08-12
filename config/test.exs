@@ -36,3 +36,7 @@ config :phoenix, :plug_init_mode, :runtime
 # Enable helpful, but potentially expensive runtime checks
 config :phoenix_live_view,
   enable_expensive_runtime_checks: true
+
+# Configure token signing secret for authentication in tests
+config :ash_authentication,
+  token_signing_secret: "test_token_signing_secret_change_me"

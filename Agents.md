@@ -158,25 +158,19 @@ When multiple valid approaches exist, choose based on:
 - Stop after 3 failed attempts and reassess
 ### Quick Start
 ```bash
-# Automated setup with environment checks
-./scripts/dev-setup.sh
-
-# Or manual setup
+# One-time setup
 cp .env.example .env
-just dev-setup
+just setup
 
-# Start Phoenix development server (auto-starts services)
-just dev-server
+# Start development
+just dev                # Start Phoenix server at http://localhost:4000
 
-# Or start interactive IEx shell (auto-starts services)
-just dev-shell
-
-# Development workflow commands
-just dev-menu        # Show all available commands
-just quick-check      # Fast format + lint
-just dev-check        # Full validation with tests
-just coverage         # Generate test coverage
-just security-audit   # Run security audit
+# Essential development commands
+just menu              # Show essential commands
+just iex               # Interactive Elixir shell  
+just test              # Run tests
+just check             # Format + lint + test (full validation)
+just coverage          # Generate test coverage report
 ```
 
 ### Framework Versions

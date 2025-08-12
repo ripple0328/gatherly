@@ -29,6 +29,12 @@ services:
   app:
     image: elixir:1.18.4-otp-28
     working_dir: /app
+    environment:
+      DATABASE_URL: ecto://postgres:postgres@db/gatherly_dev
+    depends_on:
+      - db
+    ports:
+      - "4000:4000"
     volumes:
       - .:/app
     command: >

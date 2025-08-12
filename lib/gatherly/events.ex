@@ -8,5 +8,6 @@ defmodule Gatherly.Events do
   resources do
     resource(Gatherly.Events.Event)
     resource(Gatherly.Events.MagicLink)
+    resource(Gatherly.Events.EventParticipant)
   end
 end

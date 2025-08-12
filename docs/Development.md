@@ -1,6 +1,6 @@
 # 🛠️ Development Guide
 
-This guide explains how to run Gatherly locally using Docker Compose for development and Dagger for CI/CD.
+This guide explains how to run Gatherly locally using the simplified Docker Compose workflow.
 
 ## Prerequisites
 
@@ -10,43 +10,47 @@ This guide explains how to run Gatherly locally using Docker Compose for develop
 ## Quick Start
 
 ```bash
-# One-time setup (installs deps + database in containers)
-cp .env.example .env   # fill in secrets
-just dev-setup
+# One-time setup
+cp .env.example .env
+just setup
 
-# Start development (services auto-start)
-just dev-server   # Phoenix server at http://localhost:4000
+# Start development
+just dev   # Phoenix server at http://localhost:4000
 
-# OR interactive IEx shell
-just dev-shell
+# View all essential commands
+just menu
 ```
 
-## Development Workflow
+## Essential Development Commands
 
-### Core Development Commands (via `just`)
+### Core Workflow
 ```bash
-# App
-just dev-server               # Phoenix server with live reloading
-just dev-shell                # IEx shell with database connection
-
-# Database operations
-just db-migrate               # Run migrations
-just db-rollback -- --step=1  # Rollback migrations (pass args after --)
-just db-reset                 # Reset database completely
-just db-seed                  # Run seeds
-just db-shell                 # PostgreSQL shell
+# Setup and server
+just setup                    # Initial project setup (run once)
+just dev                      # Start development server
+just iex                      # Interactive Elixir shell
 
 # Testing
-just test                     # Run all tests against isolated test DB
+just test                     # Run tests
+just test-watch               # Watch tests continuously
+just coverage                 # Generate coverage report
+
+# Code quality
+just format                   # Format code (fast)
+just check                    # Format + lint + test (full)
+
+# Database
+just db-reset                 # Reset database to clean state
+just db-console               # Open database console
+
+# Utilities
+just doctor                   # Environment health check
+just clean                    # Clean everything and start fresh
 ```
 
-### CI and Deployment
+### Deployment
 ```bash
-# CI locally
-just ci
-
-# Deploy to Fly.io (requires 'fly' CLI and login)
-just fly-deploy
+just deploy                   # Deploy to production (runs checks first)
 ```
 
 ## Project Structure
@@ -72,37 +76,35 @@ just fly-deploy
 
 ## Troubleshooting
 
-### Services Won't Start
-Services are automatically started by `just dev-server` or `just dev-shell`. If they fail to start:
+### Quick Environment Check
 ```bash
-# Stop any running containers and restart
-docker compose -f docker-compose.dev.yml down
-just dev-server  # Will start fresh
+just doctor  # Check Docker, environment files, and dependencies
+```
+
+### Services Won't Start
+```bash
+# Check what's running
+docker compose ps
+
+# Stop and restart
+docker compose down
+just dev  # Will start fresh
 ```
 
 ### Database Connection Issues
 ```bash
-just db-reset  # Reset database
+just db-reset  # Reset database to clean state
 ```
 
 ### Container Issues
 ```bash
-# Nuclear option - remove everything and start fresh
-docker compose -f docker-compose.dev.yml down --volumes --remove-orphans
-just dev-server  # Will rebuild and start fresh
-```
-
-### Live Reload Warning (file_system / inotify)
-- When running non-server Mix tasks in one-off containers, you may see a warning about `inotify-tools`.
-- This is harmless. When you start the server via `just dev-server`, the app container installs `inotify-tools` and live-reload works.
-
-### Quick Environment Check
-```bash
-just doctor  # Validates Docker daemon and compose availability
+# Clean everything and start fresh
+just clean
+just setup
 ```
 
 ### Port Already in Use
-- Stop any existing Phoenix servers
+- Stop any existing Phoenix servers: `docker compose down`
 - Check if port 4000 or 5432 is in use by other applications
 
 ### Permission Issues
@@ -111,8 +113,9 @@ just doctor  # Validates Docker daemon and compose availability
 
 ## Architecture Notes
 
-- **Development**: Uses Docker Compose for fast, local development with TTY support
-- **Task Runner**: `just` provides a Docker-first command layer
+- **Development**: Uses Docker Compose for consistent, containerized development
+- **Task Runner**: `just` provides simplified, essential commands with smart service management
+- **Efficiency**: Helper functions eliminate duplication and ensure fast, reliable execution
 - **CI/CD**: Uses Dagger for reliable, containerized testing and deployment
 - **Auto-Start**: `just dev-server` and `just dev-shell` automatically start required services
 - **Secrets**: Use `.env` for dev (not committed). Production uses platform secret stores injected via env at runtime.

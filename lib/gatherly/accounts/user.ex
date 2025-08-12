@@ -116,8 +116,6 @@ defmodule Gatherly.Accounts.User do
     create :create do
       accept([:email, :name, :avatar_url, :user_type])
       primary?(true)
-
-      change(AshAuthentication.GenerateTokenChange)
     end
 
     create :create_anonymous do
@@ -128,8 +126,6 @@ defmodule Gatherly.Accounts.User do
         description("Magic link token for verification")
         allow_nil?(false)
       end
-
-      change(AshAuthentication.GenerateTokenChange)
 
       change(fn changeset, _ ->
         changeset
