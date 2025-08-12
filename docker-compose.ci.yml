@@ -27,10 +27,6 @@ services:
       ERL_AFLAGS: "-kernel shell_history enabled"
     volumes:
       - .:/app
-      # Ephemeral volumes for CI (not defined in volumes section)
-      - /app/deps
-      - /app/_build
-      - /root/.mix
     depends_on:
       test_db:
         condition: service_healthy
@@ -39,20 +35,5 @@ services:
     # No tty/stdin for CI
     tty: false
     stdin_open: false
-    healthcheck:
-      test: ["CMD-SHELL", "test -f /app/mix.exs && mix help > /dev/null"]
-      interval: 2s
-      timeout: 10s
-      retries: 15
-    command: >
-      bash -c "
-        apt-get update -qq &&
-        apt-get install -y postgresql-client &&
-        mix local.hex --force &&
-        mix local.rebar --force &&
-        mix deps.get &&
-        MIX_ENV=dev mix deps.compile &&
-        MIX_ENV=test mix deps.get &&
-        MIX_ENV=test mix deps.compile &&
-        tail -f /dev/null
-      "
+    # Simple command that keeps container running
+    command: tail -f /dev/null

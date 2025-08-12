@@ -36,7 +36,7 @@ jobs:
       - name: Check code formatting
         run: |
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d app --wait
-          docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=dev bash -c 'mix deps.get && mix deps.compile && mix compile && mix format --check-formatted'
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app bash -c 'apt-get update -qq && apt-get install -y postgresql-client inotify-tools && mix local.hex --force && mix local.rebar --force && mix deps.get && MIX_ENV=dev mix format --check-formatted'
           docker compose -f docker-compose.yml -f docker-compose.ci.yml down
         env:
           DOCKER_BUILDKIT: 1
@@ -67,7 +67,7 @@ jobs:
       - name: Run linter (Credo)
         run: |
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d app --wait
-          docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=dev mix credo --strict
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app bash -c 'apt-get update -qq && apt-get install -y postgresql-client inotify-tools && mix local.hex --force && mix local.rebar --force && mix deps.get && MIX_ENV=dev mix credo --strict'
           docker compose -f docker-compose.yml -f docker-compose.ci.yml down
         env:
           DOCKER_BUILDKIT: 1
@@ -98,7 +98,7 @@ jobs:
       - name: Run type checker (Dialyzer)
         run: |
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d app --wait
-          docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=dev mix dialyzer
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app bash -c 'apt-get update -qq && apt-get install -y postgresql-client inotify-tools && mix local.hex --force && mix local.rebar --force && mix deps.get && MIX_ENV=dev mix dialyzer'
           docker compose -f docker-compose.yml -f docker-compose.ci.yml down
         env:
           DOCKER_BUILDKIT: 1
@@ -129,7 +129,7 @@ jobs:
       - name: Run test suite
         run: |
           docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d app test_db --wait
-          docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=test DATABASE_URL=postgres://postgres:postgres@test_db:5432/gatherly_test mix test
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app bash -c 'apt-get update -qq && apt-get install -y postgresql-client inotify-tools && mix local.hex --force && mix local.rebar --force && mix deps.get && MIX_ENV=test DATABASE_URL=postgres://postgres:postgres@test_db:5432/gatherly_test mix test'
           docker compose -f docker-compose.yml -f docker-compose.ci.yml down
         env:
           DOCKER_BUILDKIT: 1
