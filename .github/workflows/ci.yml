@@ -8,6 +8,7 @@ on:
 
 env:
   MIX_ENV: test
+  DOCKER_BUILDKIT: 1
 
 jobs:
   format:
@@ -38,8 +39,6 @@ jobs:
 
       - name: Check code formatting
         run: just format-check
-        env:
-          DOCKER_BUILDKIT: 1
 
   compile:
     name: 🔧 Compile Check
@@ -69,8 +68,6 @@ jobs:
 
       - name: Compile with warnings as errors
         run: just compile-strict
-        env:
-          DOCKER_BUILDKIT: 1
 
   lint:
     name: 🔍 Lint Check
@@ -100,8 +97,6 @@ jobs:
 
       - name: Run Credo linting
         run: just lint
-        env:
-          DOCKER_BUILDKIT: 1
 
   dialyzer:
     name: ⚡ Type Check
@@ -131,8 +126,6 @@ jobs:
 
       - name: Run Dialyzer type checking
         run: just dialyzer
-        env:
-          DOCKER_BUILDKIT: 1
 
   security:
     name: 🛡️ Security Scan
@@ -162,8 +155,6 @@ jobs:
 
       - name: Run security audit
         run: just security
-        env:
-          DOCKER_BUILDKIT: 1
 
   test:
     name: 🧪 Test Suite
@@ -193,8 +184,6 @@ jobs:
 
       - name: Run tests with coverage
         run: just test-coverage
-        env:
-          DOCKER_BUILDKIT: 1
 
   vulnerability-scan:
     name: 🕵️ Dependency Scan
@@ -224,8 +213,6 @@ jobs:
 
       - name: Check for unused dependencies
         run: just deps-audit
-        env:
-          DOCKER_BUILDKIT: 1
 
   assets:
     name: 🎨 Assets Build
@@ -255,8 +242,6 @@ jobs:
 
       - name: Build and test assets
         run: just assets-check
-        env:
-          DOCKER_BUILDKIT: 1
 
   deploy:
     name: 🚀 Deploy to Production
@@ -293,7 +278,6 @@ jobs:
         run: just deploy
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-          DOCKER_BUILDKIT: 1
 
       - name: Verify deployment
         run: |

@@ -74,8 +74,6 @@ db-console:
 
 # === Code Quality ===
 
-# === Code Quality ===
-
 # Format code only (fast)
 format:
     @echo "🎨 Formatting code..."
@@ -158,6 +156,16 @@ deploy:
     @echo "✅ Deployment complete!"
 
 # === Utilities ===
+
+# Install/update dependencies
+deps-get:
+    @echo "Installing dependencies..."
+    @docker compose run -T --rm app mix deps.get
+
+# Update dependencies
+deps-update:
+    @echo "Updating dependencies..."
+    @docker compose run -T --rm app mix deps.update --all
 
 # Health check for development environment
 doctor:
