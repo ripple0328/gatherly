@@ -28,7 +28,7 @@ primary_region = "sjc"
   url_prefix = "/assets"
 
 [deploy]
-  release_command = "./bin/gatherly eval \"Gatherly.Release.migrate\""
+  release_command = "/app/bin/migrate"
 
 [checks]
   [checks.health]
