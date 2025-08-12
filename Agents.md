@@ -444,3 +444,5 @@ Based on the project roadmap, focus on:
 ---
 
 *This file should be updated as Phoenix evolves and new patterns emerge.*
+
+- use containerized command all the time
