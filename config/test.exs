@@ -14,7 +14,11 @@ config :gatherly, Gatherly.Repo,
 # you can enable the server option below.
 config :gatherly, GatherlyWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: System.get_env("SECRET_KEY_BASE", "test_secret_key_base_change_me_this_needs_to_be_at_least_64_bytes_long"),
+  secret_key_base:
+    System.get_env(
+      "SECRET_KEY_BASE",
+      "test_secret_key_base_change_me_this_needs_to_be_at_least_64_bytes_long"
+    ),
   server: false
 
 # In test we don't send emails
