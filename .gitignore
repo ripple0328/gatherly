@@ -69,3 +69,5 @@ config/prod.secret.exs
 
 # Agent files (use CLAUDE.md instead)
 Agents.md
+
+.crush/
