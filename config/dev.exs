@@ -63,8 +63,18 @@ config :gatherly, GatherlyWeb.Endpoint,
 # Enable dev routes for dashboard and mailbox
 config :gatherly, dev_routes: true
 
-# Enable debug logging
-config :logger, level: :debug, format: "[$level] $message\n"
+# Enable debug logging with enhanced format
+config :logger, 
+  level: :debug, 
+  format: "[$level] $message\n",
+  compile_time_purge_matching: [
+    [level_lower_than: :info]
+  ]
+
+# Enhanced logging for development
+config :logger, :console,
+  format: "[$time] [$level]$levelpad $metadata$message\n",
+  metadata: [:request_id, :mfa, :pid]
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.

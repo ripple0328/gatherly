@@ -23,6 +23,7 @@
 
 - 📋 **[Project Roadmap](./docs/Project.md)** - Development phases and feature timeline
 - 🛠️ **[Development Guide](./docs/Development.md)** - Local development setup and workflow
+- ⚡ **[Development Workflow](./docs/DEVELOPMENT_WORKFLOW.md)** - Enhanced developer tools and commands
 - 🔄 **[CI/CD Documentation](./docs/CICD.md)** - Continuous integration and deployment guide
 - 🗺️ **[Technical Landscape](./docs/Landscape.md)** - Architecture overview and technical decisions
 
@@ -47,16 +48,20 @@ No local Elixir/Erlang/PostgreSQL required. Everything runs in containers.
 git clone https://github.com/yourusername/gatherly.git
 cd gatherly
 
-# Copy and fill env
-cp .env.example .env
-# Generate secrets and paste into .env
-# mix phx.gen.secret
+# Automated setup (recommended)
+./scripts/dev-setup.sh
 
-# One-time setup (installs deps, prepares DB)
+# Or manual setup
+cp .env.example .env
 just dev-setup
 
 # Start the Phoenix server (with live reload)
 just dev-server
+
+# Quick development commands
+just dev-menu          # Show all available commands
+just quick-check        # Fast format + lint
+just dev-check          # Full validation
 ```
 
 Visit [`http://localhost:4000`](http://localhost:4000).

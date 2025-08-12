@@ -1,0 +1,53 @@
+# Pre-commit hooks for Gatherly
+# Install with: pre-commit install
+repos:
+  - repo: local
+    hooks:
+      - id: mix-format
+        name: Mix Format
+        entry: just format
+        language: system
+        files: \.(ex|exs)$
+        pass_filenames: false
+        
+      - id: mix-credo-strict
+        name: Mix Credo (Strict)
+        entry: just lint
+        language: system
+        files: \.(ex|exs)$
+        pass_filenames: false
+        
+      - id: mix-test
+        name: Mix Test (Fast)
+        entry: just test --max-failures=1
+        language: system
+        files: \.(ex|exs)$
+        pass_filenames: false
+        stages: [pre-push]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: \.(md|txt)$
+      - id: end-of-file-fixer
+        exclude: \.(md|txt)$
+      - id: check-yaml
+        args: [--unsafe]
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v2.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [optional-scope]
+
+# Configuration for specific tools
+default_stages: [pre-commit]
+fail_fast: true

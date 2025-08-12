@@ -54,3 +54,15 @@ config/prod.secret.exs
 .env.local
 .env.*.local
 .env.*
+
+# Development tools and logs
+/logs/
+/backups/
+.pre-commit-hooks.yaml
+
+# Coverage and documentation  
+/cover/
+/doc/
+
+# Development cache
+.dialyzer_cache/

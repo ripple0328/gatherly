@@ -226,8 +226,8 @@ security:
 
 # === Environment & Assets ===
 
-# Quick health check for local environment
-doctor:
+# Quick health check for local environment (legacy)
+doctor-legacy:
     @echo "Diagnosing environment..."
     @docker --version || true
     @docker compose version || true
@@ -257,3 +257,162 @@ coveralls:
 # Run before commit: format code and lint strictly
 pre-commit: format lint
     @echo "Pre-commit checks passed!"
+
+# === Development Workflow Enhancements ===
+
+# Quick development cycle - fast feedback loop
+quick-check: format lint
+    @echo "✅ Quick checks passed!"
+
+# Full development cycle validation
+dev-check: format lint test
+    @echo "✅ Full development checks passed!"
+
+# Watch mode for tests (requires inotify-tools in container)
+test-watch:
+    @echo "Starting test watch mode (Ctrl+C to stop)..."
+    @docker compose run --rm app bash -c 'mix test.watch || mix test --listen-on-stdin'
+
+# Run tests with tracing for debugging
+test-trace:
+    @echo "Running tests with trace output..."
+    @docker compose run -T --rm -e MIX_ENV=test app mix test --trace
+
+# === Database Utilities ===
+
+# Quick database console access
+db-console:
+    @echo "Opening database console..."
+    @docker compose exec db psql -U postgres -d gatherly_dev -c "SELECT current_database(), current_user, version();"
+    @docker compose exec db psql -U postgres -d gatherly_dev
+
+# Show database connection info
+db-info:
+    @echo "Database connection information:"
+    @docker compose exec db psql -U postgres -d gatherly_dev -c "SELECT current_database(), current_user, inet_server_addr(), inet_server_port();"
+
+# Backup development database
+db-backup:
+    @echo "Backing up development database..."
+    @mkdir -p backups
+    @docker compose exec db pg_dump -U postgres -F custom gatherly_dev > backups/dev_$(shell date +%Y%m%d_%H%M%S).backup
+    @echo "Backup saved to backups/"
+
+# === Code Quality & Analysis ===
+
+# Dependency analysis
+deps-tree:
+    @echo "Analyzing dependency tree..."
+    @docker compose run -T --rm app mix deps.tree
+
+# Security audit (enhanced)
+security-audit:
+    @echo "Running comprehensive security audit..."
+    @docker compose run -T --rm app mix hex.audit || true
+    @echo "✅ Security audit completed"
+
+# Code coverage report
+coverage:
+    @echo "Generating test coverage report..."
+    @MIX_ENV=test docker compose run -T --rm -e MIX_ENV=test app mix coveralls.html
+    @echo "📊 Coverage report available at cover/excoveralls.html"
+
+# Coverage for CI
+coverage-ci:
+    @echo "Running coverage for CI..."
+    @MIX_ENV=test docker compose run -T --rm -e MIX_ENV=test app mix coveralls.github
+
+# === Performance & Debugging ===
+
+# Performance monitoring
+perf-monitor:
+    @echo "Starting performance monitoring..."
+    @echo "💡 Run observer with: :observer.start() in the IEx session"
+    @docker compose run --rm app iex -S mix
+
+# Check memory usage of containers  
+memory-usage:
+    @echo "Container memory usage:"
+    @docker stats --no-stream --format "table {{"{{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}"}}"
+
+# Profile test performance
+profile-tests:
+    @echo "Profiling test performance..."
+    @MIX_ENV=test docker compose run -T --rm -e MIX_ENV=test app mix test --trace --timeout 30000
+
+# === Documentation ===
+
+# Generate project documentation
+docs:
+    @echo "Generating project documentation..."
+    @docker compose run -T --rm app mix docs
+    @echo "📚 Documentation available at doc/index.html"
+
+# Open documentation (macOS/Linux)
+docs-open: docs
+    @echo "Opening documentation..."
+    @open doc/index.html 2>/dev/null || xdg-open doc/index.html 2>/dev/null || echo "📚 Documentation at doc/index.html"
+
+# === Development Data Management ===
+
+# Seed with demo data for development
+seed-demo:
+    @echo "Seeding demo data..."
+    @docker compose run -T --rm app mix run priv/repo/seeds.exs
+    @echo "✅ Demo data seeded"
+
+# Reset to demo state
+reset-demo: db-reset seed-demo
+    @echo "🎭 Demo environment ready!"
+
+# === Code Review & PR Helpers ===
+
+# Prepare code for review
+review-prep: format lint test
+    @echo "✅ Code ready for review!"
+    @git status --porcelain || echo "📝 Commit your changes"
+
+# Full PR validation
+pr-check: ci
+    @echo "✅ All PR checks passed!"
+
+# === Quick Utilities ===
+
+# Health check for local environment
+doctor:
+    @echo "🔍 Diagnosing development environment..."
+    @echo "Docker version:" && docker --version || echo "❌ Docker not found"
+    @echo "Docker Compose version:" && docker compose version || echo "❌ Docker Compose not found"  
+    @echo "Just version:" && just --version || echo "❌ Just not found"
+    @echo "Checking Docker daemon..." && docker info >/dev/null 2>&1 && echo "✅ Docker daemon running" || echo "❌ Docker daemon not accessible"
+    @test -f docker-compose.yml && echo "✅ Compose file found" || echo "❌ Compose file missing"
+    @test -f .env && echo "✅ Environment file found" || echo "⚠️  .env file missing - copy from .env.example"
+
+# Interactive development menu
+dev-menu:
+    @echo "🚀 Gatherly Development Menu"
+    @echo "=========================="
+    @echo "Setup & Health:"
+    @echo "  just doctor           - Check environment health"
+    @echo "  just dev-setup        - Initial project setup"
+    @echo "  just dev-server       - Start development server"
+    @echo ""
+    @echo "Quick Development:"
+    @echo "  just quick-check      - Format + lint (fast)"
+    @echo "  just dev-check        - Format + lint + test (full)"
+    @echo "  just test-watch       - Watch tests continuously"
+    @echo ""
+    @echo "Database:"
+    @echo "  just db-console       - Open database console"
+    @echo "  just db-reset         - Reset database"
+    @echo "  just reset-demo       - Reset with demo data"
+    @echo ""
+    @echo "Quality & Analysis:"
+    @echo "  just coverage         - Generate test coverage"
+    @echo "  just security-audit   - Run security audit"
+    @echo "  just docs             - Generate documentation"
+    @echo ""
+    @echo "Review & Deploy:"
+    @echo "  just review-prep      - Prepare for code review"
+    @echo "  just pr-check         - Full PR validation"
+    @echo "  just deploy           - Deploy to production"

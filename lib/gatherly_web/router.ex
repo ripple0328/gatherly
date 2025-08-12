@@ -67,6 +67,7 @@ defmodule GatherlyWeb.Router do
 
       live_dashboard "/dashboard", metrics: GatherlyWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
+      live "/tools", GatherlyWeb.DevToolsLive, :index
     end
   end
 end
