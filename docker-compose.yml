@@ -37,5 +37,6 @@ services:
         apt-get install -y postgresql-client inotify-tools &&
         mix local.hex --force &&
         mix local.rebar --force &&
+        if [ -f mix.exs ]; then mix deps.get; fi &&
         tail -f /dev/null
       "

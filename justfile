@@ -90,7 +90,7 @@ test *args="":
     @echo "Running tests..."
     @docker compose up -d test_db
     @docker compose exec -T test_db sh -c 'until pg_isready -U postgres; do sleep 1; done'
-    @MIX_ENV=test docker compose run -T --rm -e MIX_ENV=test app mix test {{args}}
+    @MIX_ENV=test docker compose run -T --rm -e MIX_ENV=test app bash -c 'mix local.hex --force && mix local.rebar --force && mix deps.get && mix test {{args}}'
 
 # === Service Management ===
 
@@ -127,17 +127,17 @@ services-restart:
 # Format code
 format:
     @echo "Formatting code..."
-    @docker compose run -T --rm app mix format
+    @docker compose run -T --rm app bash -c 'mix local.hex --force && mix local.rebar --force && mix deps.get && mix format'
 
 # Run linting
 lint:
     @echo "Running linter..."
-    @docker compose run -T --rm app mix credo --strict
+    @docker compose run -T --rm app bash -c 'mix local.hex --force && mix local.rebar --force && mix deps.get && mix credo --strict'
 
 # Run Dialyzer type checking
 dialyzer:
     @echo "Running Dialyzer..."
-    @docker compose run -T --rm app mix dialyzer
+    @docker compose run -T --rm app bash -c 'mix local.hex --force && mix local.rebar --force && mix deps.get && mix dialyzer'
 
 # Run all quality checks
 quality: format lint dialyzer
@@ -173,7 +173,7 @@ mix command:
 # Check formatting without writing changes
 format-check:
     @echo "Checking formatting..."
-    @docker compose run -T --rm app mix format --check-formatted
+    @docker compose run -T --rm app bash -c 'mix local.hex --force && mix local.rebar --force && mix deps.get && mix format --check-formatted'
 
 # Removed redundant CI tasks - reuse standard format-check, lint, dialyzer tasks
 
