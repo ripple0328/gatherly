@@ -32,92 +32,92 @@ defmodule GatherlyWeb.DevToolsLive do
               <dl class="grid grid-cols-1 gap-x-4 gap-y-2 text-sm">
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">Elixir Version</dt>
-                  <dd class="mt-1 text-gray-900"><%= @system_info.elixir_version %></dd>
+                  <dd class="mt-1 text-gray-900">{@system_info.elixir_version}</dd>
                 </div>
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">OTP Version</dt>
-                  <dd class="mt-1 text-gray-900"><%= @system_info.otp_version %></dd>
+                  <dd class="mt-1 text-gray-900">{@system_info.otp_version}</dd>
                 </div>
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">Environment</dt>
-                  <dd class="mt-1 text-gray-900"><%= @system_info.env %></dd>
+                  <dd class="mt-1 text-gray-900">{@system_info.env}</dd>
                 </div>
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">Uptime</dt>
-                  <dd class="mt-1 text-gray-900"><%= @system_info.uptime %></dd>
+                  <dd class="mt-1 text-gray-900">{@system_info.uptime}</dd>
                 </div>
               </dl>
             </div>
           </div>
-
-          <!-- Memory Usage -->
+          
+    <!-- Memory Usage -->
           <div class="bg-white overflow-hidden shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">
               <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Memory Usage</h3>
               <dl class="grid grid-cols-1 gap-x-4 gap-y-2 text-sm">
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">Total Memory</dt>
-                  <dd class="mt-1 text-gray-900"><%= format_bytes(@system_info.memory.total) %></dd>
+                  <dd class="mt-1 text-gray-900">{format_bytes(@system_info.memory.total)}</dd>
                 </div>
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">Process Memory</dt>
-                  <dd class="mt-1 text-gray-900"><%= format_bytes(@system_info.memory.processes) %></dd>
+                  <dd class="mt-1 text-gray-900">{format_bytes(@system_info.memory.processes)}</dd>
                 </div>
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">Atom Memory</dt>
-                  <dd class="mt-1 text-gray-900"><%= format_bytes(@system_info.memory.atom) %></dd>
+                  <dd class="mt-1 text-gray-900">{format_bytes(@system_info.memory.atom)}</dd>
                 </div>
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">Binary Memory</dt>
-                  <dd class="mt-1 text-gray-900"><%= format_bytes(@system_info.memory.binary) %></dd>
+                  <dd class="mt-1 text-gray-900">{format_bytes(@system_info.memory.binary)}</dd>
                 </div>
               </dl>
             </div>
           </div>
-
-          <!-- Process Information -->
+          
+    <!-- Process Information -->
           <div class="bg-white overflow-hidden shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">
               <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Processes</h3>
               <dl class="grid grid-cols-1 gap-x-4 gap-y-2 text-sm">
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">Process Count</dt>
-                  <dd class="mt-1 text-gray-900"><%= @system_info.process_count %></dd>
+                  <dd class="mt-1 text-gray-900">{@system_info.process_count}</dd>
                 </div>
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">Process Limit</dt>
-                  <dd class="mt-1 text-gray-900"><%= @system_info.process_limit %></dd>
+                  <dd class="mt-1 text-gray-900">{@system_info.process_limit}</dd>
                 </div>
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">Ports</dt>
-                  <dd class="mt-1 text-gray-900"><%= @system_info.port_count %></dd>
+                  <dd class="mt-1 text-gray-900">{@system_info.port_count}</dd>
                 </div>
                 <div class="sm:col-span-1">
                   <dt class="font-medium text-gray-500">ETS Tables</dt>
-                  <dd class="mt-1 text-gray-900"><%= @system_info.ets_count %></dd>
+                  <dd class="mt-1 text-gray-900">{@system_info.ets_count}</dd>
                 </div>
               </dl>
             </div>
           </div>
-
-          <!-- Quick Actions -->
+          
+    <!-- Quick Actions -->
           <div class="bg-white overflow-hidden shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">
               <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Quick Actions</h3>
               <div class="space-y-3">
-                <button 
+                <button
                   phx-click="garbage_collect"
                   class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
                 >
                   Force Garbage Collection
                 </button>
-                <button 
+                <button
                   phx-click="refresh_info"
                   class="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
                 >
                   Refresh System Info
                 </button>
-                <a 
+                <a
                   href={~p"/dev/dashboard"}
                   class="block w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors text-center"
                 >
@@ -127,8 +127,8 @@ defmodule GatherlyWeb.DevToolsLive do
             </div>
           </div>
         </div>
-
-        <!-- Performance Tips -->
+        
+    <!-- Performance Tips -->
         <div class="mt-8 bg-white overflow-hidden shadow rounded-lg">
           <div class="px-4 py-5 sm:p-6">
             <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Performance Tips</h3>
@@ -161,7 +161,7 @@ defmodule GatherlyWeb.DevToolsLive do
 
   defp get_system_info do
     memory = :erlang.memory()
-    
+
     %{
       elixir_version: System.version(),
       otp_version: System.otp_release(),
@@ -194,7 +194,7 @@ defmodule GatherlyWeb.DevToolsLive do
     hours = div(uptime_seconds, 3600)
     minutes = div(rem(uptime_seconds, 3600), 60)
     seconds = rem(uptime_seconds, 60)
-    
+
     "#{hours}h #{minutes}m #{seconds}s"
   end
 end

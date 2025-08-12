@@ -158,7 +158,10 @@ When multiple valid approaches exist, choose based on:
 - Stop after 3 failed attempts and reassess
 ### Quick Start
 ```bash
-# One-time setup (installs deps + sets up DB in containers)
+# Automated setup with environment checks
+./scripts/dev-setup.sh
+
+# Or manual setup
 cp .env.example .env
 just dev-setup
 
@@ -167,6 +170,13 @@ just dev-server
 
 # Or start interactive IEx shell (auto-starts services)
 just dev-shell
+
+# Development workflow commands
+just dev-menu        # Show all available commands
+just quick-check      # Fast format + lint
+just dev-check        # Full validation with tests
+just coverage         # Generate test coverage
+just security-audit   # Run security audit
 ```
 
 ### Framework Versions
@@ -203,6 +213,7 @@ just dev-shell
 - Follow Phoenix 1.8 conventions and leverage new features
 - Prioritize LiveView over traditional controllers where appropriate
 - Use verified routes (`~p`) everywhere for compile-time safety
+- **Use the enhanced development workflow**: See [docs/DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md) for comprehensive tooling and commands
 
 ## General Elixir Style
 - Use **idiomatic Elixir** and follow the community style guide, including `mix format` for automated formatting

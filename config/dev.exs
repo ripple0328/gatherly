@@ -64,8 +64,8 @@ config :gatherly, GatherlyWeb.Endpoint,
 config :gatherly, dev_routes: true
 
 # Enable debug logging with enhanced format
-config :logger, 
-  level: :debug, 
+config :logger,
+  level: :debug,
   format: "[$level] $message\n",
   compile_time_purge_matching: [
     [level_lower_than: :info]

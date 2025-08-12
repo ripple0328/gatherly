@@ -8,9 +8,9 @@ defmodule Gatherly.Dev.DebugHelpers do
 
   @doc """
   Times the execution of a function and logs the result.
-  
+
   ## Examples
-  
+
       iex> Gatherly.Dev.DebugHelpers.time_call(fn -> Enum.sum(1..1000) end)
       [debug] Function executed in 0.123ms
       500500
@@ -40,11 +40,11 @@ defmodule Gatherly.Dev.DebugHelpers do
     result = fun.()
     memory_after = :erlang.memory(:total)
     memory_diff = memory_after - memory_before
-    
+
     Logger.debug("Memory before: #{format_bytes(memory_before)}")
     Logger.debug("Memory after: #{format_bytes(memory_after)}")
     Logger.debug("Memory diff: #{format_bytes(memory_diff)}")
-    
+
     result
   end
 
@@ -53,14 +53,14 @@ defmodule Gatherly.Dev.DebugHelpers do
   """
   def process_info(pid \\ self()) do
     info = Process.info(pid, [:memory, :message_queue_len, :heap_size, :stack_size, :reductions])
-    
+
     Logger.debug("Process #{inspect(pid)} info:")
     Logger.debug("  Memory: #{format_bytes(info[:memory])}")
     Logger.debug("  Message queue: #{info[:message_queue_len]}")
     Logger.debug("  Heap size: #{info[:heap_size]} words")
     Logger.debug("  Stack size: #{info[:stack_size]} words")
     Logger.debug("  Reductions: #{info[:reductions]}")
-    
+
     info
   end
 
@@ -69,7 +69,7 @@ defmodule Gatherly.Dev.DebugHelpers do
   """
   def system_memory_info do
     memory = :erlang.memory()
-    
+
     Logger.debug("System memory usage:")
     Logger.debug("  Total: #{format_bytes(memory[:total])}")
     Logger.debug("  Processes: #{format_bytes(memory[:processes])}")
@@ -77,7 +77,7 @@ defmodule Gatherly.Dev.DebugHelpers do
     Logger.debug("  Binary: #{format_bytes(memory[:binary])}")
     Logger.debug("  Code: #{format_bytes(memory[:code])}")
     Logger.debug("  ETS: #{format_bytes(memory[:ets])}")
-    
+
     memory
   end
 
@@ -85,7 +85,7 @@ defmodule Gatherly.Dev.DebugHelpers do
   Finds the top N processes by memory usage.
   """
   def top_processes_by_memory(n \\ 10) do
-    processes = 
+    processes =
       Process.list()
       |> Enum.map(fn pid ->
         case Process.info(pid, [:memory, :registered_name, :initial_call]) do
@@ -98,13 +98,13 @@ defmodule Gatherly.Dev.DebugHelpers do
       |> Enum.take(n)
 
     Logger.debug("Top #{n} processes by memory:")
-    
+
     Enum.each(processes, fn {pid, info} ->
       name = info[:registered_name] || inspect(info[:initial_call])
       memory = format_bytes(info[:memory])
       Logger.debug("  #{inspect(pid)} (#{name}): #{memory}")
     end)
-    
+
     processes
   end
 
@@ -112,25 +112,30 @@ defmodule Gatherly.Dev.DebugHelpers do
   Logs database connection pool information.
   """
   def db_pool_info do
-    try do
-      pool_info = Ecto.Adapters.SQL.query!(Gatherly.Repo, "SELECT COUNT(*) as active_connections FROM pg_stat_activity WHERE state = 'active'")
-      Logger.debug("Database pool info:")
-      Logger.debug("  Active connections: #{hd(pool_info.rows) |> hd()}")
-    rescue
-      error ->
-        Logger.debug("Could not fetch DB pool info: #{inspect(error)}")
-    end
+    alias Ecto.Adapters.SQL
+
+    pool_info =
+      SQL.query!(
+        Gatherly.Repo,
+        "SELECT COUNT(*) as active_connections FROM pg_stat_activity WHERE state = 'active'"
+      )
+
+    Logger.debug("Database pool info:")
+    Logger.debug("  Active connections: #{hd(pool_info.rows) |> hd()}")
+  rescue
+    error ->
+      Logger.debug("Could not fetch DB pool info: #{inspect(error)}")
   end
 
   @doc """
   Forces garbage collection on all processes.
   """
   def force_gc_all do
-    count = 
+    count =
       Process.list()
       |> Enum.map(&:erlang.garbage_collect/1)
       |> length()
-    
+
     Logger.debug("Forced garbage collection on #{count} processes")
     count
   end
