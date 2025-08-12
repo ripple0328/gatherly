@@ -77,12 +77,12 @@ db-console:
 # Format code only (fast)
 format:
     @echo "🎨 Formatting code..."
-    @just _run 'mix format'
+    @just _run 'mix deps.get --only dev && mix format'
 
 # Check code formatting (CI)
 format-check:
     @echo "🎨 Checking code formatting..."
-    @just _run 'mix format --check-formatted'
+    @just _run 'mix deps.get --only dev && mix format --check-formatted'
 
 # Compile with warnings as errors (CI)
 compile-strict:
