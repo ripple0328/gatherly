@@ -49,7 +49,7 @@ iex:
 test *args="":
     @echo "🧪 Running tests..."
     @just _ensure-test-db
-    @just _run-test 'mix test {{args}}'
+    @just _run-test 'mix deps.get && mix test {{args}}'
 
 # Watch tests continuously
 test-watch:
@@ -87,17 +87,17 @@ format-check:
 # Compile with warnings as errors (CI)
 compile-strict:
     @echo "🔧 Compiling with warnings as errors..."
-    @just _run 'mix compile --warnings-as-errors'
+    @just _run 'mix deps.get && mix compile --warnings-as-errors'
 
 # Run Credo linting
 lint:
     @echo "🔍 Running Credo linting..."
-    @just _run 'mix credo --strict'
+    @just _run 'mix deps.get && mix credo --strict'
 
 # Run Dialyzer type checking
 dialyzer:
     @echo "⚡ Running Dialyzer type checking..."
-    @just _run 'mix dialyzer'
+    @just _run 'mix deps.get && mix dialyzer'
 
 # Run security audit
 security:
@@ -107,20 +107,20 @@ security:
 # Check for unused dependencies
 deps-audit:
     @echo "🕵️ Checking for unused dependencies..."
-    @just _run 'mix deps.unlock --check-unused'
+    @just _run 'mix deps.get && mix deps.unlock --check-unused'
 
 # Build and test assets
 assets-check:
     @echo "🎨 Building and testing assets..."
-    @just _run 'mix assets.setup'
-    @just _run 'mix assets.build'
-    @just _run 'mix assets.deploy'
+    @just _run 'mix deps.get && mix assets.setup'
+    @just _run 'mix deps.get && mix assets.build'
+    @just _run 'mix deps.get && mix assets.deploy'
 
 # Run tests with coverage
 test-coverage:
     @echo "🧪 Running tests with coverage..."
     @just _ensure-test-db
-    @just _run-test 'mix coveralls.html'
+    @just _run-test 'mix deps.get && mix coveralls.html'
 
 # Format code and run all quality checks
 check:
