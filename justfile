@@ -102,7 +102,7 @@ dialyzer:
 # Run security audit
 security:
     @echo "🛡️ Running security audit..."
-    @just _run 'mix hex.audit'
+    @just _run 'mix deps.get --only dev && mix hex.audit'
 
 # Check for unused dependencies
 deps-audit:
