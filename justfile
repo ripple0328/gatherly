@@ -195,7 +195,7 @@ ci:
 # Build and deploy to Fly.io in one step
 deploy:
     @echo "Building and deploying to Fly.io..."
-    @fly deploy
+    @flyctl deploy --remote-only
 
 # Build with Fly.io build system only (no deploy)
 build:
