@@ -15,7 +15,7 @@ services:
 
   app:
     environment:
-      MIX_ENV: test
+      MIX_ENV: dev
       DATABASE_URL: postgres://postgres:postgres@test_db:5432/gatherly_test
       SECRET_KEY_BASE: VcplVBtlc4FRIRnto8WvuQK5IehyUj0LBJ1N86+WH5r2PxHbjaJZkW97Tgj13IL6
       TOKEN_SIGNING_SECRET: test_token_signing_secret_for_ci_only

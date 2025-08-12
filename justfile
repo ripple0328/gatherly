@@ -182,13 +182,13 @@ ci:
     @echo "Running CI pipeline with optimized settings..."
     @docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d app --wait
     @echo "Checking formatting..."
-    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=dev mix format --check-formatted
+    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=dev bash -c 'mix deps.get && mix deps.compile && mix compile && mix format --check-formatted'
     @echo "Running linter..."
     @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=dev mix credo --strict  
     @echo "Running type checker..."
     @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=dev mix dialyzer
     @echo "Running tests..."
-    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app mix test
+    @docker compose -f docker-compose.yml -f docker-compose.ci.yml exec -T app env MIX_ENV=test DATABASE_URL=postgres://postgres:postgres@test_db:5432/gatherly_test mix test
     @docker compose -f docker-compose.yml -f docker-compose.ci.yml down
     @echo "✅ CI pipeline completed successfully!"
 
