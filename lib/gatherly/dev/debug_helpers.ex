@@ -155,7 +155,7 @@ defmodule Gatherly.Dev.DebugHelpers do
   Stops all tracing.
   """
   def stop_trace do
-    :dbg.stop_clear()
+    :dbg.stop()
   end
 
   # Private helpers
@@ -170,7 +170,7 @@ defmodule Gatherly.Dev.DebugHelpers do
   end
 
   # Only compile in development
-  if Mix.env() != :dev do
+  if Application.compile_env(:gatherly, :environment, :dev) != :dev do
     def time_call(_), do: raise("DebugHelpers only available in development")
     def time_call(_, _), do: raise("DebugHelpers only available in development")
     def memory_profile(_), do: raise("DebugHelpers only available in development")

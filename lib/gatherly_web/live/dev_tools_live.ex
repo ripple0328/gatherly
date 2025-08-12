@@ -165,7 +165,7 @@ defmodule GatherlyWeb.DevToolsLive do
     %{
       elixir_version: System.version(),
       otp_version: System.otp_release(),
-      env: Application.get_env(:gatherly, :environment, Mix.env()),
+      env: Application.get_env(:gatherly, :environment, :dev),
       uptime: format_uptime(:erlang.statistics(:wall_clock)),
       memory: %{
         total: memory[:total],
