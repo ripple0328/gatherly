@@ -90,7 +90,7 @@ test *args="":
     @echo "Running tests..."
     @docker compose up -d test_db
     @docker compose exec -T test_db sh -c 'until pg_isready -U postgres; do sleep 1; done'
-    @MIX_ENV=test docker compose run -T --rm -e MIX_ENV=test app bash -c 'mix local.hex --force && mix local.rebar --force && mix deps.get && mix test {{args}}'
+    @MIX_ENV=test docker compose run -T --rm -e MIX_ENV=test -e DATABASE_URL=ecto://postgres:postgres@test_db/gatherly_test app bash -c 'mix local.hex --force && mix local.rebar --force && mix deps.get && mix test {{args}}'
 
 # === Service Management ===
 
