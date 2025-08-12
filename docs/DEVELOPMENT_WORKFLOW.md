@@ -11,12 +11,18 @@ This guide covers the enhanced development workflow for Gatherly, including new 
 git clone https://github.com/ripple0328/gatherly.git
 cd gatherly
 
-# Run the automated setup script
+# Check environment health first
+just doctor
+
+# Run the automated setup script (recommended)
 ./scripts/dev-setup.sh
 
 # Or manual setup
 cp .env.example .env
 just dev-setup
+
+# Install pre-commit hooks for quality gates
+./scripts/install-hooks.sh
 ```
 
 ### Daily Development
@@ -51,7 +57,7 @@ just dev-menu
 | `just review-prep` | Prepare code for review |
 | `just pr-check` | Full PR validation |
 | `just coverage` | Generate test coverage report |
-| `just security` | Run security audit |
+| `just security-audit` | Run security audit |
 
 ### Testing
 | Command | Description |
@@ -187,18 +193,30 @@ alias Gatherly.Dev.DebugHelpers, as: Debug
 
 # Time function execution
 Debug.time_call(fn -> expensive_operation() end)
+Debug.time_call("Database query", fn -> Repo.all(User) end)
 
 # Profile memory usage
 Debug.memory_profile(fn -> create_lots_of_data() end)
 
 # Check process info
 Debug.process_info()
+Debug.process_info(pid)  # Check specific process
 
 # System memory overview
 Debug.system_memory_info()
 
 # Top memory consuming processes
 Debug.top_processes_by_memory(5)
+
+# Database connection pool info
+Debug.db_pool_info()
+
+# Force garbage collection
+Debug.force_gc_all()
+
+# Advanced: Trace function calls (use carefully)
+Debug.trace_calls(MyModule, :my_function, 2)
+Debug.stop_trace()  # Always stop when done
 ```
 
 ### Phoenix LiveDashboard
@@ -274,7 +292,7 @@ just perf-monitor
 just pr-check
 
 # Security audit
-just security
+just security-audit
 
 # Coverage check
 just coverage
@@ -341,6 +359,23 @@ just rollback
    ```bash
    # Enable query logging in config/dev.exs
    # Check Phoenix LiveDashboard
+   # Use Debug.db_pool_info() in IEx
+   ```
+
+4. **Pre-commit hooks not working**:
+   ```bash
+   # Reinstall hooks
+   ./scripts/install-hooks.sh
+   
+   # Or manual approach
+   just pre-commit
+   ```
+
+5. **Dev tools not accessible**:
+   ```bash
+   # Ensure you're in development mode
+   # Visit http://localhost:4000/dev/tools
+   # Check that dev_routes: true in config/dev.exs
    ```
 
 ## 📚 Additional Resources

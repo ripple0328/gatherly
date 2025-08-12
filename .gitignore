@@ -66,3 +66,6 @@ config/prod.secret.exs
 
 # Development cache
 .dialyzer_cache/
+
+# Agent files (use CLAUDE.md instead)
+Agents.md
