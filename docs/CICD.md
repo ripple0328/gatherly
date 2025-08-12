@@ -1,53 +1,73 @@
 # CI/CD Setup
 
-Gatherly uses GitHub Actions to lint, test and deploy the application using containerized `just` tasks and the Fly.io CLI.
+Gatherly uses GitHub Actions to lint, type-check, test, scan, and deploy the application via containerized `just` tasks and the Fly.io CLI.
 
 ## Pipeline Overview
 
-1. **Lint** – `just lint`
-2. **Test** – `just test`
-3. **Types** – `just dialyzer`
-4. **Deploy** – Fly.io deployment on pushes to `main` via `just deploy`
+The main workflow (see `.github/workflows/ci.yml`) runs on pushes and pull requests to `main` and includes:
 
-The workflow is defined in `.github/workflows/ci.yml` and runs on:
-- Every push to the `main` branch
-- Every pull request to the `main` branch
+1. **Format Check** – `just format-check`
+2. **Compile Check (warnings as errors)** – `just compile-strict`
+3. **Lint** – `just lint`
+4. **Type Check** – `just dialyzer`
+5. **Assets Build** – `just assets-check`
+6. **Test Suite** – `just test` (CI runs with coverage)
+7. **Dependency Scan** – `just deps-audit`
+8. **Security Scan** – `just security`
+9. **Deploy** – `just deploy` (pushes to `main`, only after all checks pass)
 
 ## Running CI Locally
 
-Use the composite workflow to mirror CI on your machine:
+Pick one of the following options:
 
 ```bash
-just ci
+# Fast subset (format + lint + tests)
+just ci-check
+
+# Full pipeline locally (mirrors CI job sequence)
+just format-check
+just compile-strict
+just lint
+just dialyzer
+just assets-check
+just deps-audit
+just security
+just test
 ```
+
+All tasks automatically fetch the required dependencies in their containerized environment.
 
 ## Jobs
 
-### Lint Job
+### Lint and Format Jobs
 
-Runs code quality checks:
-- `mix format --check-formatted` - Ensures code is properly formatted
-- `mix credo --strict` - Static code analysis
-- `mix dialyzer` - Type checking and analysis
+Run code quality checks:
+- `mix format --check-formatted` – Ensures code is properly formatted
+- `mix credo --strict` – Static code analysis
+- `mix dialyzer` – Type checking and analysis
+
+### Compile and Assets Jobs
+
+- Compiles code with warnings treated as errors
+- Builds and verifies frontend assets
 
 ### Test Job
 
-Runs the test suite:
+Runs the test suite (with coverage in CI):
 - Sets up PostgreSQL 17.5 service
 - Installs dependencies
-- Compiles code with warnings as errors
-- Sets up and builds assets
-- Runs the test suite
+- Compiles code (warnings as errors)
+- Builds assets
+- Runs the tests
 
 ### Deploy Job
 
-Deploys to Fly.io:
-- Only runs on pushes to the `main` branch after lint and test jobs pass
+Deploys to Fly.io on successful pushes to `main`:
 - Validates required secrets before deployment
 - Deploys using the Fly CLI
-- Runs database migrations automatically 
+- Runs database migrations automatically
 - Performs health check verification after deployment
-- Fails deployment if health check doesn't pass
+  
 
 ## Required Secrets
 

@@ -116,7 +116,7 @@ All managed in containers — no host installs required.
 - **🐳 Containerized**: Consistent environments, no local dependencies
 - **🔄 Hot Reloading**: Code changes automatically detected and reloaded
 - **🗄️ Managed Database**: PostgreSQL runs as containerized service
-- **⚡ Fast CI**: Run complete CI pipeline locally before pushing
+- **⚡ Fast CI**: Run essential CI checks locally before pushing
 - **🔧 Asset Pipeline**: TailwindCSS + esbuild handled by Phoenix (no Node.js required)
 
 ### Branching Strategy
@@ -128,8 +128,19 @@ All managed in containers — no host installs required.
 
 ### Code Standards
 - Follow [Elixir Style Guide](https://github.com/christopheradams/elixir_style_guide)
-- Use `mix dagger.quality --fix` for automated formatting and linting
-- Verify changes with `mix dagger.ci` before pushing
+- Use `just format` to auto-format and `just lint` for static analysis
+- Verify changes with `just ci-check` (format + lint + tests). For a full run, execute:
+
+```bash
+just format-check
+just compile-strict
+just lint
+just dialyzer
+just assets-check
+just deps-audit
+just security
+just test
+```
 
 ## 🤝 Contributing
 
