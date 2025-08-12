@@ -74,27 +74,72 @@ db-console:
 
 # === Code Quality ===
 
+# === Code Quality ===
+
+# Format code only (fast)
+format:
+    @echo "🎨 Formatting code..."
+    @just _run 'mix format'
+
+# Check code formatting (CI)
+format-check:
+    @echo "🎨 Checking code formatting..."
+    @just _run 'mix format --check-formatted'
+
+# Compile with warnings as errors (CI)
+compile-strict:
+    @echo "🔧 Compiling with warnings as errors..."
+    @just _run 'mix compile --warnings-as-errors'
+
+# Run Credo linting
+lint:
+    @echo "🔍 Running Credo linting..."
+    @just _run 'mix credo --strict'
+
+# Run Dialyzer type checking
+dialyzer:
+    @echo "⚡ Running Dialyzer type checking..."
+    @just _run 'mix dialyzer'
+
+# Run security audit
+security:
+    @echo "🛡️ Running security audit..."
+    @just _run 'mix hex.audit'
+
+# Check for unused dependencies
+deps-audit:
+    @echo "🕵️ Checking for unused dependencies..."
+    @just _run 'mix deps.unlock --check-unused'
+
+# Build and test assets
+assets-check:
+    @echo "🎨 Building and testing assets..."
+    @just _run 'mix assets.setup'
+    @just _run 'mix assets.build'
+    @just _run 'mix assets.deploy'
+
+# Run tests with coverage
+test-coverage:
+    @echo "🧪 Running tests with coverage..."
+    @just _ensure-test-db
+    @just _run-test 'mix coveralls.html'
+
 # Format code and run all quality checks
 check:
     @echo "✅ Running quality checks..."
-    @just _run 'mix format'
-    @just _run 'mix credo --strict'
-    @just _run 'mix dialyzer'
+    @just format
+    @just lint
+    @just dialyzer
     @just test
     @echo "🎉 All checks passed!"
 
 # Fast CI checks (without slow dialyzer)
 ci-check:
     @echo "⚡ Running fast CI checks..."
-    @just _run 'mix format --check-formatted'
-    @just _run 'mix credo --strict'
+    @just format-check
+    @just lint
     @just test
     @echo "🎉 CI checks passed!"
-
-# Format code only (fast)
-format:
-    @echo "🎨 Formatting code..."
-    @just _run 'mix format'
 
 # Generate test coverage report
 coverage:
