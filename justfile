@@ -87,7 +87,7 @@ format-check:
 # Compile with warnings as errors (CI)
 compile-strict:
     @echo "🔧 Compiling with warnings as errors..."
-    @just _run 'mix deps.get && mix compile --warnings-as-errors'
+    @just _run 'mix deps.get --only dev && MIX_ENV=test mix deps.get && MIX_ENV=test mix compile --warnings-as-errors'
 
 # Run Credo linting
 lint:
@@ -200,7 +200,7 @@ _ensure-test-db:
 
 # Run command in app container
 _run cmd:
-    @docker compose run --rm app bash -c "mix local.hex --force && mix local.rebar --force && {{cmd}}"
+    @docker compose run --rm -e MIX_ENV=${MIX_ENV:-dev} app bash -c "mix local.hex --force && mix local.rebar --force && {{cmd}}"
 
 # Run command in app container (detached)
 _run-detached cmd:
