@@ -1,6 +1,34 @@
-# Gatherly
+<div align="center">
+  <h1>Gatherly</h1>
 
-A collaborative event planning platform designed for group-based activities such as potlucks, camping, hiking, and game nights. Built with Phoenix LiveView and PWA-first principles.
+  [![CI/CD Pipeline](https://github.com/ripple0328/gatherly/actions/workflows/ci.yml/badge.svg)](https://github.com/ripple0328/gatherly/actions/workflows/ci.yml)
+  [![Elixir](https://img.shields.io/badge/elixir-1.18.4-purple.svg)](https://elixir-lang.org)
+  [![Phoenix](https://img.shields.io/badge/phoenix-1.8-orange.svg)](https://phoenixframework.org)
+  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+  [![Live Demo](https://img.shields.io/badge/demo-gatherly.qingbo.us-green.svg)](https://gatherly.qingbo.us)
+
+  <p><em>A collaborative event planning platform designed for group-based activities such as potlucks, camping, hiking, and game nights. Built with Phoenix LiveView and PWA-first principles.</em></p>
+</div>
+
+## 🌟 Main Features
+
+- **Event Creation & Management**: Create and organize collaborative events with RSVP tracking
+- **Proposal & Voting System**: Propose and vote on event dates, times, and locations
+- **Logistics Coordination**: Collaborative task and item management boards
+- **Real-time Updates**: Live collaboration with Phoenix LiveView
+- **PWA-First Design**: Mobile-optimized progressive web application
+- **Authentication Integration**: Secure login with Google OAuth and magic links
+
+## 📚 Documentation
+
+- 📋 **[Project Roadmap](./docs/Project.md)** - Development phases and feature timeline
+- 🛠️ **[Development Guide](./docs/Development.md)** - Local development setup and workflow
+- 🔄 **[CI/CD Documentation](./docs/CICD.md)** - Continuous integration and deployment guide
+- 🗺️ **[Technical Landscape](./docs/Landscape.md)** - Architecture overview and technical decisions
+
+## 🌐 Live Demo
+
+Visit the live application at **[gatherly.qingbo.us](https://gatherly.qingbo.us)**
 
 ## 🚀 Getting Started
 
@@ -103,12 +131,19 @@ All managed in containers — no host installs required.
 
 ## 🤝 Contributing
 
+We welcome contributions! Please check out:
+1. [Development Guide](./docs/Development.md) for local setup and workflow
+2. [GitHub Issues](https://github.com/ripple0328/gatherly/issues) for feature requests and bugs
+3. [Project Roadmap](./docs/Project.md) for current development priorities
+
+### Quick Contributing Steps
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Work in the containerized development environment
-4. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-5. Push to the branch (`git push origin feature/AmazingFeature`)
-6. Open a Pull Request
+3. Work in the containerized development environment (`just dev-setup`)
+4. Run quality checks (`just quality`) and tests (`just test`)
+5. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+6. Push to the branch (`git push origin feature/AmazingFeature`)
+7. Open a Pull Request
 
 ## 📝 License
 
