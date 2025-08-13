@@ -13,7 +13,10 @@ defmodule Gatherly.MixProject do
       deps: deps(),
       listeners: listeners(Mix.env()),
       test_coverage: [tool: ExCoveralls],
-      dialyzer: [ignore_warnings: ".dialyzer_ignore.exs"],
+      dialyzer: [
+        ignore_warnings: ".dialyzer_ignore.exs",
+        plt_add_apps: [:ex_unit]
+      ],
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
