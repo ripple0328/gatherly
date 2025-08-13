@@ -107,7 +107,7 @@ security:
 # Check for unused dependencies
 deps-audit:
     @echo "🕵️ Checking for unused dependencies..."
-    @just _run 'mix deps.get && mix deps.unlock --check-unused'
+    @just _run 'MIX_ENV=dev mix deps.get && MIX_ENV=dev mix deps.unlock --check-unused'
 
 # Build and test assets
 assets-check:
