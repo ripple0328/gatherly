@@ -77,12 +77,12 @@ db-console:
 # Format code only (fast)
 format:
     @echo "🎨 Formatting code..."
-    @just _run 'mix deps.get --only dev && mix format'
+    @just _run 'mix deps.get --only dev && MIX_ENV=test mix deps.get --only test && mix format'
 
 # Check code formatting (CI)
 format-check:
     @echo "🎨 Checking code formatting..."
-    @just _run 'mix deps.get --only dev && mix format --check-formatted'
+    @just _run 'mix deps.get --only dev && MIX_ENV=test mix deps.get --only test && mix format --check-formatted'
 
 # Compile with warnings as errors (CI)
 compile-strict:
@@ -102,7 +102,7 @@ dialyzer:
 # Run security audit
 security:
     @echo "🛡️ Running security audit..."
-    @just _run 'mix deps.get --only dev && mix hex.audit'
+    @just _run 'mix deps.get --only dev && MIX_ENV=test mix deps.get --only test && mix hex.audit'
 
 # Check for unused dependencies
 deps-audit:
