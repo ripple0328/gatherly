@@ -152,7 +152,7 @@ coverage:
 deploy:
     @echo "🚀 Deploying to production..."
     @just check
-    @fly deploy
+    @flyctl deploy --remote-only
     @echo "✅ Deployment complete!"
 
 # === Utilities ===
