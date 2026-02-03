@@ -12,7 +12,7 @@ concurrency:
 jobs:
   deploy:
     name: Deploy to mini (self-hosted)
-    runs-on: [self-hosted, mini]
+    runs-on: [self-hosted, gatherly]
 
     timeout-minutes: 30
 
