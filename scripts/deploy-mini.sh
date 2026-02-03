@@ -59,6 +59,9 @@ if [[ ! -f mix.exs ]]; then
 fi
 
 echo "==> Building release"
+# GitHub Actions runner shells may not include Homebrew in PATH.
+# Ensure brew-installed Erlang/Elixir are available.
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export MIX_ENV=prod
 
 # Install deps & compile.
