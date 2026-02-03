@@ -1,0 +1,174 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+env:
+  # Gatherly targets "latest stable" (see docs/tech/STACK.md).
+  # Keep these pinned for reproducible CI; bump intentionally.
+  ELIXIR_VERSION: '1.19.4'
+  OTP_VERSION: '28.3'
+
+jobs:
+  static-analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+          otp-version: ${{ env.OTP_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-static-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-static-
+
+      - name: Install dependencies
+        run: mix deps.get
+        env:
+          MIX_ENV: test
+
+      - name: Check formatting
+        run: mix format --check-formatted
+        env:
+          MIX_ENV: test
+
+      - name: Compile (warnings as errors)
+        run: mix compile --warnings-as-errors
+        env:
+          MIX_ENV: test
+
+      - name: Check unused dependencies
+        run: mix deps.unlock --check-unused
+        env:
+          MIX_ENV: test
+
+      - name: Check for security vulnerabilities
+        run: mix hex.audit
+        env:
+          MIX_ENV: test
+
+  test:
+    name: Tests
+    needs: static-analysis
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: gatherly_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+          otp-version: ${{ env.OTP_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-test-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-test-
+
+      - name: Install dependencies
+        run: mix deps.get
+        env:
+          MIX_ENV: test
+
+      - name: Compile dependencies
+        run: mix deps.compile
+        env:
+          MIX_ENV: test
+
+      - name: Prepare database (if Ecto tasks exist)
+        run: |
+          set -e
+          if mix help ecto.create > /dev/null 2>&1; then
+            mix ecto.create
+            mix ecto.migrate
+          else
+            echo "Skipping ecto.create/migrate (Ecto tasks not available)"
+          fi
+        env:
+          MIX_ENV: test
+          POSTGRES_HOST: localhost
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: gatherly_test
+
+      - name: Run tests
+        run: mix test
+        env:
+          MIX_ENV: test
+          POSTGRES_HOST: localhost
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: gatherly_test
+
+  assets:
+    name: Build Assets
+    needs: static-analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+          otp-version: ${{ env.OTP_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-assets-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-assets-
+
+      - name: Install dependencies
+        run: mix deps.get
+        env:
+          MIX_ENV: prod
+
+      - name: Build assets
+        run: mix assets.deploy
+        env:
+          MIX_ENV: prod
