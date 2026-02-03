@@ -88,7 +88,12 @@ else
 fi
 
 echo "==> Restarting service ($LAUNCHD_LABEL)"
-# macOS launchd (LaunchAgent). The service should already be installed via scripts/mini-install.sh.
+# macOS launchd (LaunchAgent). If it's not installed yet, install it.
+if ! launchctl list | grep -q "$LAUNCHD_LABEL"; then
+  echo "Service not found; installing LaunchAgent via scripts/mini-install.sh"
+  ENV_FILE="$ENV_FILE" LAUNCHD_LABEL="$LAUNCHD_LABEL" bash scripts/mini-install.sh
+fi
+
 launchctl kickstart -k "gui/$(id -u)/$LAUNCHD_LABEL"
 
 echo "==> Health checks"

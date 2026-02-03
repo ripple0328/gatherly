@@ -1,55 +1,106 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# One-time setup for the "mini" macOS host.
-# Installs a LaunchAgent that runs the Gatherly release.
-#
-# Secrets are NOT managed here. Keep them in:
-#   ~/.config/gatherly/.envrc.worker
+# Installation script to run on the mini server.
+# Creates a per-user LaunchAgent and starts the service.
 
-APP_DIR="${APP_DIR:-$HOME/Projects/Personal/gatherly}"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+APP_PATH="$(cd "$SCRIPT_DIR/.." && pwd)"
+APP_NAME="gatherly"
+PLIST_NAME="${LAUNCHD_LABEL:-com.gatherly}"
+LAUNCHAGENTS_DIR="$HOME/Library/LaunchAgents"
 ENV_FILE="${ENV_FILE:-$HOME/.config/gatherly/.envrc.worker}"
-LAUNCHD_LABEL="${LAUNCHD_LABEL:-com.gatherly}"
-PLIST_SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/mini/com.gatherly.plist"
-PLIST_DST="$HOME/Library/LaunchAgents/$LAUNCHD_LABEL.plist"
-
-mkdir -p "$HOME/Library/LaunchAgents" "$(dirname "$ENV_FILE")" "$APP_DIR" "$APP_DIR/log"
 
 if [[ ! -f "$ENV_FILE" ]]; then
-  cat >"$ENV_FILE" <<'EOF'
-# Local secrets for the self-hosted runner (do not commit!)
-#
-# Required for Phoenix releases (typical):
-# export SECRET_KEY_BASE=...
-# export DATABASE_URL=...
-# export PHX_HOST=...
-# export PORT=4000
-EOF
-  echo "Created placeholder env file: $ENV_FILE"
-  echo "Edit it and add real secrets before deploying." >&2
-fi
-
-if [[ ! -f "$PLIST_SRC" ]]; then
-  echo "Missing plist template: $PLIST_SRC" >&2
+  echo "Missing ENV_FILE: $ENV_FILE" >&2
   exit 1
 fi
 
-# Render plist with paths.
-TMP_PLIST="$(mktemp)"
-sed \
-  -e "s|__APP_DIR__|$APP_DIR|g" \
-  -e "s|__ENV_FILE__|$ENV_FILE|g" \
-  -e "s|__LAUNCHD_LABEL__|$LAUNCHD_LABEL|g" \
-  "$PLIST_SRC" > "$TMP_PLIST"
+# shellcheck disable=SC1090
+source "$ENV_FILE"
 
-mv "$TMP_PLIST" "$PLIST_DST"
+PORT=${PORT:-4002}
+PHX_HOST=${PHX_HOST:-gatherly.qingbo.us}
+SECRET_KEY_BASE=${SECRET_KEY_BASE:-}
+DATABASE_URL=${DATABASE_URL:-}
 
-# (Re)load LaunchAgent.
-launchctl bootout "gui/$(id -u)/$LAUNCHD_LABEL" 2>/dev/null || true
-launchctl bootstrap "gui/$(id -u)" "$PLIST_DST"
-launchctl enable "gui/$(id -u)/$LAUNCHD_LABEL"
-launchctl kickstart -k "gui/$(id -u)/$LAUNCHD_LABEL"
+if [[ -z "$SECRET_KEY_BASE" ]]; then
+  echo "SECRET_KEY_BASE is missing in $ENV_FILE" >&2
+  exit 1
+fi
 
-echo "✅ Installed LaunchAgent: $PLIST_DST"
-echo "   App dir: $APP_DIR"
-echo "   Env:     $ENV_FILE"
+if [[ -z "$DATABASE_URL" ]]; then
+  echo "DATABASE_URL is missing in $ENV_FILE" >&2
+  exit 1
+fi
+
+mkdir -p "$LAUNCHAGENTS_DIR"
+
+cat > "$LAUNCHAGENTS_DIR/$PLIST_NAME.plist" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>$PLIST_NAME</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>$APP_PATH/_build/prod/rel/$APP_NAME/bin/$APP_NAME</string>
+    <string>start</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>$APP_PATH/_build/prod/rel/$APP_NAME</string>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>KeepAlive</key>
+  <dict>
+    <key>SuccessfulExit</key>
+    <false/>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>$APP_PATH/_build/prod/rel/$APP_NAME/log/stdout.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>$APP_PATH/_build/prod/rel/$APP_NAME/log/stderr.log</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>MIX_ENV</key>
+    <string>prod</string>
+    <key>PHX_SERVER</key>
+    <string>true</string>
+    <key>PORT</key>
+    <string>$PORT</string>
+    <key>PHX_HOST</key>
+    <string>$PHX_HOST</string>
+    <key>SECRET_KEY_BASE</key>
+    <string>$SECRET_KEY_BASE</string>
+    <key>DATABASE_URL</key>
+    <string>$DATABASE_URL</string>
+  </dict>
+
+  <key>ProcessType</key>
+  <string>Interactive</string>
+</dict>
+</plist>
+EOF
+
+chmod 644 "$LAUNCHAGENTS_DIR/$PLIST_NAME.plist"
+mkdir -p "$APP_PATH/_build/prod/rel/$APP_NAME/log"
+
+launchctl unload "$LAUNCHAGENTS_DIR/$PLIST_NAME.plist" 2>/dev/null || true
+launchctl load "$LAUNCHAGENTS_DIR/$PLIST_NAME.plist"
+
+sleep 2
+
+if launchctl list | grep -q "$PLIST_NAME"; then
+  echo "✅ $PLIST_NAME loaded"
+else
+  echo "❌ Failed to load $PLIST_NAME" >&2
+  exit 1
+fi
