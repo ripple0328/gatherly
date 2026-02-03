@@ -1,0 +1,33 @@
+name: Deploy (mini)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-mini
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to mini (self-hosted)
+    runs-on: [self-hosted, mini]
+
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Deploy
+        shell: bash
+        env:
+          DEPLOY_DIR: ~/Projects/Personal/gatherly
+          ENV_FILE: ~/.config/gatherly/.envrc.worker
+          LAUNCHD_LABEL: com.gatherly
+          HEALTHCHECK_BASE_URL: http://127.0.0.1:4000
+        run: |
+          bash scripts/deploy-mini.sh
