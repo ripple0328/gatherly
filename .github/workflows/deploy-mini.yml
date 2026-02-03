@@ -28,6 +28,7 @@ jobs:
           DEPLOY_DIR: ~/Projects/Personal/gatherly
           ENV_FILE: ~/.config/gatherly/.envrc.worker
           LAUNCHD_LABEL: com.gatherly
-          HEALTHCHECK_BASE_URL: http://127.0.0.1:4000
+          # HEALTHCHECK_BASE_URL defaults to http://127.0.0.1:${PORT:-4000}
+          # (see scripts/deploy-mini.sh). Prefer setting PORT in ENV_FILE.
         run: |
           bash scripts/deploy-mini.sh
