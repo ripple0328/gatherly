@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>__LAUNCHD_LABEL__</string>
+
+    <key>WorkingDirectory</key>
+    <string>__APP_DIR__</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/bash</string>
+      <string>-lc</string>
+      <string>
+        set -euo pipefail
+        source "__ENV_FILE__"
+        if [[ -x "_build/prod/rel/gatherly/bin/gatherly" ]]; then
+          exec "_build/prod/rel/gatherly/bin/gatherly" start
+        else
+          echo "Release binary not found; deploy first" >&2
+          exit 1
+        fi
+      </string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>__APP_DIR__/log/launchd.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>__APP_DIR__/log/launchd.err.log</string>
+  </dict>
+</plist>
