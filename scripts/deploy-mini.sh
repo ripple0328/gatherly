@@ -100,7 +100,23 @@ echo "==> Health checks"
 for path in "/health" "/"; do
   url="$HEALTHCHECK_BASE_URL$path"
   echo "curl $url"
-  curl -fsS "$url" >/dev/null
+
+  ok=0
+  for i in $(seq 1 30); do
+    if curl -fsS "$url" >/dev/null; then
+      ok=1
+      break
+    fi
+    sleep 1
+  done
+
+  if [[ "$ok" != "1" ]]; then
+    echo "Healthcheck failed after retries: $url" >&2
+    echo "Last 80 lines of stdout/stderr:" >&2
+    tail -n 80 "_build/prod/rel/gatherly/log/stdout.log" 2>/dev/null || true
+    tail -n 80 "_build/prod/rel/gatherly/log/stderr.log" 2>/dev/null || true
+    exit 1
+  fi
 done
 
 echo "✅ Deploy complete"
