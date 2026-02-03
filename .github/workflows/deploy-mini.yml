@@ -25,10 +25,8 @@ jobs:
       - name: Deploy
         shell: bash
         env:
-          DEPLOY_DIR: ~/Projects/Personal/gatherly
-          ENV_FILE: ~/.config/gatherly/.envrc.worker
+          # NOTE: do not use "~" here; GitHub Actions does not expand it.
+          # Let deploy-mini.sh default these using $HOME.
           LAUNCHD_LABEL: com.gatherly
-          # HEALTHCHECK_BASE_URL defaults to http://127.0.0.1:${PORT:-4000}
-          # (see scripts/deploy-mini.sh). Prefer setting PORT in ENV_FILE.
         run: |
           bash scripts/deploy-mini.sh
