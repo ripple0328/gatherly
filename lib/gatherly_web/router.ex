@@ -18,6 +18,9 @@ defmodule GatherlyWeb.Router do
     pipe_through :api
 
     get "/health", HealthController, :index
+    get "/healthz", HealthController, :liveness
+    get "/readyz", HealthController, :readiness
+    get "/version", HealthController, :version
   end
 
   scope "/", GatherlyWeb do
