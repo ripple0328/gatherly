@@ -14,7 +14,7 @@ defmodule GatherlyWeb.Telemetry do
       {:telemetry_poller, measurements: periodic_measurements(), period: 10_000},
 
       # Prometheus exporter (scraped by Prometheus)
-      {TelemetryMetricsPrometheus, metrics: metrics()}
+      {TelemetryMetricsPrometheus, metrics: metrics(), name: :gatherly_metrics}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
