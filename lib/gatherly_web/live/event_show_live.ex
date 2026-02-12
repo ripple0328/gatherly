@@ -14,6 +14,7 @@ defmodule GatherlyWeb.EventShowLive do
      |> assign(:items, Events.list_items(event.id))
      |> assign(:rsvp_form, to_form(default_rsvp_form()))
      |> assign(:item_form, to_form(default_item_form()))
+     |> assign(:editing_item_id, nil)
      |> assign(:form_error, nil)}
   end
 
@@ -44,17 +45,94 @@ defmodule GatherlyWeb.EventShowLive do
       |> Map.put("event_id", socket.assigns.event.id)
       |> Map.update("dietary_tags", [], &parse_tags/1)
 
-    case Events.create_item(params) do
+    case Map.get(params, "id") do
+      nil ->
+        create_item(params, socket)
+
+      "" ->
+        create_item(Map.delete(params, "id"), socket)
+
+      id ->
+        update_item(id, Map.delete(params, "id"), socket)
+    end
+  end
+
+  @impl true
+  def handle_event("edit_item", %{"id" => id}, socket) do
+    item = find_item(socket, id)
+
+    form =
+      if item do
+        %{
+          "id" => item.id,
+          "name" => item.name,
+          "quantity" => item.quantity || "",
+          "dietary_tags" => Enum.join(item.dietary_tags || [], ", "),
+          "assigned_to" => item.assigned_to || "",
+          "notes" => item.notes || ""
+        }
+      else
+        default_item_form()
+      end
+
+    {:noreply,
+     socket
+     |> assign(:item_form, to_form(form))
+     |> assign(:editing_item_id, item && item.id)}
+  end
+
+  @impl true
+  def handle_event("cancel_item_edit", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(:item_form, to_form(default_item_form()))
+     |> assign(:editing_item_id, nil)}
+  end
+
+  @impl true
+  def handle_event("delete_item", %{"id" => id}, socket) do
+    _ = Events.delete_item(id)
+
+    {:noreply,
+     socket
+     |> assign(:items, Events.list_items(socket.assigns.event.id))
+     |> assign(:item_form, to_form(default_item_form()))
+     |> assign(:editing_item_id, nil)
+     |> assign(:form_error, nil)}
+  end
+
+  defp create_item(params, socket) do
+    case Events.create_item(Map.delete(params, "id")) do
       {:ok, _item} ->
         {:noreply,
          socket
          |> assign(:items, Events.list_items(socket.assigns.event.id))
          |> assign(:item_form, to_form(default_item_form()))
+         |> assign(:editing_item_id, nil)
          |> assign(:form_error, nil)}
 
       {:error, error} ->
         {:noreply, assign(socket, :form_error, error)}
     end
+  end
+
+  defp update_item(id, params, socket) do
+    case Events.update_item(id, Map.delete(params, "id")) do
+      {:ok, _item} ->
+        {:noreply,
+         socket
+         |> assign(:items, Events.list_items(socket.assigns.event.id))
+         |> assign(:item_form, to_form(default_item_form()))
+         |> assign(:editing_item_id, nil)
+         |> assign(:form_error, nil)}
+
+      {:error, error} ->
+        {:noreply, assign(socket, :form_error, error)}
+    end
+  end
+
+  defp find_item(socket, id) do
+    Enum.find(socket.assigns.items, &(&1.id == id))
   end
 
   defp default_rsvp_form do
@@ -98,7 +176,17 @@ defmodule GatherlyWeb.EventShowLive do
       <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 class="text-2xl font-semibold"><%= @event.title %></h1>
-          <p class="text-sm text-base-content/70"><%= event_link(@event) %></p>
+          <div class="flex flex-wrap items-center gap-2 text-sm text-base-content/70">
+            <span><%= event_link(@event) %></span>
+            <button
+              type="button"
+              class="btn btn-xs btn-ghost"
+              data-clipboard={event_link(@event)}
+              onclick="navigator.clipboard.writeText(this.dataset.clipboard)"
+            >
+              Copy link
+            </button>
+          </div>
         </div>
         <a href="/events" class="btn btn-ghost">All events</a>
       </div>
@@ -150,12 +238,18 @@ defmodule GatherlyWeb.EventShowLive do
         <div class="rounded-box border border-base-200 bg-base-100 p-6">
           <h2 class="text-lg font-semibold">Potluck items</h2>
           <.simple_form for={@item_form} phx-submit="add_item" class="mt-6 space-y-4">
+            <input type="hidden" name="item[id]" value={@editing_item_id || ""} />
             <.input field={@item_form[:name]} label="Item" required />
             <.input field={@item_form[:quantity]} label="Quantity" />
             <.input field={@item_form[:dietary_tags]} label="Dietary tags (comma separated)" />
             <.input field={@item_form[:assigned_to]} label="Assigned to" />
             <.input field={@item_form[:notes]} label="Notes" type="textarea" />
-            <.button type="submit">Add item</.button>
+            <div class="flex items-center gap-3">
+              <.button type="submit"><%= @editing_item_id && "Save changes" || "Add item" %></.button>
+              <%= if @editing_item_id do %>
+                <button type="button" class="btn btn-ghost" phx-click="cancel_item_edit">Cancel</button>
+              <% end %>
+            </div>
           </.simple_form>
 
           <div class="mt-6 space-y-3">
@@ -164,11 +258,32 @@ defmodule GatherlyWeb.EventShowLive do
             <% else %>
               <%= for item <- @items do %>
                 <div class="rounded-lg border border-base-200 p-3">
-                  <div class="flex items-center justify-between">
-                    <div class="font-medium"><%= item.name %></div>
-                    <%= if item.assigned_to do %>
-                      <div class="text-sm text-base-content/60">Assigned to <%= item.assigned_to %></div>
-                    <% end %>
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <div class="font-medium"><%= item.name %></div>
+                      <%= if item.assigned_to do %>
+                        <div class="text-sm text-base-content/60">Assigned to <%= item.assigned_to %></div>
+                      <% end %>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <button
+                        type="button"
+                        class="btn btn-xs btn-ghost"
+                        phx-click="edit_item"
+                        phx-value-id={item.id}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-xs btn-ghost text-error"
+                        phx-click="delete_item"
+                        phx-value-id={item.id}
+                        data-confirm="Delete this item?"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                   <%= if item.quantity do %>
                     <div class="text-sm text-base-content/60">Qty: <%= item.quantity %></div>

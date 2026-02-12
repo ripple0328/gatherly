@@ -27,10 +27,7 @@ defmodule GatherlyWeb.EventsLive do
 
   defp default_form do
     %{
-      "title" => "",
-      "description" => "",
-      "starts_at" => "",
-      "location" => ""
+      "title" => ""
     }
   end
 
@@ -80,9 +77,6 @@ defmodule GatherlyWeb.EventsLive do
           <h2 class="text-lg font-semibold">New event</h2>
           <.simple_form for={@form} phx-submit="save" class="mt-6 space-y-4">
             <.input field={@form[:title]} label="Title" required />
-            <.input field={@form[:description]} label="Description" type="textarea" />
-            <.input field={@form[:starts_at]} label="Starts at (YYYY-MM-DD HH:MM)" />
-            <.input field={@form[:location]} label="Location" />
             <.button type="submit">Create event</.button>
           </.simple_form>
           <%= if @form_error do %>

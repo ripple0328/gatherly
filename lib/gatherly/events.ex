@@ -35,6 +35,16 @@ defmodule Gatherly.Events do
     Ash.create(Item, params, domain: Domain)
   end
 
+  def update_item(id, params) do
+    item = Ash.get!(Item, id, domain: Domain)
+    Ash.update(item, params, domain: Domain)
+  end
+
+  def delete_item(id) do
+    item = Ash.get!(Item, id, domain: Domain)
+    Ash.destroy(item, domain: Domain)
+  end
+
   defp generate_slug do
     :crypto.strong_rand_bytes(6)
     |> Base.url_encode64(padding: false)
