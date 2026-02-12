@@ -17,12 +17,8 @@ defmodule GatherlyWeb.EventsLive do
     params = normalize_params(params)
 
     case Events.create_event(params) do
-      {:ok, _event} ->
-        {:noreply,
-         socket
-         |> assign(:events, Events.list_events())
-         |> assign(:form, to_form(default_form()))
-         |> assign(:form_error, nil)}
+      {:ok, event} ->
+        {:noreply, push_navigate(socket, to: ~p"/events/#{event.slug}")}
 
       {:error, error} ->
         {:noreply, assign(socket, :form_error, error)}
@@ -102,7 +98,10 @@ defmodule GatherlyWeb.EventsLive do
             <% else %>
               <%= for event <- @events do %>
                 <div class="rounded-lg border border-base-200 p-4">
-                  <div class="font-semibold"><%= event.title %></div>
+                  <div class="flex items-center justify-between">
+                    <div class="font-semibold"><%= event.title %></div>
+                    <a class="link text-sm" href={~p"/events/#{event.slug}"}>Open</a>
+                  </div>
                   <%= if event.starts_at do %>
                     <div class="text-sm text-base-content/70"><%= format_dt(event.starts_at) %></div>
                   <% end %>

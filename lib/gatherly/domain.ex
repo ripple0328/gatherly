@@ -10,5 +10,7 @@ defmodule Gatherly.Domain do
 
   resources do
     resource Gatherly.Events.Event
+    resource Gatherly.Events.Rsvp
+    resource Gatherly.Events.Item
   end
 end
