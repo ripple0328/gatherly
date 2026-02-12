@@ -9,6 +9,6 @@ defmodule Gatherly.Domain do
   use Ash.Domain
 
   resources do
-    # resources can be added here later
+    resource Gatherly.Events.Event
   end
 end
