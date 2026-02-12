@@ -13,7 +13,7 @@ defmodule Gatherly.Events.Rsvp do
 
     attribute :status, :string do
       allow_nil? false
-      constraints one_of: ["yes", "no", "maybe"]
+      constraints match: ~r/^(yes|no|maybe)$/
     end
 
     timestamps()
