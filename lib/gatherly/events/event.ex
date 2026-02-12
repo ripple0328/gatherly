@@ -1,5 +1,6 @@
 defmodule Gatherly.Events.Event do
   use Ash.Resource,
+    domain: Gatherly.Domain,
     data_layer: AshPostgres.DataLayer
 
   attributes do
