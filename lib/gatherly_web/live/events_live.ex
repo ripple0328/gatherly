@@ -27,36 +27,53 @@ defmodule GatherlyWeb.EventsLive do
 
   defp default_form do
     %{
-      "title" => ""
+      "title" => "",
+      "starts_at" => "",
+      "location" => "",
+      "description" => ""
     }
   end
 
   defp normalize_params(params) do
-    case Map.get(params, "starts_at") do
-      nil ->
-        params
+    params =
+      case Map.get(params, "starts_at") do
+        nil ->
+          params
 
-      "" ->
-        Map.put(params, "starts_at", nil)
+        "" ->
+          Map.put(params, "starts_at", nil)
 
-      value ->
-        parsed =
-          case NaiveDateTime.from_iso8601(value) do
-            {:ok, ndt} -> {:ok, ndt}
-            _ ->
-              case NaiveDateTime.from_iso8601(String.replace(value, " ", "T") <> ":00") do
-                {:ok, ndt} -> {:ok, ndt}
-                _ -> :error
-              end
+        value ->
+          parsed =
+            case NaiveDateTime.from_iso8601(value) do
+              {:ok, ndt} -> {:ok, ndt}
+              _ ->
+                case NaiveDateTime.from_iso8601(String.replace(value, " ", "T") <> ":00") do
+                  {:ok, ndt} -> {:ok, ndt}
+                  _ -> :error
+                end
+            end
+
+          case parsed do
+            {:ok, ndt} ->
+              Map.put(params, "starts_at", DateTime.from_naive!(ndt, "Etc/UTC"))
+
+            :error ->
+              params
           end
+      end
 
-        case parsed do
-          {:ok, ndt} ->
-            Map.put(params, "starts_at", DateTime.from_naive!(ndt, "Etc/UTC"))
+    params
+    |> normalize_blank("location")
+    |> normalize_blank("description")
+  end
 
-          :error ->
-            params
-        end
+  defp normalize_blank(params, key) do
+    case Map.get(params, key) do
+      nil -> params
+      "" -> Map.put(params, key, nil)
+      value when is_binary(value) -> Map.put(params, key, String.trim(value))
+      _ -> params
     end
   end
 
@@ -77,6 +94,9 @@ defmodule GatherlyWeb.EventsLive do
           <h2 class="text-lg font-semibold">New event</h2>
           <.simple_form for={@form} phx-submit="save" class="mt-6 space-y-4">
             <.input field={@form[:title]} label="Title" required />
+            <.input field={@form[:starts_at]} type="datetime-local" label="Start time (optional)" />
+            <.input field={@form[:location]} label="Location (optional)" />
+            <.input field={@form[:description]} type="textarea" label="Description (optional)" />
             <.button type="submit">Create event</.button>
           </.simple_form>
           <%= if @form_error do %>
