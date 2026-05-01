@@ -343,7 +343,7 @@ defmodule GatherlyWeb.EventShowLive do
                     <div>
                       <span class="font-medium">{participant.display_name}</span>
                       <%= if participant.role do %>
-                        <span class="text-base-content/50"> ·          {participant.role}</span>
+                        <span class="text-base-content/50"> ·           {participant.role}</span>
                       <% end %>
                     </div>
                     <span class="badge badge-outline">

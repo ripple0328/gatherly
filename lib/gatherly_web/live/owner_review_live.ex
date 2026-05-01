@@ -136,7 +136,7 @@ defmodule GatherlyWeb.OwnerReviewLive do
                         <div class="mt-1 text-sm text-base-content/60">
                           RSVP: {String.replace(participant.rsvp_status, "_", " ")}
                           <%= if participant.role do %>
-                            <span> · Role/note:    {participant.role}</span>
+                            <span> · Role/note:     {participant.role}</span>
                           <% end %>
                         </div>
                         <span class="badge badge-ghost mt-2">{label}</span>

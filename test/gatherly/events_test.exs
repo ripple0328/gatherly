@@ -335,8 +335,8 @@ defmodule Gatherly.EventsTest do
     assert row_counts() == before_counts
   end
 
-  test "invite retry with issued submission token updates existing participant instead of duplicating" do
-    {:ok, %{event: event, invite_token: invite_token}} =
+  test "invite retry with pending or accepted submission token updates existing participant instead of duplicating" do
+    {:ok, %{event: event, owner_token: owner_token, invite_token: invite_token}} =
       Events.create_event(%{"title" => "Park picnic"})
 
     assert {:ok, %{participant: participant, submission_token: submission_token}} =
@@ -355,8 +355,99 @@ defmodule Gatherly.EventsTest do
     assert retried.id == participant.id
     assert retried.display_name == "Sam Retry"
     assert retried.rsvp_status == "not_going"
+
+    assert {:ok, %{review_status: "accepted"}} =
+             Events.review_participant(event.id, participant.id, owner_token, "accepted")
+
+    assert {:ok, %{participant: accepted_retry, submission_token: ^submission_token}} =
+             Events.submit_participant_with_invite(event.id, invite_token, %{
+               "display_name" => "Sam Accepted Retry",
+               "rsvp_status" => "going",
+               "submission_token" => submission_token
+             })
+
+    assert accepted_retry.id == participant.id
+    assert accepted_retry.display_name == "Sam Accepted Retry"
+    assert accepted_retry.review_status == "accepted"
     assert [%{id: participant_id}] = Events.list_participants(event.id)
     assert participant_id == participant.id
+  end
+
+  test "invite retry with rejected or excluded submission token fails closed without creating duplicates" do
+    {:ok, %{event: event, owner_token: owner_token, invite_token: invite_token}} =
+      Events.create_event(%{"title" => "Park picnic"})
+
+    {:ok, %{participant: rejected, submission_token: rejected_token}} =
+      Events.submit_participant_with_invite(event.id, invite_token, %{
+        "display_name" => "Rejected Guest",
+        "rsvp_status" => "going",
+        "role" => "salad"
+      })
+
+    {:ok, %{participant: excluded, submission_token: excluded_token}} =
+      Events.submit_participant_with_invite(event.id, invite_token, %{
+        "display_name" => "Excluded Guest",
+        "rsvp_status" => "maybe",
+        "role" => "dessert"
+      })
+
+    assert {:ok, %{review_status: "rejected"}} =
+             Events.review_participant(event.id, rejected.id, owner_token, "rejected")
+
+    assert {:ok, %{review_status: "excluded"}} =
+             Events.review_participant(event.id, excluded.id, owner_token, "excluded")
+
+    before_counts = row_counts()
+    rejected_before = Repo.get!(Participant, rejected.id)
+    excluded_before = Repo.get!(Participant, excluded.id)
+
+    assert {:error, :unauthorized} =
+             Events.submit_participant_with_invite(event.id, invite_token, %{
+               "display_name" => "Rejected Retry",
+               "rsvp_status" => "not_going",
+               "role" => "changed",
+               "submission_token" => rejected_token
+             })
+
+    assert {:error, :unauthorized} =
+             Events.submit_participant_with_invite(event.id, invite_token, %{
+               "display_name" => "Excluded Retry",
+               "rsvp_status" => "going",
+               "role" => "changed",
+               "submission_token" => excluded_token
+             })
+
+    assert row_counts() == before_counts
+    assert Repo.get!(Participant, rejected.id) == rejected_before
+    assert Repo.get!(Participant, excluded.id) == excluded_before
+  end
+
+  test "invite submission without submission token stays fresh but supplied unknown tokens fail closed" do
+    {:ok, %{event: event, invite_token: invite_token}} =
+      Events.create_event(%{"title" => "Park picnic"})
+
+    assert {:ok, %{participant: first}} =
+             Events.submit_participant_with_invite(event.id, invite_token, %{
+               "display_name" => "Fresh Guest"
+             })
+
+    assert {:ok, %{participant: second}} =
+             Events.submit_participant_with_invite(event.id, invite_token, %{
+               "display_name" => "Second Fresh Guest"
+             })
+
+    assert first.id != second.id
+    before_counts = row_counts()
+
+    for token <- ["malformed", mutate_token(Ecto.UUID.generate()), 123] do
+      assert {:error, :unauthorized} =
+               Events.submit_participant_with_invite(event.id, invite_token, %{
+                 "display_name" => "Unknown Retry",
+                 "submission_token" => token
+               })
+    end
+
+    assert row_counts() == before_counts
   end
 
   test "accepted participant listing excludes pending rejected and excluded participants" do

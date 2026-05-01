@@ -143,6 +143,9 @@ defmodule Gatherly.Events do
             {:error, changeset} ->
               {:error, changeset}
           end
+
+        {:error, :unauthorized} ->
+          {:error, :unauthorized}
       end
     end
   end
@@ -279,16 +282,23 @@ defmodule Gatherly.Events do
   defp existing_submission_for_retry(_event_id, token) when token in [nil, ""], do: :new
 
   defp existing_submission_for_retry(event_id, token) when is_binary(token) do
-    with {:ok, token_hash} <- token_hash_for_verification(token),
-         %Participant{} = participant <- get_participant_by_submission_hash(event_id, token_hash),
-         true <- participant.review_status in ["pending", "accepted"] do
-      {:ok, participant, String.trim(token)}
-    else
-      _ -> :new
+    case String.trim(token) do
+      "" ->
+        :new
+
+      trimmed_token ->
+        with {:ok, token_hash} <- token_hash_for_verification(trimmed_token),
+             %Participant{} = participant <-
+               get_participant_by_submission_hash(event_id, token_hash),
+             true <- participant.review_status in ["pending", "accepted"] do
+          {:ok, participant, trimmed_token}
+        else
+          _ -> {:error, :unauthorized}
+        end
     end
   end
 
-  defp existing_submission_for_retry(_event_id, _token), do: :new
+  defp existing_submission_for_retry(_event_id, _token), do: {:error, :unauthorized}
 
   defp normalize_item_attrs(attrs) do
     attrs
