@@ -75,6 +75,20 @@ defmodule Gatherly.Events do
     |> Repo.all()
   end
 
+  def list_review_participants(event_id, owner_token) do
+    with {:ok, event} <- verify_owner_token(event_id, owner_token) do
+      participants = list_participants(event.id)
+
+      {:ok,
+       %{
+         pending: Enum.filter(participants, &(&1.review_status == "pending")),
+         accepted: Enum.filter(participants, &(&1.review_status == "accepted")),
+         rejected: Enum.filter(participants, &(&1.review_status == "rejected")),
+         excluded: Enum.filter(participants, &(&1.review_status == "excluded"))
+       }}
+    end
+  end
+
   def create_participant(attrs) do
     attrs = normalize_participant_attrs(attrs)
 

@@ -30,6 +30,7 @@ defmodule GatherlyWeb.Router do
     live "/events", EventsLive
     live "/events/:slug", EventShowLive
     live "/events/:slug/invite/:token", EventInviteLive
+    live "/events/:slug/owner/:token", OwnerReviewLive
     live "/events/:slug/participants/:participant_id/edit/:token", ParticipantEditLive
   end
 

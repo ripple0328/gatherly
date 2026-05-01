@@ -4,12 +4,13 @@ defmodule GatherlyWeb.EventShowLive do
   alias Gatherly.Events
 
   @impl true
-  def mount(%{"slug" => slug}, _session, socket) do
+  def mount(%{"slug" => slug} = params, _session, socket) do
     event = Events.get_event_by_slug!(slug)
 
     {:ok,
      socket
      |> assign(:event, event)
+     |> assign_authority_entry_points(params)
      |> reload_event_workspace()
      |> assign(:item_form, to_form(default_item_form(), as: :item))
      |> assign(:proposal_form, to_form(default_proposal_form(), as: :proposal))
@@ -209,9 +210,38 @@ defmodule GatherlyWeb.EventShowLive do
   defp proposal_notes(_proposal), do: nil
 
   defp event_link(event), do: GatherlyWeb.Endpoint.url() <> "/events/" <> event.slug
+
+  defp owner_review_url(event, token),
+    do: GatherlyWeb.Endpoint.url() <> ~p"/events/#{event.slug}/owner/#{token}"
+
+  defp invite_url(event, token),
+    do: GatherlyWeb.Endpoint.url() <> ~p"/events/#{event.slug}/invite/#{token}"
+
   defp format_dt(%DateTime{} = dt), do: Calendar.strftime(dt, "%b %-d, %Y %H:%M")
   defp format_dt(%NaiveDateTime{} = dt), do: Calendar.strftime(dt, "%b %-d, %Y %H:%M")
   defp format_dt(other), do: to_string(other)
+
+  defp assign_authority_entry_points(socket, params) do
+    event_id = socket.assigns.event.id
+    owner_token = Map.get(params, "owner_token")
+    invite_token = Map.get(params, "invite_token")
+
+    owner_token =
+      case Events.verify_owner_token(event_id, owner_token) do
+        {:ok, _event} -> owner_token
+        {:error, :unauthorized} -> nil
+      end
+
+    invite_token =
+      case Events.verify_invite_token(event_id, invite_token) do
+        {:ok, _event} -> invite_token
+        {:error, :unauthorized} -> nil
+      end
+
+    socket
+    |> assign(:owner_token, owner_token)
+    |> assign(:invite_token, invite_token)
+  end
 
   @impl true
   def render(assigns) do
@@ -261,6 +291,39 @@ defmodule GatherlyWeb.EventShowLive do
           <% end %>
         </div>
 
+        <%= if @owner_token || @invite_token do %>
+          <div class="mt-6 rounded-box border border-primary/30 bg-primary/5 p-6">
+            <h2 class="text-lg font-semibold">Event authority links</h2>
+            <p class="mt-1 text-sm text-base-content/70">
+              Save these links now. They are the only browser-visible entry points for owner review and invited participant submission.
+            </p>
+            <div class="mt-4 grid gap-3">
+              <%= if @owner_token do %>
+                <div>
+                  <div class="text-sm font-medium">Owner review link</div>
+                  <.link
+                    class="link break-all text-sm"
+                    navigate={~p"/events/#{@event.slug}/owner/#{@owner_token}"}
+                  >
+                    {owner_review_url(@event, @owner_token)}
+                  </.link>
+                </div>
+              <% end %>
+              <%= if @invite_token do %>
+                <div>
+                  <div class="text-sm font-medium">Invite link</div>
+                  <.link
+                    class="link break-all text-sm"
+                    navigate={~p"/events/#{@event.slug}/invite/#{@invite_token}"}
+                  >
+                    {invite_url(@event, @invite_token)}
+                  </.link>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
         <div class="mt-8 grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           <section class="space-y-8">
             <div class="rounded-box border border-base-200 bg-base-100 p-6">
@@ -280,7 +343,7 @@ defmodule GatherlyWeb.EventShowLive do
                     <div>
                       <span class="font-medium">{participant.display_name}</span>
                       <%= if participant.role do %>
-                        <span class="text-base-content/50"> ·        {participant.role}</span>
+                        <span class="text-base-content/50"> ·          {participant.role}</span>
                       <% end %>
                     </div>
                     <span class="badge badge-outline">

@@ -18,6 +18,7 @@ defmodule GatherlyWeb.ParticipantEditLive do
          |> assign(:event, event)
          |> assign(:participant, participant)
          |> assign(:submission_token, token)
+         |> assign(:participants, Events.list_accepted_participants(event.id))
          |> assign(:form, to_form(participant_form(participant), as: :participant))
          |> assign(:form_error, nil)}
 
@@ -58,6 +59,7 @@ defmodule GatherlyWeb.ParticipantEditLive do
     |> assign(:event, nil)
     |> assign(:participant, nil)
     |> assign(:submission_token, nil)
+    |> assign(:participants, [])
     |> assign(:form, to_form(participant_form(nil), as: :participant))
     |> assign(:form_error, "This self-edit link is invalid or unavailable.")
   end
@@ -83,6 +85,22 @@ defmodule GatherlyWeb.ParticipantEditLive do
           <p class="mt-3 text-base-content/70">
             Update your own participant details. Review status stays <span class="font-medium">{@participant.review_status}</span>.
           </p>
+
+          <div class="mt-6 rounded-box border border-base-200 bg-base-100 p-4">
+            <h2 class="font-semibold">Accepted participants</h2>
+            <div class="mt-3 space-y-2 text-sm">
+              <%= if Enum.empty?(@participants) do %>
+                <p class="text-base-content/60">No accepted participants yet.</p>
+              <% else %>
+                <div :for={participant <- @participants}>
+                  <span class="font-medium">{participant.display_name}</span>
+                  <%= if participant.role do %>
+                    <span class="text-base-content/50"> ·   {participant.role}</span>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
 
           <div class="mt-6 rounded-box border border-base-200 bg-base-100 p-6">
             <.simple_form for={@form} id="self-edit-form" phx-submit="save">

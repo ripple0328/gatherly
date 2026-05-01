@@ -16,8 +16,11 @@ defmodule GatherlyWeb.EventsLive do
   @impl true
   def handle_event("save", %{"event" => params}, socket) do
     case Events.create_event(params) do
-      {:ok, %{event: event}} ->
-        {:noreply, push_navigate(socket, to: ~p"/events/#{event.slug}")}
+      {:ok, %{event: event, owner_token: owner_token, invite_token: invite_token}} ->
+        {:noreply,
+         push_navigate(socket,
+           to: ~p"/events/#{event.slug}?#{[owner_token: owner_token, invite_token: invite_token]}"
+         )}
 
       {:error, changeset} ->
         {:noreply,

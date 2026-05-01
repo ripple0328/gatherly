@@ -390,6 +390,96 @@ defmodule Gatherly.EventsTest do
              ])
   end
 
+  test "owner review transitions are status-aware idempotent and event scoped" do
+    {:ok, %{event: event_a, owner_token: owner_token_a, invite_token: invite_token_a}} =
+      Events.create_event(%{"title" => "Park picnic", "creator_name" => "Avery"})
+
+    {:ok, %{event: event_b, owner_token: owner_token_b, invite_token: invite_token_b}} =
+      Events.create_event(%{"title" => "Lake picnic"})
+
+    {:ok, %{participant: pending}} =
+      Events.submit_participant_with_invite(event_a.id, invite_token_a, %{"display_name" => "Sam"})
+
+    {:ok, %{participant: cross_event}} =
+      Events.submit_participant_with_invite(event_b.id, invite_token_b, %{
+        "display_name" => "Riley"
+      })
+
+    before_counts = row_counts()
+
+    assert {:error, :unauthorized} =
+             Events.review_participant(event_a.id, pending.id, "", "accepted")
+
+    assert {:error, :unauthorized} =
+             Events.review_participant(event_a.id, pending.id, invite_token_a, "accepted")
+
+    assert {:error, :unauthorized} =
+             Events.review_participant(event_a.id, pending.id, owner_token_b, "accepted")
+
+    assert {:error, :unauthorized} =
+             Events.review_participant(event_a.id, cross_event.id, owner_token_a, "accepted")
+
+    assert Repo.get!(Participant, pending.id).review_status == "pending"
+    assert Repo.get!(Participant, cross_event.id).review_status == "pending"
+    assert row_counts() == before_counts
+
+    assert {:ok, %{review_status: "accepted"}} =
+             Events.review_participant(event_a.id, pending.id, owner_token_a, "accepted")
+
+    assert {:ok, %{review_status: "accepted"}} =
+             Events.review_participant(event_a.id, pending.id, owner_token_a, "accepted")
+
+    assert row_counts() == before_counts
+
+    assert {:error, :unauthorized} =
+             Events.review_participant(event_a.id, pending.id, owner_token_a, "rejected")
+
+    assert Repo.get!(Participant, pending.id).review_status == "accepted"
+
+    assert {:ok, %{review_status: "excluded"}} =
+             Events.review_participant(event_a.id, pending.id, owner_token_a, "excluded")
+
+    assert {:ok, %{review_status: "excluded"}} =
+             Events.review_participant(event_a.id, pending.id, owner_token_a, "excluded")
+
+    assert {:error, :unauthorized} =
+             Events.review_participant(event_a.id, pending.id, owner_token_a, "pending")
+
+    assert Repo.get!(Participant, pending.id).review_status == "excluded"
+    assert row_counts() == before_counts
+  end
+
+  test "owner review listing requires owner authority and groups every status" do
+    {:ok, %{event: event, owner_token: owner_token, invite_token: invite_token}} =
+      Events.create_event(%{"title" => "Park picnic", "creator_name" => "Avery"})
+
+    {:ok, %{participant: pending}} =
+      Events.submit_participant_with_invite(event.id, invite_token, %{"display_name" => "Pending"})
+
+    {:ok, %{participant: rejected}} =
+      Events.submit_participant_with_invite(event.id, invite_token, %{
+        "display_name" => "Rejected"
+      })
+
+    {:ok, %{participant: excluded}} =
+      Events.submit_participant_with_invite(event.id, invite_token, %{
+        "display_name" => "Excluded"
+      })
+
+    {:ok, _} = Events.review_participant(event.id, rejected.id, owner_token, "rejected")
+    {:ok, _} = Events.review_participant(event.id, excluded.id, owner_token, "excluded")
+
+    assert {:ok, grouped} = Events.list_review_participants(event.id, owner_token)
+
+    assert ["Avery"] = Enum.map(grouped.accepted, & &1.display_name)
+    assert [^pending] = grouped.pending
+    assert ["Rejected"] = Enum.map(grouped.rejected, & &1.display_name)
+    assert ["Excluded"] = Enum.map(grouped.excluded, & &1.display_name)
+
+    assert {:error, :unauthorized} = Events.list_review_participants(event.id, invite_token)
+    assert {:error, :unauthorized} = Events.list_review_participants(event.id, "bad-token")
+  end
+
   defp mutate_token(<<first::binary-size(1), rest::binary>>) do
     replacement = if first == "a", do: "b", else: "a"
     replacement <> rest

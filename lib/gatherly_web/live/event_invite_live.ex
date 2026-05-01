@@ -13,6 +13,7 @@ defmodule GatherlyWeb.EventInviteLive do
          socket
          |> assign(:event, event)
          |> assign(:invite_token, token)
+         |> assign(:participants, Events.list_accepted_participants(event.id))
          |> assign(:participant, nil)
          |> assign(:submission_token, nil)
          |> assign(:form, to_form(default_form(), as: :participant))
@@ -23,6 +24,7 @@ defmodule GatherlyWeb.EventInviteLive do
          socket
          |> assign(:event, event)
          |> assign(:invite_token, nil)
+         |> assign(:participants, Events.list_accepted_participants(event.id))
          |> assign(:participant, nil)
          |> assign(:submission_token, nil)
          |> assign(:form, to_form(default_form(), as: :participant))
@@ -34,6 +36,7 @@ defmodule GatherlyWeb.EventInviteLive do
        socket
        |> assign(:event, nil)
        |> assign(:invite_token, nil)
+       |> assign(:participants, [])
        |> assign(:participant, nil)
        |> assign(:submission_token, nil)
        |> assign(:form, to_form(default_form(), as: :participant))
@@ -103,6 +106,22 @@ defmodule GatherlyWeb.EventInviteLive do
           <p class="mt-3 text-base-content/70">
             Submit your RSVP for owner review. You can use your self-edit link to update it later.
           </p>
+
+          <div class="mt-6 rounded-box border border-base-200 bg-base-100 p-4">
+            <h2 class="font-semibold">Accepted participants</h2>
+            <div class="mt-3 space-y-2 text-sm">
+              <%= if Enum.empty?(@participants) do %>
+                <p class="text-base-content/60">No accepted participants yet.</p>
+              <% else %>
+                <div :for={participant <- @participants}>
+                  <span class="font-medium">{participant.display_name}</span>
+                  <%= if participant.role do %>
+                    <span class="text-base-content/50"> ·   {participant.role}</span>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
 
           <%= if @participant do %>
             <div class="mt-6 rounded-box border border-success/30 bg-success/10 p-4">
