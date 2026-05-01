@@ -75,6 +75,72 @@ defmodule Gatherly.Events do
     |> Repo.insert()
   end
 
+  def verify_owner_token(event_id, token) do
+    verify_event_token(event_id, token, :owner_token_hash)
+  end
+
+  def verify_invite_token(event_id, token) do
+    verify_event_token(event_id, token, :invite_token_hash)
+  end
+
+  def submit_participant_with_invite(event_id, invite_token, attrs) do
+    with {:ok, event} <- verify_invite_token(event_id, invite_token) do
+      submission_token = generate_token()
+
+      attrs =
+        attrs
+        |> normalize_participant_attrs()
+        |> Map.take(["display_name", "rsvp_status", "role"])
+        |> Map.put("event_id", event.id)
+        |> Map.put("review_status", "pending")
+        |> Map.put("submission_token_hash", hash_token(submission_token))
+
+      %Participant{}
+      |> Participant.changeset(attrs)
+      |> Repo.insert()
+      |> case do
+        {:ok, participant} ->
+          {:ok, %{participant: participant, submission_token: submission_token}}
+
+        {:error, changeset} ->
+          {:error, changeset}
+      end
+    end
+  end
+
+  def verify_submission_token(event_id, participant_id, token) do
+    with {:ok, token_hash} <- token_hash_for_verification(token),
+         %Participant{} = participant <- get_participant_for_event(event_id, participant_id),
+         true <- secure_token_match?(participant.submission_token_hash, token_hash) do
+      {:ok, participant}
+    else
+      _ -> {:error, :unauthorized}
+    end
+  end
+
+  def update_participant_with_submission(event_id, participant_id, submission_token, attrs) do
+    with {:ok, participant} <- verify_submission_token(event_id, participant_id, submission_token),
+         true <- participant.review_status in ["pending", "accepted"] do
+      participant
+      |> Participant.changeset(safe_participant_self_edit_attrs(attrs))
+      |> Repo.update()
+    else
+      _ -> {:error, :unauthorized}
+    end
+  end
+
+  def review_participant(event_id, participant_id, owner_token, target_status) do
+    with {:ok, event} <- verify_owner_token(event_id, owner_token),
+         %Participant{} = participant <- get_participant_for_event(event.id, participant_id),
+         true <- valid_review_transition?(participant.review_status, target_status) do
+      participant
+      |> Participant.changeset(%{"review_status" => target_status})
+      |> Repo.update()
+    else
+      _ -> {:error, :unauthorized}
+    end
+  end
+
   def list_items(event_id) do
     Item
     |> where([item], item.event_id == ^event_id)
@@ -162,6 +228,13 @@ defmodule Gatherly.Events do
     |> stringify_keys()
     |> Map.update("rsvp_status", "going", &normalize_rsvp_status/1)
     |> Map.put_new("review_status", "accepted")
+  end
+
+  defp safe_participant_self_edit_attrs(attrs) do
+    attrs
+    |> stringify_keys()
+    |> Map.take(["display_name", "rsvp_status", "role"])
+    |> Map.update("rsvp_status", "going", &normalize_rsvp_status/1)
   end
 
   defp normalize_item_attrs(attrs) do
@@ -280,6 +353,64 @@ defmodule Gatherly.Events do
 
   defp parse_tags(tags) when is_list(tags), do: tags
   defp parse_tags(_tags), do: []
+
+  defp verify_event_token(event_id, token, token_hash_field) do
+    with {:ok, token_hash} <- token_hash_for_verification(token),
+         %Event{} = event <- get_event(event_id),
+         stored_hash when is_binary(stored_hash) <- Map.get(event, token_hash_field),
+         true <- secure_token_match?(stored_hash, token_hash) do
+      {:ok, event}
+    else
+      _ -> {:error, :unauthorized}
+    end
+  end
+
+  defp get_event(event_id) do
+    Repo.get(Event, event_id)
+  rescue
+    Ecto.Query.CastError -> nil
+    Ecto.CastError -> nil
+  end
+
+  defp get_participant_for_event(event_id, participant_id) do
+    Participant
+    |> where([participant], participant.event_id == ^event_id)
+    |> where([participant], participant.id == ^participant_id)
+    |> Repo.one()
+  rescue
+    Ecto.Query.CastError -> nil
+    Ecto.CastError -> nil
+  end
+
+  defp token_hash_for_verification(token) when is_binary(token) do
+    case String.trim(token) do
+      "" -> {:error, :unauthorized}
+      trimmed_token -> {:ok, hash_token(trimmed_token)}
+    end
+  end
+
+  defp token_hash_for_verification(_token), do: {:error, :unauthorized}
+
+  defp secure_token_match?(stored_hash, candidate_hash)
+       when is_binary(stored_hash) and is_binary(candidate_hash) and
+              byte_size(stored_hash) == byte_size(candidate_hash) do
+    Plug.Crypto.secure_compare(stored_hash, candidate_hash)
+  end
+
+  defp secure_token_match?(_stored_hash, _candidate_hash), do: false
+
+  defp valid_review_transition?(status, status)
+       when status in ~w(pending accepted rejected excluded) do
+    true
+  end
+
+  defp valid_review_transition?("pending", target_status)
+       when target_status in ~w(accepted rejected excluded) do
+    true
+  end
+
+  defp valid_review_transition?("accepted", "excluded"), do: true
+  defp valid_review_transition?(_current_status, _target_status), do: false
 
   defp generate_token do
     @token_bytes
