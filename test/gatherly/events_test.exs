@@ -17,7 +17,7 @@ defmodule Gatherly.EventsTest do
     assert [%{display_name: "Avery", rsvp_status: "going"}] = Events.list_participants(event.id)
   end
 
-  test "adds participants, logistics items, and discussion comments" do
+  test "adds participants, logistics items, proposals, votes, and discussion comments" do
     {:ok, %{event: event}} = Events.create_event(%{"title" => "Park picnic"})
 
     assert {:ok, participant} =
@@ -39,6 +39,27 @@ defmodule Gatherly.EventsTest do
              })
 
     assert item.tags == ["vegan", "dessert"]
+
+    assert {:ok, proposal} =
+             Events.create_proposal(%{
+               "event_id" => event.id,
+               "proposal_type" => "location",
+               "title" => "Use the park pavilion",
+               "proposed_by_name" => "Sam",
+               "details_text" => "Covered tables if it rains."
+             })
+
+    assert proposal.details == %{"notes" => "Covered tables if it rains."}
+
+    assert {:ok, vote} =
+             Events.create_vote(%{
+               "proposal_id" => proposal.id,
+               "voter_name" => "Avery",
+               "weight" => "1"
+             })
+
+    assert vote.weight == 1
+    assert [%{votes: [^vote]}] = Events.list_proposals(event.id)
 
     assert {:ok, comment} =
              Events.create_comment(%{

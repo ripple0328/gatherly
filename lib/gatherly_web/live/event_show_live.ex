@@ -13,6 +13,7 @@ defmodule GatherlyWeb.EventShowLive do
      |> reload_event_workspace()
      |> assign(:participant_form, to_form(default_participant_form(), as: :participant))
      |> assign(:item_form, to_form(default_item_form(), as: :item))
+     |> assign(:proposal_form, to_form(default_proposal_form(), as: :proposal))
      |> assign(:comment_form, to_form(default_comment_form(), as: :comment))
      |> assign(:editing_item_id, nil)
      |> assign(:form_error, nil)}
@@ -92,6 +93,40 @@ defmodule GatherlyWeb.EventShowLive do
      |> assign(:item_form, to_form(default_item_form(), as: :item))
      |> assign(:editing_item_id, nil)
      |> assign(:form_error, nil)}
+  end
+
+  @impl true
+  def handle_event("add_proposal", %{"proposal" => params}, socket) do
+    params = Map.put(params, "event_id", socket.assigns.event.id)
+
+    case Events.create_proposal(params) do
+      {:ok, _proposal} ->
+        {:noreply,
+         socket
+         |> reload_event_workspace()
+         |> assign(:proposal_form, to_form(default_proposal_form(), as: :proposal))
+         |> assign(:form_error, nil)}
+
+      {:error, changeset} ->
+        {:noreply,
+         socket
+         |> assign(:proposal_form, to_form(changeset, as: :proposal))
+         |> assign(:form_error, "Could not add proposal.")}
+    end
+  end
+
+  @impl true
+  def handle_event("vote", %{"vote" => params}, socket) do
+    case Events.create_vote(params) do
+      {:ok, _vote} ->
+        {:noreply,
+         socket
+         |> reload_event_workspace()
+         |> assign(:form_error, nil)}
+
+      {:error, _changeset} ->
+        {:noreply, assign(socket, :form_error, "Could not record vote.")}
+    end
   end
 
   @impl true
@@ -176,9 +211,27 @@ defmodule GatherlyWeb.EventShowLive do
     }
   end
 
+  defp default_proposal_form do
+    %{
+      "proposal_type" => "time",
+      "title" => "",
+      "proposed_by_name" => "",
+      "details_text" => ""
+    }
+  end
+
   defp default_comment_form do
     %{"author_name" => "", "body" => ""}
   end
+
+  defp proposal_score(proposal) do
+    proposal.votes
+    |> Enum.map(& &1.weight)
+    |> Enum.sum()
+  end
+
+  defp proposal_notes(%{details: %{"notes" => notes}}) when is_binary(notes), do: notes
+  defp proposal_notes(_proposal), do: nil
 
   defp event_link(event), do: GatherlyWeb.Endpoint.url() <> "/events/" <> event.slug
   defp format_dt(%DateTime{} = dt), do: Calendar.strftime(dt, "%b %-d, %Y %H:%M")
@@ -265,12 +318,88 @@ defmodule GatherlyWeb.EventShowLive do
                     <div>
                       <span class="font-medium">{participant.display_name}</span>
                       <%= if participant.role do %>
-                        <span class="text-base-content/50"> ·     {participant.role}</span>
+                        <span class="text-base-content/50"> ·   {participant.role}</span>
                       <% end %>
                     </div>
                     <span class="badge badge-outline">
                       {String.replace(participant.rsvp_status, "_", " ")}
                     </span>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="rounded-box border border-base-200 bg-base-100 p-6">
+              <h2 class="text-lg font-semibold">Proposals and voting</h2>
+              <p class="mt-1 text-sm text-base-content/60">
+                Anyone can suggest a time or location, then the group can vote it up or down.
+              </p>
+              <.simple_form
+                for={@proposal_form}
+                id="proposal-form"
+                phx-submit="add_proposal"
+                class="mt-6 space-y-4"
+              >
+                <.input
+                  field={@proposal_form[:proposal_type]}
+                  type="select"
+                  label="Proposal type"
+                  options={[{"Time", "time"}, {"Location", "location"}]}
+                />
+                <.input field={@proposal_form[:title]} label="Proposal" required />
+                <.input field={@proposal_form[:proposed_by_name]} label="Proposed by" />
+                <.input field={@proposal_form[:details_text]} label="Details" type="textarea" />
+                <.button type="submit">Add proposal</.button>
+              </.simple_form>
+
+              <div class="mt-6 space-y-3">
+                <%= if Enum.empty?(@proposals) do %>
+                  <p class="text-sm text-base-content/60">No proposals yet.</p>
+                <% else %>
+                  <div :for={proposal <- @proposals} class="rounded-lg border border-base-200 p-4">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <div class="text-xs uppercase tracking-wide text-base-content/50">
+                          {proposal.proposal_type}
+                        </div>
+                        <div class="font-medium">{proposal.title}</div>
+                        <%= if proposal.proposed_by_name do %>
+                          <div class="text-sm text-base-content/60">
+                            Proposed by {proposal.proposed_by_name}
+                          </div>
+                        <% end %>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-2xl font-semibold">{proposal_score(proposal)}</div>
+                        <div class="text-xs text-base-content/50">score</div>
+                      </div>
+                    </div>
+                    <%= if proposal_notes(proposal) do %>
+                      <p class="mt-2 text-sm text-base-content/70">{proposal_notes(proposal)}</p>
+                    <% end %>
+                    <form phx-submit="vote" class="mt-4 grid gap-2 sm:grid-cols-[1fr_auto_auto]">
+                      <input type="hidden" name="vote[proposal_id]" value={proposal.id} />
+                      <input
+                        id={"vote-name-#{proposal.id}"}
+                        name="vote[voter_name]"
+                        class="input input-bordered input-sm w-full"
+                        placeholder="Your name"
+                        required
+                      />
+                      <button class="btn btn-sm btn-outline" name="vote[weight]" value="1">
+                        Upvote
+                      </button>
+                      <button class="btn btn-sm btn-ghost" name="vote[weight]" value="-1">
+                        Downvote
+                      </button>
+                    </form>
+                    <%= if proposal.votes != [] do %>
+                      <div class="mt-3 flex flex-wrap gap-2 text-xs text-base-content/60">
+                        <span :for={vote <- proposal.votes} class="badge badge-ghost">
+                          {vote.voter_name}: {if vote.weight > 0, do: "+1", else: "-1"}
+                        </span>
+                      </div>
+                    <% end %>
                   </div>
                 <% end %>
               </div>
@@ -394,7 +523,7 @@ defmodule GatherlyWeb.EventShowLive do
 
         <div class="mt-8 rounded-box border border-dashed border-base-300 p-6 text-sm text-base-content/65">
           <strong>Next roadmap slots:</strong>
-          proposal voting, commute-aware location comparison, owner review tokens, account claiming, and AI coverage checks.
+          commute-aware location comparison, owner review tokens, account claiming, and AI coverage checks.
         </div>
 
         <%= if @form_error do %>

@@ -111,13 +111,13 @@ defmodule Gatherly.Events do
 
   def create_proposal(attrs) do
     %Proposal{}
-    |> Proposal.changeset(attrs)
+    |> Proposal.changeset(normalize_proposal_attrs(attrs))
     |> Repo.insert()
   end
 
   def create_vote(attrs) do
     %Vote{}
-    |> Vote.changeset(attrs)
+    |> Vote.changeset(normalize_vote_attrs(attrs))
     |> Repo.insert()
   end
 
@@ -171,6 +171,29 @@ defmodule Gatherly.Events do
     |> rename_key("dietary_tags", "tags")
     |> Map.update("tags", [], &parse_tags/1)
     |> Map.put_new("status", "unassigned")
+  end
+
+  defp normalize_proposal_attrs(attrs) do
+    attrs = stringify_keys(attrs)
+
+    details =
+      case blank_to_nil(Map.get(attrs, "details_text")) do
+        nil -> Map.get(attrs, "details", %{})
+        notes -> %{"notes" => notes}
+      end
+
+    attrs
+    |> Map.take(["event_id", "proposal_type", "title", "proposed_by_name", "status"])
+    |> Map.put("details", details)
+    |> Map.put_new("status", "open")
+    |> normalize_blanks(["proposed_by_name"])
+  end
+
+  defp normalize_vote_attrs(attrs) do
+    attrs
+    |> stringify_keys()
+    |> Map.update("weight", 1, &normalize_vote_weight/1)
+    |> normalize_blanks(["voter_name"])
   end
 
   defp normalize_datetime(params, key) do
@@ -236,6 +259,17 @@ defmodule Gatherly.Events do
   defp normalize_rsvp_status("no"), do: "not_going"
   defp normalize_rsvp_status(status) when status in ["going", "maybe", "not_going"], do: status
   defp normalize_rsvp_status(_status), do: "maybe"
+
+  defp normalize_vote_weight(weight) when is_integer(weight), do: weight
+
+  defp normalize_vote_weight(weight) when is_binary(weight) do
+    case Integer.parse(weight) do
+      {int, ""} -> int
+      _ -> 1
+    end
+  end
+
+  defp normalize_vote_weight(_weight), do: 1
 
   defp parse_tags(tags) when is_binary(tags) do
     tags
