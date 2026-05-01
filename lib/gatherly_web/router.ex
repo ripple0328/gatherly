@@ -29,6 +29,8 @@ defmodule GatherlyWeb.Router do
     get "/", PageController, :home
     live "/events", EventsLive
     live "/events/:slug", EventShowLive
+    live "/events/:slug/invite/:token", EventInviteLive
+    live "/events/:slug/participants/:participant_id/edit/:token", ParticipantEditLive
   end
 
   # Other scopes may use custom stacks.

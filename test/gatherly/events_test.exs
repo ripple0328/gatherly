@@ -233,6 +233,163 @@ defmodule Gatherly.EventsTest do
              Events.review_participant(event.id, participant_a.id, owner_token, "accepted")
   end
 
+  test "self-edit is allowed only for pending or accepted participants and preserves forbidden fields" do
+    {:ok, %{event: event, owner_token: owner_token, invite_token: invite_token}} =
+      Events.create_event(%{"title" => "Park picnic"})
+
+    {:ok, %{participant: pending, submission_token: pending_token}} =
+      Events.submit_participant_with_invite(event.id, invite_token, %{"display_name" => "Sam"})
+
+    assert {:ok, updated_pending} =
+             Events.update_participant_with_submission(event.id, pending.id, pending_token, %{
+               "display_name" => "Sam Pending",
+               "rsvp_status" => "maybe",
+               "role" => "snacks",
+               "review_status" => "excluded",
+               "event_id" => Ecto.UUID.generate(),
+               "owner_token_hash" => "attacker",
+               "invite_token_hash" => "attacker",
+               "submission_token_hash" => "attacker",
+               "source_payload" => %{"admin" => true}
+             })
+
+    assert updated_pending.display_name == "Sam Pending"
+    assert updated_pending.rsvp_status == "maybe"
+    assert updated_pending.role == "snacks"
+    assert updated_pending.review_status == "pending"
+    assert updated_pending.event_id == event.id
+    assert updated_pending.submission_token_hash == pending.submission_token_hash
+    assert updated_pending.source_payload == %{}
+
+    assert {:ok, accepted} =
+             Events.review_participant(event.id, pending.id, owner_token, "accepted")
+
+    assert {:ok, updated_accepted} =
+             Events.update_participant_with_submission(event.id, accepted.id, pending_token, %{
+               "display_name" => "Sam Accepted"
+             })
+
+    assert updated_accepted.display_name == "Sam Accepted"
+    assert updated_accepted.review_status == "accepted"
+
+    {:ok, %{participant: rejected, submission_token: rejected_token}} =
+      Events.submit_participant_with_invite(event.id, invite_token, %{"display_name" => "Riley"})
+
+    {:ok, %{participant: excluded, submission_token: excluded_token}} =
+      Events.submit_participant_with_invite(event.id, invite_token, %{"display_name" => "Jordan"})
+
+    assert {:ok, %{review_status: "rejected"}} =
+             Events.review_participant(event.id, rejected.id, owner_token, "rejected")
+
+    assert {:ok, %{review_status: "excluded"}} =
+             Events.review_participant(event.id, excluded.id, owner_token, "excluded")
+
+    assert {:error, :unauthorized} =
+             Events.update_participant_with_submission(event.id, rejected.id, rejected_token, %{
+               "display_name" => "Rejected Edit"
+             })
+
+    assert {:error, :unauthorized} =
+             Events.update_participant_with_submission(event.id, excluded.id, excluded_token, %{
+               "display_name" => "Excluded Edit"
+             })
+
+    assert Repo.get!(Participant, rejected.id).display_name == "Riley"
+    assert Repo.get!(Participant, excluded.id).display_name == "Jordan"
+  end
+
+  test "mixed event participant and submission token combinations fail closed" do
+    {:ok, %{event: event_a, invite_token: invite_token_a}} =
+      Events.create_event(%{"title" => "Park picnic"})
+
+    {:ok, %{event: event_b, invite_token: invite_token_b}} =
+      Events.create_event(%{"title" => "Lake picnic"})
+
+    {:ok, %{participant: participant_a, submission_token: token_a}} =
+      Events.submit_participant_with_invite(event_a.id, invite_token_a, %{"display_name" => "Sam"})
+
+    {:ok, %{participant: participant_b, submission_token: token_b}} =
+      Events.submit_participant_with_invite(event_b.id, invite_token_b, %{
+        "display_name" => "Riley"
+      })
+
+    before_counts = row_counts()
+
+    assert {:error, :unauthorized} =
+             Events.update_participant_with_submission(event_a.id, participant_b.id, token_b, %{
+               "display_name" => "Wrong event"
+             })
+
+    assert {:error, :unauthorized} =
+             Events.update_participant_with_submission(event_b.id, participant_a.id, token_a, %{
+               "display_name" => "Wrong event"
+             })
+
+    assert {:error, :unauthorized} =
+             Events.update_participant_with_submission(event_a.id, participant_a.id, token_b, %{
+               "display_name" => "Wrong token"
+             })
+
+    assert Repo.get!(Participant, participant_a.id).display_name == "Sam"
+    assert Repo.get!(Participant, participant_b.id).display_name == "Riley"
+    assert row_counts() == before_counts
+  end
+
+  test "invite retry with issued submission token updates existing participant instead of duplicating" do
+    {:ok, %{event: event, invite_token: invite_token}} =
+      Events.create_event(%{"title" => "Park picnic"})
+
+    assert {:ok, %{participant: participant, submission_token: submission_token}} =
+             Events.submit_participant_with_invite(event.id, invite_token, %{
+               "display_name" => "Sam",
+               "rsvp_status" => "going"
+             })
+
+    assert {:ok, %{participant: retried, submission_token: ^submission_token}} =
+             Events.submit_participant_with_invite(event.id, invite_token, %{
+               "display_name" => "Sam Retry",
+               "rsvp_status" => "not_going",
+               "submission_token" => submission_token
+             })
+
+    assert retried.id == participant.id
+    assert retried.display_name == "Sam Retry"
+    assert retried.rsvp_status == "not_going"
+    assert [%{id: participant_id}] = Events.list_participants(event.id)
+    assert participant_id == participant.id
+  end
+
+  test "accepted participant listing excludes pending rejected and excluded participants" do
+    {:ok, %{event: event, owner_token: owner_token, invite_token: invite_token}} =
+      Events.create_event(%{"title" => "Park picnic", "creator_name" => "Avery"})
+
+    {:ok, %{participant: pending}} =
+      Events.submit_participant_with_invite(event.id, invite_token, %{"display_name" => "Pending"})
+
+    {:ok, %{participant: rejected}} =
+      Events.submit_participant_with_invite(event.id, invite_token, %{
+        "display_name" => "Rejected"
+      })
+
+    {:ok, %{participant: excluded}} =
+      Events.submit_participant_with_invite(event.id, invite_token, %{
+        "display_name" => "Excluded"
+      })
+
+    {:ok, _} = Events.review_participant(event.id, rejected.id, owner_token, "rejected")
+    {:ok, _} = Events.review_participant(event.id, excluded.id, owner_token, "excluded")
+
+    assert ["Avery"] = Enum.map(Events.list_accepted_participants(event.id), & &1.display_name)
+
+    assert MapSet.new(Enum.map(Events.list_participants(event.id), & &1.id)) ==
+             MapSet.new([
+               hd(Events.list_accepted_participants(event.id)).id,
+               pending.id,
+               rejected.id,
+               excluded.id
+             ])
+  end
+
   defp mutate_token(<<first::binary-size(1), rest::binary>>) do
     replacement = if first == "a", do: "b", else: "a"
     replacement <> rest

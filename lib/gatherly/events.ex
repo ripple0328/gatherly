@@ -67,6 +67,14 @@ defmodule Gatherly.Events do
     |> Repo.all()
   end
 
+  def list_accepted_participants(event_id) do
+    Participant
+    |> where([participant], participant.event_id == ^event_id)
+    |> where([participant], participant.review_status == "accepted")
+    |> order_by([participant], asc: participant.inserted_at, asc: participant.display_name)
+    |> Repo.all()
+  end
+
   def create_participant(attrs) do
     attrs = normalize_participant_attrs(attrs)
 
@@ -85,25 +93,42 @@ defmodule Gatherly.Events do
 
   def submit_participant_with_invite(event_id, invite_token, attrs) do
     with {:ok, event} <- verify_invite_token(event_id, invite_token) do
-      submission_token = generate_token()
+      attrs = stringify_keys(attrs)
 
-      attrs =
-        attrs
-        |> normalize_participant_attrs()
-        |> Map.take(["display_name", "rsvp_status", "role"])
-        |> Map.put("event_id", event.id)
-        |> Map.put("review_status", "pending")
-        |> Map.put("submission_token_hash", hash_token(submission_token))
+      case existing_submission_for_retry(event.id, Map.get(attrs, "submission_token")) do
+        {:ok, participant, submission_token} ->
+          participant
+          |> Participant.changeset(safe_participant_self_edit_attrs(attrs))
+          |> Repo.update()
+          |> case do
+            {:ok, participant} ->
+              {:ok, %{participant: participant, submission_token: submission_token}}
 
-      %Participant{}
-      |> Participant.changeset(attrs)
-      |> Repo.insert()
-      |> case do
-        {:ok, participant} ->
-          {:ok, %{participant: participant, submission_token: submission_token}}
+            {:error, changeset} ->
+              {:error, changeset}
+          end
 
-        {:error, changeset} ->
-          {:error, changeset}
+        :new ->
+          submission_token = generate_token()
+
+          participant_attrs =
+            attrs
+            |> normalize_participant_attrs()
+            |> Map.take(["display_name", "rsvp_status", "role"])
+            |> Map.put("event_id", event.id)
+            |> Map.put("review_status", "pending")
+            |> Map.put("submission_token_hash", hash_token(submission_token))
+
+          %Participant{}
+          |> Participant.changeset(participant_attrs)
+          |> Repo.insert()
+          |> case do
+            {:ok, participant} ->
+              {:ok, %{participant: participant, submission_token: submission_token}}
+
+            {:error, changeset} ->
+              {:error, changeset}
+          end
       end
     end
   end
@@ -236,6 +261,20 @@ defmodule Gatherly.Events do
     |> Map.take(["display_name", "rsvp_status", "role"])
     |> Map.update("rsvp_status", "going", &normalize_rsvp_status/1)
   end
+
+  defp existing_submission_for_retry(_event_id, token) when token in [nil, ""], do: :new
+
+  defp existing_submission_for_retry(event_id, token) when is_binary(token) do
+    with {:ok, token_hash} <- token_hash_for_verification(token),
+         %Participant{} = participant <- get_participant_by_submission_hash(event_id, token_hash),
+         true <- participant.review_status in ["pending", "accepted"] do
+      {:ok, participant, String.trim(token)}
+    else
+      _ -> :new
+    end
+  end
+
+  defp existing_submission_for_retry(_event_id, _token), do: :new
 
   defp normalize_item_attrs(attrs) do
     attrs
@@ -376,6 +415,16 @@ defmodule Gatherly.Events do
     Participant
     |> where([participant], participant.event_id == ^event_id)
     |> where([participant], participant.id == ^participant_id)
+    |> Repo.one()
+  rescue
+    Ecto.Query.CastError -> nil
+    Ecto.CastError -> nil
+  end
+
+  defp get_participant_by_submission_hash(event_id, submission_token_hash) do
+    Participant
+    |> where([participant], participant.event_id == ^event_id)
+    |> where([participant], participant.submission_token_hash == ^submission_token_hash)
     |> Repo.one()
   rescue
     Ecto.Query.CastError -> nil

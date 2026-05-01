@@ -11,32 +11,11 @@ defmodule GatherlyWeb.EventShowLive do
      socket
      |> assign(:event, event)
      |> reload_event_workspace()
-     |> assign(:participant_form, to_form(default_participant_form(), as: :participant))
      |> assign(:item_form, to_form(default_item_form(), as: :item))
      |> assign(:proposal_form, to_form(default_proposal_form(), as: :proposal))
      |> assign(:comment_form, to_form(default_comment_form(), as: :comment))
      |> assign(:editing_item_id, nil)
      |> assign(:form_error, nil)}
-  end
-
-  @impl true
-  def handle_event("join", %{"participant" => params}, socket) do
-    params = Map.put(params, "event_id", socket.assigns.event.id)
-
-    case Events.create_participant(params) do
-      {:ok, _participant} ->
-        {:noreply,
-         socket
-         |> reload_event_workspace()
-         |> assign(:participant_form, to_form(default_participant_form(), as: :participant))
-         |> assign(:form_error, nil)}
-
-      {:error, changeset} ->
-        {:noreply,
-         socket
-         |> assign(:participant_form, to_form(changeset, as: :participant))
-         |> assign(:form_error, "Could not add participant.")}
-    end
   end
 
   @impl true
@@ -189,14 +168,10 @@ defmodule GatherlyWeb.EventShowLive do
     event_id = socket.assigns.event.id
 
     socket
-    |> assign(:participants, Events.list_participants(event_id))
+    |> assign(:participants, Events.list_accepted_participants(event_id))
     |> assign(:items, Events.list_items(event_id))
     |> assign(:proposals, Events.list_proposals(event_id))
     |> assign(:comments, Events.list_comments(event_id))
-  end
-
-  defp default_participant_form do
-    %{"display_name" => "", "rsvp_status" => "going", "role" => ""}
   end
 
   defp default_item_form do
@@ -289,23 +264,10 @@ defmodule GatherlyWeb.EventShowLive do
         <div class="mt-8 grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           <section class="space-y-8">
             <div class="rounded-box border border-base-200 bg-base-100 p-6">
-              <h2 class="text-lg font-semibold">Join the event</h2>
-              <.simple_form
-                for={@participant_form}
-                id="participant-form"
-                phx-submit="join"
-                class="mt-6 space-y-4"
-              >
-                <.input field={@participant_form[:display_name]} label="Your name" required />
-                <.input field={@participant_form[:role]} label="Role or note (optional)" />
-                <.input
-                  field={@participant_form[:rsvp_status]}
-                  type="select"
-                  label="RSVP"
-                  options={[{"Going", "going"}, {"Maybe", "maybe"}, {"Not going", "not_going"}]}
-                />
-                <.button type="submit">Add myself</.button>
-              </.simple_form>
+              <h2 class="text-lg font-semibold">Participants</h2>
+              <p class="mt-1 text-sm text-base-content/60">
+                Accepted participants appear here. Use an invite link to submit your RSVP.
+              </p>
 
               <div class="mt-6 space-y-2">
                 <%= if Enum.empty?(@participants) do %>
@@ -318,7 +280,7 @@ defmodule GatherlyWeb.EventShowLive do
                     <div>
                       <span class="font-medium">{participant.display_name}</span>
                       <%= if participant.role do %>
-                        <span class="text-base-content/50"> ·       {participant.role}</span>
+                        <span class="text-base-content/50"> ·        {participant.role}</span>
                       <% end %>
                     </div>
                     <span class="badge badge-outline">
