@@ -1,22 +1,55 @@
 # Gatherly
 
-To start your Phoenix server:
+Gatherly is a Phoenix LiveView reboot of a collaborative event planning workspace. The current foundation supports tokenized event access for owners and invited participants, invite-based participant submissions, participant self-edit links, owner review flows, and the existing workspace tools for logistics, proposals, and discussion.
 
-* Run `mix setup` to install and setup dependencies
-* Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+## Local setup
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Prerequisites are managed through `mise`; local services use Docker Compose.
 
-Health check endpoint:
+```bash
+mise install
+mise x -- mix setup
+mise x -- docker compose up -d db
+```
 
-* `GET /health` returns `{ "status": "ok" }`
+Start the development server:
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+```bash
+just dev
+```
 
-## Learn more
+The golden-path dev server is exposed through Portless at `http://gatherly.localhost:1355`. Direct `mix phx.server` still defaults to `http://localhost:4000`.
 
-* Official website: https://www.phoenixframework.org/
-* Guides: https://hexdocs.pm/phoenix/overview.html
-* Docs: https://hexdocs.pm/phoenix
-* Forum: https://elixirforum.com/c/phoenix-forum
-* Source: https://github.com/phoenixframework/phoenix
+## Development and validation
+
+```bash
+just test          # Start db and run the test suite
+just format        # Run mix format
+just precommit     # Start db and run mix precommit
+mise x -- mix precommit
+```
+
+## Current surfaces
+
+- `/` — product landing page
+- `/events` and `/events/:slug` — event workspace entry and event detail
+- `/events/:slug/invite/:token` — participant invite submission
+- `/events/:slug/participants/:participant_id/edit/:token` — participant self-edit
+- `/events/:slug/owner/:token` — owner review surface
+- `/health`, `/healthz`, `/readyz`, `/version` — operational health and version endpoints
+
+## Production operations
+
+Production tasks are delegated through the root `Justfile` to the mini-infra workflow:
+
+```bash
+just deploy
+just status
+just health
+just logs
+just restart
+just rollback
+just migrate
+```
+
+Runtime secrets are provided by the configured environment file and must not be committed.
