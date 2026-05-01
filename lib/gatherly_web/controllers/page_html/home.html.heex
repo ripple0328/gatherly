@@ -1,22 +1,41 @@
-<Layouts.flash_group flash={@flash} />
-<div class="mx-auto max-w-3xl px-6 py-12">
-  <div class="flex items-center justify-between">
-    <h1 class="text-2xl font-semibold">Gatherly</h1>
-    <Layouts.theme_toggle />
-  </div>
-
-  <p class="mt-4 text-base-content/70">
-    Plan a get‑together in minutes. Create an event, share the link, and coordinate with friends.
-  </p>
-
-  <div class="mt-8 rounded-box border border-base-200 bg-base-100 p-6">
-    <h2 class="text-lg font-semibold">Start now</h2>
-    <p class="mt-2 text-sm text-base-content/70">
-      Create your first event and invite people.
-    </p>
-    <div class="mt-4 flex gap-3">
-      <a href="/events" class="btn btn-primary">Create an event</a>
-      <a href="/events" class="btn btn-ghost">View events</a>
+<Layouts.app flash={@flash}>
+  <section class="mx-auto max-w-6xl px-6 py-16">
+    <div class="max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.25em] text-primary">
+        Crowdsourced event planning
+      </p>
+      <h1 class="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
+        Build the event together, from invite to logistics.
+      </h1>
+      <p class="mt-5 text-lg text-base-content/70">
+        Gatherly starts with lightweight potluck coordination: create an event, share the link,
+        let people add themselves, and crowdsource who brings what.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <.link navigate={~p"/events"} class="btn btn-primary">Start an event</.link>
+        <.link navigate={~p"/events"} class="btn btn-ghost">View events</.link>
+      </div>
     </div>
-  </div>
-</div>
+
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      <div class="rounded-box border border-base-200 bg-base-100 p-5">
+        <h2 class="font-semibold">Low-friction invites</h2>
+        <p class="mt-2 text-sm text-base-content/65">
+          No admin-heavy setup before the group sees value.
+        </p>
+      </div>
+      <div class="rounded-box border border-base-200 bg-base-100 p-5">
+        <h2 class="font-semibold">Shared ownership</h2>
+        <p class="mt-2 text-sm text-base-content/65">
+          Participants RSVP, discuss, and claim logistics themselves.
+        </p>
+      </div>
+      <div class="rounded-box border border-base-200 bg-base-100 p-5">
+        <h2 class="font-semibold">Reusable teams later</h2>
+        <p class="mt-2 text-sm text-base-content/65">
+          A one-off event can become a reusable team when the group needs it.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layouts.app>

@@ -1,39 +1,70 @@
 defmodule Gatherly.Events.Event do
-  use Ash.Resource,
-    domain: Gatherly.Domain,
-    data_layer: AshPostgres.DataLayer
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  attributes do
-    uuid_primary_key :id
+  alias Gatherly.Events.{Item, Participant, Proposal, ThreadComment}
 
-    attribute :title, :string do
-      allow_nil? false
-      constraints min_length: 1, max_length: 140
-    end
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+  @event_types ~w(potluck camping hiking game_night general)
 
-    attribute :slug, :string do
-      allow_nil? false
-      constraints min_length: 4, max_length: 32
-    end
+  schema "events" do
+    field :title, :string
+    field :slug, :string
+    field :event_type, :string, default: "potluck"
+    field :description, :string
+    field :starts_at, :utc_datetime
+    field :location, :string
+    field :owner_token_hash, :string
+    field :invite_token_hash, :string
+    field :decision_status, :string, default: "planning"
 
-    attribute :description, :string
-    attribute :starts_at, :utc_datetime
-    attribute :location, :string
+    has_many :participants, Participant
+    has_many :logistics_items, Item
+    has_many :proposals, Proposal
+    has_many :comments, ThreadComment
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
-  relationships do
-    has_many :rsvps, Gatherly.Events.Rsvp
-    has_many :items, Gatherly.Events.Item
+  def event_types, do: @event_types
+
+  def changeset(event, attrs) do
+    event
+    |> cast(attrs, [
+      :title,
+      :slug,
+      :event_type,
+      :description,
+      :starts_at,
+      :location,
+      :owner_token_hash,
+      :invite_token_hash,
+      :decision_status
+    ])
+    |> normalize_blank_strings([:title, :slug, :event_type, :description, :location])
+    |> validate_required([:title, :slug, :event_type])
+    |> validate_length(:title, min: 1, max: 140)
+    |> validate_length(:slug, min: 4, max: 32)
+    |> validate_inclusion(:event_type, @event_types)
+    |> validate_inclusion(:decision_status, ~w(planning locked archived))
+    |> unique_constraint(:slug)
+    |> unique_constraint(:owner_token_hash)
+    |> unique_constraint(:invite_token_hash)
   end
 
-  actions do
-    defaults [:create, :read, :update, :destroy]
-  end
+  defp normalize_blank_strings(changeset, fields) do
+    Enum.reduce(fields, changeset, fn field, acc ->
+      case get_change(acc, field) do
+        value when is_binary(value) ->
+          case String.trim(value) do
+            "" -> put_change(acc, field, nil)
+            text -> put_change(acc, field, text)
+          end
 
-  postgres do
-    table "events"
-    repo Gatherly.Repo
+        _ ->
+          acc
+      end
+    end)
   end
 end

@@ -2,136 +2,119 @@ defmodule GatherlyWeb.EventsLive do
   use GatherlyWeb, :live_view
 
   alias Gatherly.Events
+  alias Gatherly.Events.Event
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
      socket
      |> assign(:events, Events.list_events())
-     |> assign(:form, to_form(default_form()))
+     |> assign(:form, to_form(default_form(), as: :event))
      |> assign(:form_error, nil)}
   end
 
   @impl true
   def handle_event("save", %{"event" => params}, socket) do
-    params = normalize_params(params)
-
     case Events.create_event(params) do
-      {:ok, event} ->
+      {:ok, %{event: event}} ->
         {:noreply, push_navigate(socket, to: ~p"/events/#{event.slug}")}
 
-      {:error, error} ->
-        {:noreply, assign(socket, :form_error, error)}
+      {:error, changeset} ->
+        {:noreply,
+         socket
+         |> assign(:form, to_form(changeset, as: :event))
+         |> assign(:form_error, "Could not create event. Check the fields and try again.")}
     end
   end
 
   defp default_form do
     %{
       "title" => "",
+      "event_type" => "potluck",
+      "creator_name" => "",
       "starts_at" => "",
       "location" => "",
       "description" => ""
     }
   end
 
-  defp normalize_params(params) do
-    params =
-      case Map.get(params, "starts_at") do
-        nil ->
-          params
-
-        "" ->
-          Map.put(params, "starts_at", nil)
-
-        value ->
-          parsed =
-            case NaiveDateTime.from_iso8601(value) do
-              {:ok, ndt} -> {:ok, ndt}
-              _ ->
-                case NaiveDateTime.from_iso8601(String.replace(value, " ", "T") <> ":00") do
-                  {:ok, ndt} -> {:ok, ndt}
-                  _ -> :error
-                end
-            end
-
-          case parsed do
-            {:ok, ndt} ->
-              Map.put(params, "starts_at", DateTime.from_naive!(ndt, "Etc/UTC"))
-
-            :error ->
-              params
-          end
-      end
-
-    params
-    |> normalize_blank("location")
-    |> normalize_blank("description")
-  end
-
-  defp normalize_blank(params, key) do
-    case Map.get(params, key) do
-      nil -> params
-      "" -> Map.put(params, key, nil)
-      value when is_binary(value) -> Map.put(params, key, String.trim(value))
-      _ -> params
-    end
-  end
-
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-4xl px-6 py-10">
-      <div class="flex items-center justify-between">
-        <div>
-          <h1 class="text-2xl font-semibold">Gatherly</h1>
-          <p class="text-sm text-base-content/70">Create an event and share the link.</p>
-        </div>
-        <a href="/" class="text-sm link">Home</a>
-      </div>
-
-      <div class="mt-8 grid gap-8 lg:grid-cols-[1.1fr_1fr]">
-        <div class="rounded-box border border-base-200 bg-base-100 p-6 shadow-sm">
-          <h2 class="text-lg font-semibold">New event</h2>
-          <.simple_form for={@form} phx-submit="save" class="mt-6 space-y-4">
-            <.input field={@form[:title]} label="Title" required />
-            <.input field={@form[:starts_at]} type="datetime-local" label="Start time (optional)" />
-            <.input field={@form[:location]} label="Location (optional)" />
-            <.input field={@form[:description]} type="textarea" label="Description (optional)" />
-            <.button type="submit">Create event</.button>
-          </.simple_form>
-          <%= if @form_error do %>
-            <p class="mt-3 text-sm text-error">Could not save event. Check the fields and try again.</p>
-          <% end %>
+    <Layouts.app flash={@flash}>
+      <div class="mx-auto max-w-6xl px-6 py-10">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+              Gatherly reboot
+            </p>
+            <h1 class="mt-2 text-3xl font-semibold">Crowdsource the event, not just the invite.</h1>
+            <p class="mt-3 max-w-2xl text-base-content/70">
+              Start with a potluck, share the link, and let participants add themselves and own logistics.
+            </p>
+          </div>
+          <.link navigate={~p"/"} class="btn btn-ghost">Home</.link>
         </div>
 
-        <div class="rounded-box border border-base-200 bg-base-100 p-6 shadow-sm">
-          <h2 class="text-lg font-semibold">Upcoming events</h2>
-          <div class="mt-4 space-y-4">
-            <%= if Enum.empty?(@events) do %>
-              <p class="text-sm text-base-content/60">No events yet.</p>
-            <% else %>
-              <%= for event <- @events do %>
-                <div class="rounded-lg border border-base-200 p-4">
-                  <div class="flex items-center justify-between">
-                    <div class="font-semibold"><%= event.title %></div>
-                    <a class="link text-sm" href={~p"/events/#{event.slug}"}>Open</a>
+        <div class="mt-8 grid gap-8 lg:grid-cols-[1.05fr_1fr]">
+          <div class="rounded-box border border-base-200 bg-base-100 p-6 shadow-sm">
+            <h2 class="text-lg font-semibold">Start an event</h2>
+            <.simple_form for={@form} id="event-form" phx-submit="save" class="mt-6 space-y-4">
+              <.input field={@form[:title]} label="Event title" required />
+              <.input
+                field={@form[:event_type]}
+                type="select"
+                label="Event type"
+                options={
+                  Enum.map(
+                    Event.event_types(),
+                    &{String.replace(&1, "_", " ") |> String.capitalize(), &1}
+                  )
+                }
+              />
+              <.input field={@form[:creator_name]} label="Your name (optional)" />
+              <.input field={@form[:starts_at]} type="datetime-local" label="Start time (optional)" />
+              <.input field={@form[:location]} label="Location (optional)" />
+              <.input field={@form[:description]} type="textarea" label="Description (optional)" />
+              <.button type="submit">Create shareable event</.button>
+            </.simple_form>
+            <%= if @form_error do %>
+              <p class="mt-3 text-sm text-error">{@form_error}</p>
+            <% end %>
+          </div>
+
+          <div class="rounded-box border border-base-200 bg-base-100 p-6 shadow-sm">
+            <h2 class="text-lg font-semibold">Recent events</h2>
+            <div class="mt-4 space-y-4">
+              <%= if Enum.empty?(@events) do %>
+                <p class="text-sm text-base-content/60">No events yet.</p>
+              <% else %>
+                <div :for={event <- @events} class="rounded-lg border border-base-200 p-4">
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <div class="font-semibold">{event.title}</div>
+                      <div class="text-xs uppercase tracking-wide text-base-content/50">
+                        {event.event_type}
+                      </div>
+                    </div>
+                    <.link class="link text-sm" navigate={~p"/events/#{event.slug}"}>Open</.link>
                   </div>
                   <%= if event.starts_at do %>
-                    <div class="text-sm text-base-content/70"><%= format_dt(event.starts_at) %></div>
+                    <div class="mt-2 text-sm text-base-content/70">{format_dt(event.starts_at)}</div>
                   <% end %>
                   <%= if event.location do %>
-                    <div class="text-sm text-base-content/70"><%= event.location %></div>
+                    <div class="text-sm text-base-content/70">{event.location}</div>
                   <% end %>
                   <%= if event.description do %>
-                    <p class="mt-2 text-sm text-base-content/80"><%= event.description %></p>
+                    <p class="mt-2 text-sm text-base-content/80">{event.description}</p>
                   <% end %>
                 </div>
               <% end %>
-            <% end %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Layouts.app>
     """
   end
 

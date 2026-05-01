@@ -1,36 +1,32 @@
 defmodule Gatherly.Events.Rsvp do
-  use Ash.Resource,
-    domain: Gatherly.Domain,
-    data_layer: AshPostgres.DataLayer
+  @moduledoc """
+  Legacy RSVP schema kept for old migrations.
 
-  attributes do
-    uuid_primary_key :id
+  New product code uses `Gatherly.Events.Participant` as the richer RSVP surface.
+  """
 
-    attribute :name, :string do
-      allow_nil? false
-      constraints min_length: 1, max_length: 120
-    end
+  use Ecto.Schema
+  import Ecto.Changeset
 
-    attribute :status, :string do
-      allow_nil? false
-      constraints match: ~r/^(yes|no|maybe)$/
-    end
+  alias Gatherly.Events.Event
 
-    timestamps()
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+
+  schema "rsvps" do
+    field :name, :string
+    field :status, :string
+
+    belongs_to :event, Event
+
+    timestamps(type: :utc_datetime)
   end
 
-  relationships do
-    belongs_to :event, Gatherly.Events.Event do
-      allow_nil? false
-    end
-  end
-
-  actions do
-    defaults [:create, :read, :update, :destroy]
-  end
-
-  postgres do
-    table "rsvps"
-    repo Gatherly.Repo
+  def changeset(rsvp, attrs) do
+    rsvp
+    |> cast(attrs, [:event_id, :name, :status])
+    |> validate_required([:event_id, :name, :status])
+    |> validate_inclusion(:status, ~w(yes no maybe))
+    |> assoc_constraint(:event)
   end
 end

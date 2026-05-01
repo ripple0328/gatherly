@@ -1,0 +1,6 @@
+# Local-only Gatherly secrets. Copy to `.mise.local.toml` and keep it gitignored.
+
+[env]
+# Future examples:
+# OPENAI_API_KEY = "..."
+# MAPTILER_API_KEY = "..."

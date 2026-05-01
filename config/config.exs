@@ -9,8 +9,7 @@ import Config
 
 config :gatherly,
   ecto_repos: [Gatherly.Repo],
-  generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Gatherly.Domain]
+  generators: [timestamp_type: :utc_datetime]
 
 # Configure the endpoint
 config :gatherly, GatherlyWeb.Endpoint,

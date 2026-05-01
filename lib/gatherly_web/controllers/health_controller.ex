@@ -1,12 +1,12 @@
 defmodule GatherlyWeb.HealthController do
   @moduledoc """
   Standard health check endpoints (Platform App Contract).
-  
+
   - /healthz: Liveness probe
   - /readyz: Readiness probe
   - /version: Build/version info
   """
-  
+
   use GatherlyWeb, :controller
   require Logger
 
@@ -30,16 +30,16 @@ defmodule GatherlyWeb.HealthController do
     checks = %{
       database: check_database()
     }
-    
+
     all_healthy = Enum.all?(checks, fn {_name, status} -> status == :ok end)
     status_code = if all_healthy, do: 200, else: 503
-    
+
     response = %{
       status: if(all_healthy, do: "ready", else: "not_ready"),
       checks: checks,
       timestamp: DateTime.utc_now() |> DateTime.to_iso8601()
     }
-    
+
     conn
     |> put_status(status_code)
     |> json(response)
@@ -67,7 +67,9 @@ defmodule GatherlyWeb.HealthController do
   defp check_database do
     try do
       case Gatherly.Repo.query("SELECT 1") do
-        {:ok, _result} -> :ok
+        {:ok, _result} ->
+          :ok
+
         {:error, reason} ->
           Logger.error("Database health check failed: #{inspect(reason)}")
           :error

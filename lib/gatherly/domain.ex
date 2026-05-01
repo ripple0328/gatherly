@@ -1,16 +1,7 @@
 defmodule Gatherly.Domain do
   @moduledoc """
-  Gatherly Ash domain.
+  Historical placeholder kept so old references fail gracefully during the reboot.
 
-  This is intentionally empty in the skeleton app. Add resources as features are
-  implemented.
+  Gatherly now uses explicit Ecto contexts rather than Ash resources.
   """
-
-  use Ash.Domain
-
-  resources do
-    resource Gatherly.Events.Event
-    resource Gatherly.Events.Rsvp
-    resource Gatherly.Events.Item
-  end
 end
