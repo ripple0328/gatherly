@@ -10,8 +10,8 @@ on:
 env:
   # Gatherly targets "latest stable" (see docs/tech/STACK.md).
   # Keep these pinned for reproducible CI; bump intentionally.
-  ELIXIR_VERSION: '1.19.4'
-  OTP_VERSION: '28.3'
+  ELIXIR_VERSION: '1.20.0'
+  OTP_VERSION: '29.0.1'
 
 jobs:
   static-analysis:
