@@ -89,8 +89,6 @@ defmodule GatherlyWeb.EventInviteLive do
     }
   end
 
-  defp self_edit_path(%{participant: nil}), do: nil
-
   defp self_edit_path(assigns) do
     ~p"/events/#{assigns.event.slug}/participants/#{assigns.participant.id}/edit/#{assigns.submission_token}"
   end
@@ -116,7 +114,7 @@ defmodule GatherlyWeb.EventInviteLive do
                 <div :for={participant <- @participants}>
                   <span class="font-medium">{participant.display_name}</span>
                   <%= if participant.role do %>
-                    <span class="text-base-content/50"> ·    {participant.role}</span>
+                    <span class="text-base-content/50"> ·     {participant.role}</span>
                   <% end %>
                 </div>
               <% end %>
