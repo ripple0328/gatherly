@@ -95,7 +95,7 @@ defmodule GatherlyWeb.ParticipantEditLive do
                 <div :for={participant <- @participants}>
                   <span class="font-medium">{participant.display_name}</span>
                   <%= if participant.role do %>
-                    <span class="text-base-content/50"> ·    {participant.role}</span>
+                    <span class="text-base-content/50">{"· " <> participant.role}</span>
                   <% end %>
                 </div>
               <% end %>
