@@ -13,8 +13,14 @@ defmodule GatherlyWeb.Telemetry do
       # every 10_000ms. Learn more here: https://hexdocs.pm/telemetry_metrics
       {:telemetry_poller, measurements: periodic_measurements(), period: 10_000},
 
-      # Prometheus exporter (scraped by Prometheus)
-      {TelemetryMetricsPrometheus, metrics: metrics(), name: :gatherly_metrics}
+      # Keep aggregation independent from its HTTP projection. The scrape
+      # endpoint uses the app's existing Bandit stack and binds to loopback.
+      {TelemetryMetricsPrometheus.Core, metrics: metrics(), name: :gatherly_metrics},
+      {Bandit,
+       plug: {GatherlyWeb.MetricsPlug, name: :gatherly_metrics},
+       ip: :loopback,
+       port: 9568,
+       startup_log: false}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

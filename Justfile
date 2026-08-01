@@ -2,62 +2,62 @@
 
 set shell := ["/usr/bin/env", "bash", "-lc"]
 
-INFRA_JUST    := "/Users/qingbo/Projects/Personal/mini-infra/platform/Justfile"
-APP_NAME      := "gatherly"
+PLATFORM_JUST := justfile_directory() + "/../mini-infra/platform/Justfile"
+APP_NAME := "gatherly"
 LAUNCHD_LABEL := "com.gatherly"
-ENV_FILE      := "${HOME}/.config/gatherly/env.runtime"
-PORT          := "4002"
-PHX_HOST      := "gatherly.qingbo.us"
+ENV_FILE := "${HOME}/.config/gatherly/env.runtime"
+APP_PORT := "${GATHERLY_PROD_PORT:-4002}"
+PHX_HOST := "${PHX_HOST:-gatherly.qingbo.us}"
+DEPLOY_HOST := "${DEPLOY_HOST:-mini}"
+DATABASE_NAME := "gatherly"
 
 # Local development
 setup:
-	mise x -- mix setup
+	mise exec -- mix setup
 
 dev:
-	mise x -- docker compose up -d db
-	mise x -- portless gatherly ./scripts/dev_with_tidewave_banner.sh
+	mise exec -- docker compose up -d db
+	mise exec -- portless gatherly ./scripts/dev_with_tidewave_banner.sh
 
 db-up:
-	mise x -- docker compose up -d db
+	mise exec -- docker compose up -d db
 
 db-down:
-	mise x -- docker compose down
+	mise exec -- docker compose down
 
 test:
-	mise x -- docker compose up -d db
-	mise x -- mix test
+	mise exec -- docker compose up -d db
+	mise exec -- mix test
 
 format:
-	mise x -- mix format
+	mise exec -- mix format
 
-precommit:
-	mise x -- docker compose up -d db
-	mise x -- mix precommit
+check:
+	mise exec -- docker compose up -d db
+	mise exec -- mix precommit
+
+precommit: check
 
 # Production operations delegated to mini-infra.
-deploy:
-	APP_NAME={{APP_NAME}} LAUNCHD_LABEL={{LAUNCHD_LABEL}} ENV_FILE={{ENV_FILE}} PORT={{PORT}} PHX_HOST={{PHX_HOST}} just -f {{INFRA_JUST}} deploy
+_platform command:
+	@ROOT_SRC={{justfile_directory()}} APP_NAME={{APP_NAME}} LAUNCHD_LABEL={{LAUNCHD_LABEL}} ENV_FILE={{ENV_FILE}} PORT={{APP_PORT}} PHX_HOST={{PHX_HOST}} DEPLOY_HOST={{DEPLOY_HOST}} DATABASE_NAME={{DATABASE_NAME}} just -f {{PLATFORM_JUST}} {{command}}
 
-install:
-	APP_NAME={{APP_NAME}} LAUNCHD_LABEL={{LAUNCHD_LABEL}} ENV_FILE={{ENV_FILE}} PORT={{PORT}} PHX_HOST={{PHX_HOST}} just -f {{INFRA_JUST}} install
+doctor: (_platform "doctor")
 
-status:
-	APP_NAME={{APP_NAME}} LAUNCHD_LABEL={{LAUNCHD_LABEL}} ENV_FILE={{ENV_FILE}} PORT={{PORT}} PHX_HOST={{PHX_HOST}} just -f {{INFRA_JUST}} status
+deploy: (_platform "deploy")
 
-health:
-	APP_NAME={{APP_NAME}} LAUNCHD_LABEL={{LAUNCHD_LABEL}} ENV_FILE={{ENV_FILE}} PORT={{PORT}} PHX_HOST={{PHX_HOST}} just -f {{INFRA_JUST}} health
+install: (_platform "install")
 
-logs:
-	APP_NAME={{APP_NAME}} LAUNCHD_LABEL={{LAUNCHD_LABEL}} ENV_FILE={{ENV_FILE}} PORT={{PORT}} PHX_HOST={{PHX_HOST}} just -f {{INFRA_JUST}} logs
+status: (_platform "status")
 
-tail:
-	APP_NAME={{APP_NAME}} LAUNCHD_LABEL={{LAUNCHD_LABEL}} ENV_FILE={{ENV_FILE}} PORT={{PORT}} PHX_HOST={{PHX_HOST}} just -f {{INFRA_JUST}} tail
+health: (_platform "health")
 
-restart:
-	APP_NAME={{APP_NAME}} LAUNCHD_LABEL={{LAUNCHD_LABEL}} ENV_FILE={{ENV_FILE}} PORT={{PORT}} PHX_HOST={{PHX_HOST}} just -f {{INFRA_JUST}} restart
+logs: (_platform "logs")
 
-rollback:
-	APP_NAME={{APP_NAME}} LAUNCHD_LABEL={{LAUNCHD_LABEL}} ENV_FILE={{ENV_FILE}} PORT={{PORT}} PHX_HOST={{PHX_HOST}} just -f {{INFRA_JUST}} rollback
+tail: (_platform "tail")
 
-migrate:
-	APP_NAME={{APP_NAME}} LAUNCHD_LABEL={{LAUNCHD_LABEL}} ENV_FILE={{ENV_FILE}} PORT={{PORT}} PHX_HOST={{PHX_HOST}} just -f {{INFRA_JUST}} migrate
+restart: (_platform "restart")
+
+rollback: (_platform "rollback")
+
+migrate: (_platform "migrate")

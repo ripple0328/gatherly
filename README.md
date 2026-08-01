@@ -17,8 +17,8 @@ Prerequisites are managed through `mise`; local services use Docker Compose.
 
 ```bash
 mise install
-mise x -- mix setup
-mise x -- docker compose up -d db
+mise exec -- mix setup
+mise exec -- docker compose up -d db
 ```
 
 Start the development server:
@@ -34,8 +34,8 @@ The golden-path dev server is exposed through Portless at `http://gatherly.local
 ```bash
 just test          # Start db and run the test suite
 just format        # Run mix format
-just precommit     # Start db and run mix precommit
-mise x -- mix precommit
+just check         # Start db and run the non-mutating mix precommit gate
+mise exec -- mix precommit
 ```
 
 ## Current surfaces
@@ -52,6 +52,7 @@ mise x -- mix precommit
 Production tasks are delegated through the root `Justfile` to the mini-infra workflow:
 
 ```bash
+just doctor
 just deploy
 just status
 just health
@@ -62,3 +63,5 @@ just migrate
 ```
 
 Runtime secrets are provided by the configured environment file and must not be committed.
+See [OPS.md](OPS.md) for the clean-and-pushed source contract, graceful cutover,
+release traceability, and internal/public health verification.

@@ -1,2 +1,2 @@
-# This file intentionally left blank.
-# Metrics are exposed via TelemetryMetricsPrometheus built-in server (default :9568).
+# Metrics are exposed by GatherlyWeb.MetricsPlug through a loopback-only Bandit
+# listener on port 9568. This file remains as a compatibility placeholder.
